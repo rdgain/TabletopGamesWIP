@@ -1,0 +1,67 @@
+#,ID,line,Title,Text,Incompatible,Clarifications
+99,1.1,SETUP,Two Sides,-,,-
+99,1.2,SETUP,Outliers,-,,-
+99,1.3,SETUP,Black Hole,-,,-
+99,1.4,SETUP,Focal Point,-,,-
+99,1.5,SETUP,Twin Peaks,-,,-
+99,1.6,SETUP,Dual Abyss,-,,-
+99,1.7,SETUP,Ballroom,-,,-
+99,1.8,SETUP,Behind the Rocks,-,,-
+99,1.9,SETUP,Scylla & Charybdis,-,,-
+99,1.10,SETUP,Butterfly,-,,-
+99,1.11,SETUP,Lassos,-,,-
+99,1.12,SETUP,Attractors,-,,-
+99,1.13,SETUP,Two Arrows,-,,-
+99,1.14,SETUP,Split Focus,-,,-
+99,1.15,SETUP,Whirlpool,-,,-
+99,1.19,SETUP,Circles,-,,-
+99,1.20,SETUP,Three Arrows,-,,-
+99,1.21,SETUP,Hydra,-,,-
+99,1.22,SETUP,Clover,-,,-
+99,1.23,SETUP,Traffic Jam,-,,-
+99,1.24,SETUP,Spirals,-,,-
+99,1.25,SETUP,Peacocks,-,,-
+99,1.26,SETUP,Line Dance,-,,-
+99,1.27,SETUP,Gravity,-,,-
+99,1.28,SETUP,Rotor,-,,-
+99,1.29,SETUP,Ribbons,-,,-
+99,1.30,SETUP,Distant Friends,-,,-
+99,1.31,SETUP,Continents,-,,-
+99,1.32,SETUP,The Cube,-,,-
+99,1.33,SETUP,Cerberus,-,,-
+99,2.1,VICTORY,Your color,Occupy all goals of your color.,,-
+99,2.2,VICTORY,One of each,Occupy 1 goal of each color.,,"This does not include the neutral (grey) goals. Needs to be green, blue or red."
+99,2.3,VICTORY,Diagonal,Occupy 2 opposing goals and the center (if it exists).,,"If the center has a blocker or black hole then you just need two opposing goals. Opposing means they are on a ""virtual"" line with the center."
+99,2.4,VICTORY,Any three,Occupy 3 non-neighbouring goals.,,"The center is neighboring to all goals, so cannot be used here."
+99,2.5,VICTORY,Across,Put 1 marble on each opponent's end of the board.,,This is a side of 5 tiles right where an opponent is sitting. In a 3 / 4 / 6 player game you need to place 2 / 2 / 4 marbles respectively.
+99,2.6,VICTORY,Push out,Push out 3 opposing marbles.,,This requires counting. It does not matter if the marble stays out or comes back. In 3+ player games any combination of opposing marbles counts. Pushing into a black hole counts. When the time runs out then the player(s) who pushed out more win.
+99,3.1,MOVEMENT,Move 1,Move 1 marble by 1 space in any direction.,,-
+99,3.2,MOVEMENT,Move exactly 2,Move 1 marble exactly 2 spaces in any direction.,,If you cannot move 2 then you cannot move. Can't just move by 1.
+99,3.3,MOVEMENT,Move 3,Move 1 marble by up to 3 spaces in any direction.,,-
+99,3.4,MOVEMENT,Split move,Move up to 2 seperate marbles by 1 space in any direction.,,-
+99,3.5,MOVEMENT,Sidestep,Move a column of marbles orthogonally by 1 space or move 1 marble by 1 space in any direction.,,-
+99,3.6,MOVEMENT,Leapfrog,Jump over 1 opposing marble or blocker or move a marble by 1 space in any direction.,,Leapfrogging can only be done once per turn. It cannot be chained.
+99,3.7,MOVEMENT,Chain Frog,Repeatedly jump over 1 opposing marble or blocker or move a marble by 1 space in any direction.,,"Like leapfrog, but it can be chained."
+99,4.1,PUSH DIRECTION,Push 1,Push a column of marbles by 1 space in any direction.,,-
+99,4.2,PUSH DIRECTION,Push 2,Push a column of marbles by up to 2 spaces in any direction.,,-
+99,4.3,PUSH DIRECTION,Split Push,"Push a column of marbles by 1 space in any direction up to twice, using 2 different marbles.",,This means you cannot push the same exact columns of marbles twice in a row.
+99,4.4,PUSH DIRECTION,Must Push Opponent,"You must push a column of opposing marbles by 1 space, if you can.",,"You do not have to push your own marbles, just the opponents'."
+99,4.5,PUSH DIRECTION,Must Push Any,"You must push a column of marbles by 1 space, if you can. Including your own.",,This applies to both pushing your opponents' marbles and your own.
+99,4.6,PUSH DIRECTION,Momentum,Push in any direction until your 1st marble reaches the edge or until you cannot push anymore.,,This means you can push out multiple opposing marbles in one push. You never need to push out your own marbles.
+99,5.1,PUSH REQUIREMENT,More,You can push opposing marbles if you use more marbles.,,This does not apply to your own marbles. You can always push your own marbles with any number.
+99,5.2,PUSH REQUIREMENT,More or equal,You can push opposing marbles if you use more or equal marbles. Do not split your column while pushing the opponent.,,Only consider adjacent marbles in the line you are pushing on. Any marbles that are perpendicular or diagonally adjacent don't matter.
+99,5.3,PUSH REQUIREMENT,Equal,You can push opposing marbles if you use equal marbles. Do not split your column while pushing the opponent.,,Only consider adjacent marbles in the line you are pushing on. Any marbles that are perpendicular or diagonally adjacent don't matter.
+99,5.4,PUSH REQUIREMENT,Fewer or equal,You can push opposing marbles if you use fewer or equal marbles. Do not split your column while pushing the opponent.,,Only consider adjacent marbles in the line you are pushing on. Any marbles that are perpendicular or diagonally adjacent don't matter.
+99,5.5,PUSH REQUIREMENT,Fewer or more,You can push opposing marbles if you use fewer or more marbles.,,-
+99,5.6,PUSH REQUIREMENT,Majority,You can push opposing marbles if you have more marbles anywhere in the line.,,"This includes all marbles in the line, even behind or not touching the current line being pushed."
+99,5.7,PUSH REQUIREMENT,Minority,You can push opposing marbles if you have fewer marbles anywhere in the line.,,"This includes all marbles in the line, even behind or not touching the current line being pushed."
+99,5.8,PUSH REQUIREMENT,Uneven ,"You can push your opposing marbles if you use an uneven number of marbles (1, 3 or 5). Do not split your column while pushing the opponent.",,
+99,5.9,PUSH REQUIREMENT,Even,"You can push opposing marbles if you use an even number of marbles (2, 4 or 6). Do not split your column while pushing the opponent.",,
+99,6.1,PUSH OUT,Center replace,Pushed out marbles return to the center. Remove any pre-existing marble.,,
+99,6.2,PUSH OUT,Center if free,"Pushed out marbles return to the center, if it is free. Else they are removed.",,
+99,6.3,PUSH OUT,Out is gone,Pushed out marbles are removed from play.,,
+99,6.4,PUSH OUT,The Return,Pushed out marbles return to a free space of the next opponent's choice.,,"""The opponent"" here means the person who does not control the marble. It does not matter who pushed out a marble."
+99,6.5,PUSH OUT,Replacement,Pushed out marbles replace an opponent's marble of the owner's choice. You cannot push out your own marbles.,,"""The opponent"" here means the person who does not control the marble. It does not matter who pushed out a marble. You place your marble at the beginning of your turn."
+99,6.6,PUSH OUT,Wrap around,"Instead of being pushed out, marbles ""wrap around"" to the other end of the line. ",,"This also means that rules such as ""do not split your line"" apply for the whole line, even ""through"" the edge of the board. There is, in fact, no edge anymore. All lines are now cyclical. "
+99,6.7,PUSH OUT,Teleport if free,"Pushed out marbles appear on the other end of the line, if that space is free. Otherwise they are removed.",,
+99,6.8,PUSH OUT,Teleport Replace,"Pushed out marbles appear on the other end of the line, but never on goals. Remove any pre-existing marble.",,
