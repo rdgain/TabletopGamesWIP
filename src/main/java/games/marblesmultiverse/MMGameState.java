@@ -1,14 +1,16 @@
-package gametemplate;
+package games.marblesmultiverse;
 
 import core.AbstractGameState;
 import core.AbstractParameters;
+import core.components.Card;
 import core.components.Component;
+import core.components.Deck;
+import core.components.GridBoard;
 import games.GameType;
+import games.marblesmultiverse.components.BoardSpot;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.BiFunction;
-import java.util.function.Function;
 
 /**
  * <p>The game state encapsulates all game information. It is a data-only class, with game functionality present
@@ -18,12 +20,19 @@ import java.util.function.Function;
  * <p>Computation may be included in functions here for ease of access, but only if this is querying the game state information.
  * Functions on the game state should never <b>change</b> the state of the game.</p>
  */
-public class GTGameState extends AbstractGameState {
+public class MMGameState extends AbstractGameState {
+
+    List<Card> cardsInPlay = new ArrayList<Card>();
+
+    Deck<Card> deckOfRules;
+
+    GridBoard<BoardSpot> gameGrid;
+
     /**
      * @param gameParameters - game parameters.
      * @param nPlayers       - number of players in the game
      */
-    public GTGameState(AbstractParameters gameParameters, int nPlayers) {
+    public MMGameState(AbstractParameters gameParameters, int nPlayers) {
         super(gameParameters, nPlayers);
     }
 
@@ -66,8 +75,8 @@ public class GTGameState extends AbstractGameState {
      * @param playerId - player observing this game state.
      */
     @Override
-    protected GTGameState _copy(int playerId) {
-        GTGameState copy = new GTGameState(gameParameters, getNPlayers());
+    protected MMGameState _copy(int playerId) {
+        MMGameState copy = new MMGameState(gameParameters, getNPlayers());
         // TODO: deep copy all variables to the new game state.
         return copy;
     }
@@ -101,7 +110,7 @@ public class GTGameState extends AbstractGameState {
     @Override
     protected boolean _equals(Object o) {
         // TODO: compare all variables in the state
-        return o instanceof GTGameState;
+        return o instanceof MMGameState;
     }
 
     @Override

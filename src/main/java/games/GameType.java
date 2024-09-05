@@ -33,6 +33,8 @@ import games.hearts.HeartsParameters;
 import games.hearts.gui.HeartsGUIManager;
 import games.loveletter.*;
 import games.loveletter.gui.LoveLetterGUIManager;
+import games.marblesmultiverse.MMForwardModel;
+import games.marblesmultiverse.MMGameState;
 import games.pandemic.*;
 import games.pandemic.gui.PandemicGUIManager;
 import games.puertorico.*;
@@ -59,10 +61,7 @@ import games.wonders7.Wonders7ForwardModel;
 import games.wonders7.Wonders7GameParameters;
 import games.wonders7.Wonders7GameState;
 import games.wonders7.gui.Wonders7GUI;
-import gametemplate.GTForwardModel;
-import gametemplate.GTGUIManager;
-import gametemplate.GTGameState;
-import gametemplate.GTParameters;
+import gametemplate.*;
 import gui.*;
 import org.apache.commons.lang3.reflect.ConstructorUtils;
 import players.human.ActionController;
@@ -200,7 +199,11 @@ public enum GameType {
     ChineseCheckers(2, 6,
             Arrays.asList(Strategy, Abstract),
             Arrays.asList(GridMovement),
-            CCGameState.class, CCForwardModel.class, CCParameters.class, CCGUIManager.class);
+            CCGameState.class, CCForwardModel.class, CCParameters.class, CCGUIManager.class),
+    MarbleMultiverse(2, 2,
+                    Arrays.asList(Strategy, Abstract),
+            Arrays.asList(GridMovement),
+    MMGameState .class, MMForwardModel .class, gametemplate.MMParameters .class, CCGUIManager.class);
 
 
     // Core classes where the game is defined

@@ -1,4 +1,4 @@
-package gametemplate;
+package games.marblesmultiverse;
 
 import core.AbstractGameState;
 import core.StandardForwardModel;
@@ -17,7 +17,7 @@ import java.util.List;
  *     <li>Game end</li>
  * </ol>
  */
-public class GTForwardModel extends StandardForwardModel {
+public class MMForwardModel extends StandardForwardModel {
 
     /**
      * Initializes all variables in the given game state. Performs initial game setup according to game rules, e.g.:
