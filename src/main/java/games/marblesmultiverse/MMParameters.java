@@ -14,7 +14,7 @@ import evaluation.optimisation.TunableParameters;
  * <p>The class can optionally extend from {@link TunableParameters} instead, which allows to use
  * automatic game parameter optimisation tools in the framework.</p>
  */
-public class GTParameters extends AbstractParameters {
+public class MMParameters extends AbstractParameters {
 
     @Override
     protected AbstractParameters _copy() {

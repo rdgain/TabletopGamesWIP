@@ -1,10 +1,12 @@
 package games.marblesmultiverse.components;
 
 public enum CardType{
-    SETUP,
+    Setup,
     Victory,
     Movement,
     Push,
     PushRequirement,
-    PushOff
+    PushOut
 }
+// lez do dis
+
