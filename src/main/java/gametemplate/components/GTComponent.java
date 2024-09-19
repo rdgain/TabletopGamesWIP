@@ -32,8 +32,8 @@ public class GTComponent extends Component {
      * <p>If all variables in this class are final or effectively final, then you can just return <code>`this`</code>.</p>
      */
     @Override
-    public GTComponent copy() {
-        GTComponent copy = new GTComponent(type, componentName, componentID);
+    public gametemplate.GTComponent copy() {
+        gametemplate.GTComponent copy = new gametemplate.GTComponent(type, componentName, componentID);
         // TODO: copy here all non-final class variables.
         copyComponentTo(copy);
         return copy;
@@ -42,7 +42,7 @@ public class GTComponent extends Component {
     @Override
     public boolean equals(Object o) {
         // TODO: compare all class variables (if any).
-        return (o instanceof GTComponent) && super.equals(o);
+        return (o instanceof gametemplate.GTComponent) && super.equals(o);
     }
 
     @Override
