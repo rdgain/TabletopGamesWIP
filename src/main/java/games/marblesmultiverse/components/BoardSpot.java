@@ -13,7 +13,8 @@ public class BoardSpot extends BoardNode {
         NORMAL,
         VORTEX,
         BLOCKAGE,
-        VICTORY;
+        VICTORY,
+        VOID;
     }
     // type of node
     SpotType type;

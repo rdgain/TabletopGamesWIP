@@ -2,14 +2,17 @@ package games.marblesmultiverse;
 
 import core.AbstractGameState;
 import core.AbstractParameters;
-import core.components.Card;
-import core.components.Component;
-import core.components.Deck;
-import core.components.GridBoard;
+import core.CoreConstants;
+import core.components.*;
+import core.interfaces.IGamePhase;
 import games.GameType;
+import games.catan.components.CatanTile;
 import games.marblesmultiverse.components.BoardSpot;
+import games.marblesmultiverse.components.Cards;
+import games.marblesmultiverse.components.MMCard;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -22,11 +25,32 @@ import java.util.List;
  */
 public class MMGameState extends AbstractGameState {
 
-    List<Card> cardsInPlay = new ArrayList<Card>();
+    ArrayList<Cards> cardsInPlay = new ArrayList<Cards>();
 
-    Deck<Card> deckOfRules;
+    ArrayList<Cards> deckOfRules = new ArrayList<Cards>();
 
-    GridBoard<BoardSpot> gameGrid;
+    protected BoardSpot[][] board;
+    protected GraphBoardWithEdges mmGraph;
+
+    public enum MMGamePhase implements IGamePhase{
+        Setup,
+        Action,
+        RuleChange
+    }
+
+    public void setBoard(BoardSpot[][] board) {
+        this.board = board;
+    }
+    public BoardSpot[][] getBoard() {
+        return board;
+    }
+
+    public void setGraph(GraphBoardWithEdges graph) {
+        this.mmGraph = graph;
+    }
+    public GraphBoardWithEdges getGraph() {
+        return mmGraph;
+    }
 
     /**
      * @param gameParameters - game parameters.
@@ -54,7 +78,15 @@ public class MMGameState extends AbstractGameState {
     @Override
     protected List<Component> _getAllComponents() {
         // TODO: add all components to the list
-        return new ArrayList<>();
+        return new ArrayList<Component>() {{
+            add(mmGraph);
+            for ( BoardSpot[] tiles: board) {
+                this.addAll(Arrays.asList(tiles));
+            }
+            addAll(cardsInPlay);
+            add(deckOfRules);
+
+        }};
     }
 
     /**

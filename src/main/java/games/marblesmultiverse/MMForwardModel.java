@@ -3,6 +3,12 @@ package games.marblesmultiverse;
 import core.AbstractGameState;
 import core.StandardForwardModel;
 import core.actions.AbstractAction;
+import games.catan.CatanParameters;
+import games.marblesmultiverse.components.BoardSpot;
+import games.marblesmultiverse.components.CardType;
+import games.marblesmultiverse.components.Cards;
+import games.marblesmultiverse.components.MMCard;
+import gametemplate.MMParameters;
 import gametemplate.actions.GTAction;
 
 import java.util.ArrayList;
@@ -32,9 +38,47 @@ public class MMForwardModel extends StandardForwardModel {
      */
     @Override
     protected void _setup(AbstractGameState firstState) {
-        // TODO: perform initialization of variables and game setup
+        MMGameState state = (MMGameState) firstState;
+        MMParameters params = (MMParameters) state.getGameParameters();
+        // create deck of all cards
+        Cards possibleCards[] = Cards.values();
+        ArrayList<Cards> deck = new ArrayList<Cards>();
+        for(Cards card : possibleCards){
+            deck.add(card);
+        }
+        // select first rules
+        ArrayList<Cards> initialSetup = new ArrayList<Cards>();
+        initialSetup.add(Cards.YOUR_COLOR);
+        initialSetup.add(Cards.MOVE_1);
+        initialSetup.add(Cards.PUSH_1);
+        initialSetup.add(Cards.MORE);
+        initialSetup.add(Cards.OUT_IS_GONE);
+
+        for(Cards card : initialSetup){
+            deck.remove(card);
+        }
+
+        state.cardsInPlay = initialSetup;
+        state.deckOfRules = deck;
+
+        // create game board
+        state.board = SetupGameBoard();
+
+
+
+
+
+
     }
 
+    BoardSpot[][] SetupGameBoard() {
+        //setup empty board
+        BoardSpot[][] emptyBoard = new BoardSpot[9][9];
+        int midX = emptyBoard.length / 2;
+        int midY = emptyBoard[0].length / 2;
+
+
+    }
     /**
      * Calculates the list of currently available actions, possibly depending on the game phase.
      * @return - List of AbstractAction objects.
