@@ -6,7 +6,6 @@ import core.CoreConstants;
 import core.components.*;
 import core.interfaces.IGamePhase;
 import games.GameType;
-import games.catan.components.CatanTile;
 import games.marblesmultiverse.components.BoardSpot;
 import games.marblesmultiverse.components.Cards;
 import games.marblesmultiverse.components.MMCard;
@@ -29,7 +28,7 @@ public class MMGameState extends AbstractGameState {
 
     ArrayList<Cards> deckOfRules = new ArrayList<Cards>();
 
-    protected BoardSpot[][] board;
+    GridBoard<BoardSpot> board;
     protected GraphBoardWithEdges mmGraph;
 
     public enum MMGamePhase implements IGamePhase{
@@ -38,10 +37,7 @@ public class MMGameState extends AbstractGameState {
         RuleChange
     }
 
-    public void setBoard(BoardSpot[][] board) {
-        this.board = board;
-    }
-    public BoardSpot[][] getBoard() {
+    public GridBoard<BoardSpot> getBoard() {
         return board;
     }
 

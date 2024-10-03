@@ -7,26 +7,19 @@ import java.util.Objects;
 
 public class Marble extends Token {
 
-    public enum MarbleColor{
-        BLUE,
-        GREEN,
-        RED,
-        YELLOW,
-        PURPLE
-    }
 
-    private final MarbleColor color;
+    private final MarbleTypes color;
 
-    public Marble(MarbleColor color,String name, int ID) {
-        super(name, ID);
+    public Marble(MarbleTypes color,String name) {
+        super(name);
         this.color=color;
     }
 
-    public MarbleColor getColor() {return  color;};
+    public MarbleTypes getColor() {return  color;};
 
     @Override
     public Token copy(int playerId) {
-        return super.copy(playerId);
+        return (Token) super.copy(playerId);
     }
 
     @Override
