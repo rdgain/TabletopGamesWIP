@@ -1,34 +1,20 @@
 package games.marblesmultiverse.components;
 
-import com.univocity.parsers.annotations.Copy;
 import core.components.BoardNode;
-import scala.collection.parallel.mutable.UnrolledParArrayCombiner;
-import utilities.Vector2D;
 
 import java.util.Objects;
 
 public class BoardSpot extends BoardNode {
-    // use this for r(odd) shift
 
-
-    public enum SpotType {
-        NORMAL,
-        VORTEX,
-        BLOCKAGE,
-        VICTORY,
-        VOID;
-    }
-    // type of node
-    SpotType type;
-    // position on grid
+    // position on grid, r-odd (shift)
     public final int x;
     public final int y;
-    // who is in this spot
-    Marble occupant;
 
-    // who is this victory from
-    MarbleTypes victoryOwner;
-    public BoardSpot(int x, int y, SpotType type) {
+    MMTypes.SpotType type; // type of node
+    MMTypes.MarbleType occupant; // who is in this spot
+    MMTypes.MarbleType victoryOwner; // who is this victory from
+
+    public BoardSpot(int x, int y, MMTypes.SpotType type) {
         super();
         this.type = type;
         this.x = x;
@@ -36,7 +22,7 @@ public class BoardSpot extends BoardNode {
         occupant = null;
         victoryOwner= null;
     }
-    public BoardSpot(int x, int y, SpotType type, MarbleTypes victoryOwner) {
+    public BoardSpot(int x, int y, MMTypes.SpotType type, MMTypes.MarbleType victoryOwner) {
         super();
         this.type = type;
         this.x = x;
@@ -45,7 +31,7 @@ public class BoardSpot extends BoardNode {
         this.victoryOwner= victoryOwner;
     }
 
-    public BoardSpot(int x, int y, SpotType type, int ID) {
+    public BoardSpot(int x, int y, MMTypes.SpotType type, int ID) {
         super(-1, "create name with X and Y", ID);
         this.type = type;
         this.x = x;
@@ -54,11 +40,8 @@ public class BoardSpot extends BoardNode {
         victoryOwner= null;
     }
 
-
-
-    // dunno if it is going to be necessary but just in case
-    public boolean addMarble(Marble newOccupant){
-        if(type == SpotType.VORTEX || type == SpotType.BLOCKAGE){
+    public boolean addMarble(MMTypes.MarbleType newOccupant){
+        if(type == MMTypes.SpotType.VORTEX || type == MMTypes.SpotType.BLOCKAGE){
             return false;
         }
         if(occupant == null){
@@ -81,8 +64,10 @@ public class BoardSpot extends BoardNode {
 
     @Override
     public BoardSpot copy() {
-        BoardSpot = new BoardSpot(); // add stuff
-        return super.copy();
+        BoardSpot copy = new BoardSpot(x, y, type, componentID);
+        copy.occupant = occupant;
+        copy.victoryOwner = victoryOwner;
+        return copy;
     }
 
     @Override
@@ -91,11 +76,11 @@ public class BoardSpot extends BoardNode {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         BoardSpot boardSpot = (BoardSpot) o;
-        return x == boardSpot.x && y == boardSpot.y && type == boardSpot.type && Objects.equals(occupant, boardSpot.occupant);
+        return x == boardSpot.x && y == boardSpot.y && type == boardSpot.type && occupant == boardSpot.occupant && victoryOwner == boardSpot.victoryOwner;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), type, x, y, occupant);
+        return Objects.hash(super.hashCode(), type, x, y, occupant, victoryOwner);
     }
 }

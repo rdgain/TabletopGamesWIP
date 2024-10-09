@@ -2,17 +2,14 @@ package games.marblesmultiverse;
 
 import core.AbstractGameState;
 import core.AbstractParameters;
-import core.CoreConstants;
 import core.components.*;
-import core.interfaces.IGamePhase;
 import games.GameType;
 import games.marblesmultiverse.components.BoardSpot;
-import games.marblesmultiverse.components.Cards;
-import games.marblesmultiverse.components.MMCard;
+import games.marblesmultiverse.components.Card;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * <p>The game state encapsulates all game information. It is a data-only class, with game functionality present
@@ -24,29 +21,9 @@ import java.util.List;
  */
 public class MMGameState extends AbstractGameState {
 
-    ArrayList<Cards> cardsInPlay = new ArrayList<Cards>();
-
-    ArrayList<Cards> deckOfRules = new ArrayList<Cards>();
-
+    List<Card> cardsInPlay = new ArrayList<>();
+    List<Card> deckOfRules = new ArrayList<>();
     GridBoard<BoardSpot> board;
-    protected GraphBoardWithEdges mmGraph;
-
-    public enum MMGamePhase implements IGamePhase{
-        Setup,
-        Action,
-        RuleChange
-    }
-
-    public GridBoard<BoardSpot> getBoard() {
-        return board;
-    }
-
-    public void setGraph(GraphBoardWithEdges graph) {
-        this.mmGraph = graph;
-    }
-    public GraphBoardWithEdges getGraph() {
-        return mmGraph;
-    }
 
     /**
      * @param gameParameters - game parameters.
@@ -56,13 +33,24 @@ public class MMGameState extends AbstractGameState {
         super(gameParameters, nPlayers);
     }
 
+    public GridBoard<BoardSpot> getBoard() {
+        return board;
+    }
+
+    public List<Card> getCardsInPlay() {
+        return cardsInPlay;
+    }
+
+    public List<Card> getDeckOfRules() {
+        return deckOfRules;
+    }
+
     /**
      * @return the enum value corresponding to this game, declared in {@link GameType}.
      */
     @Override
     protected GameType _getGameType() {
-        // TODO: replace with game-specific enum value declared in GameType
-        return GameType.GameTemplate;
+        return GameType.MultiverseMarbles;
     }
 
     /**
@@ -73,15 +61,8 @@ public class MMGameState extends AbstractGameState {
      */
     @Override
     protected List<Component> _getAllComponents() {
-        // TODO: add all components to the list
-        return new ArrayList<Component>() {{
-            add(mmGraph);
-            for ( BoardSpot[] tiles: board) {
-                this.addAll(Arrays.asList(tiles));
-            }
-            addAll(cardsInPlay);
-            add(deckOfRules);
-
+        return new ArrayList<>() {{
+            add(board);
         }};
     }
 
@@ -118,7 +99,7 @@ public class MMGameState extends AbstractGameState {
     protected double _getHeuristicScore(int playerId) {
         if (isNotTerminal()) {
             // TODO calculate an approximate value
-            return 0;
+            return getGameScore(playerId);
         } else {
             // The game finished, we can instead return the actual result of the game for the given player.
             return getPlayerResults()[playerId].value;
@@ -131,59 +112,19 @@ public class MMGameState extends AbstractGameState {
      */
     @Override
     public double getGameScore(int playerId) {
-        // TODO: What is this player's score (if any)?
-        return 0;
+        return 0;  // no scoring
     }
 
     @Override
-    protected boolean _equals(Object o) {
-        // TODO: compare all variables in the state
-        return o instanceof MMGameState;
+    public boolean _equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        MMGameState that = (MMGameState) o;
+        return Objects.equals(cardsInPlay, that.cardsInPlay) && Objects.equals(deckOfRules, that.deckOfRules) && Objects.equals(board, that.board);
     }
 
     @Override
     public int hashCode() {
-        // TODO: include the hash code of all variables
-        return super.hashCode();
+        return Objects.hash(cardsInPlay, deckOfRules, board);
     }
-
-    // TODO: Consider the methods below for possible implementation
-    // TODO: These all have default implementations in AbstractGameState, so are not required to be implemented here.
-    // TODO: If the game has 'teams' that win/lose together, then implement the next two nethods.
-    /**
-     * Returns the number of teams in the game. The default is to have one team per player.
-     * If the game does not have 'teams' that win/lose together, then ignore these two methods.
-     */
-   // public int getNTeams();
-    /**
-     * Returns the team number the specified player is on.
-     */
-    //public int getTeam(int player);
-
-    // TODO: If your game has multiple special tiebreak options, then implement the next two methods.
-    // TODO: The default is to tie-break on the game score (if this is the case, ignore these)
-    // public double getTiebreak(int playerId, int tier);
-    // public int getTiebreakLevels();
-
-
-    // TODO: If your game does not have a score of any type, and is an 'insta-win' type game which ends
-    // TODO: as soon as a player achieves a winning condition, and has some bespoke method for determining 1st, 2nd, 3rd etc.
-    // TODO: Then you *may* want to implement:.
-    //public int getOrdinalPosition(int playerId);
-
-    // TODO: Review the methods below...these are all supported by the default implementation in AbstractGameState
-    // TODO: So you do not (and generally should not) implement your own versions - take advantage of the framework!
-    // public Random getRnd() returns a Random number generator for the game. This will be derived from the seed
-    // in game parameters, and will be updated correctly on a reset
-
-    // Ths following provide access to the id of the current player; the first player in the Round (if that is relevant to a game)
-    // and the current Turn and Round numbers.
-    // public int getCurrentPlayer()
-    // public int getFirstPlayer()
-    // public int getRoundCounter()
-    // public int getTurnCounter()
-    // also make sure you check out the standard endPlayerTurn() and endRound() methods in StandardForwardModel
-
-    // This method can be used to log a game event (e.g. for something game-specific that you want to include in the metrics)
-    // public void logEvent(IGameEvent...)
 }

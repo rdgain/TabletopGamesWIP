@@ -16,6 +16,8 @@ import evaluation.optimisation.TunableParameters;
  */
 public class MMParameters extends AbstractParameters {
 
+    int gridSize = 9;
+
     @Override
     protected AbstractParameters _copy() {
         // TODO: deep copy of all variables.

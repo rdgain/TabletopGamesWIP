@@ -1,4 +1,4 @@
-package gametemplate;
+package games.marblesmultiverse;
 
 import core.AbstractGameState;
 import core.AbstractPlayer;

@@ -200,7 +200,7 @@ public enum GameType {
             Arrays.asList(Strategy, Abstract),
             Arrays.asList(GridMovement),
             CCGameState.class, CCForwardModel.class, CCParameters.class, CCGUIManager.class),
-    MarbleMultiverse(2, 2,
+    MultiverseMarbles(2, 2,
                     Arrays.asList(Strategy, Abstract),
             Arrays.asList(GridMovement),
     MMGameState .class, MMForwardModel .class, gametemplate.MMParameters .class, CCGUIManager.class);
