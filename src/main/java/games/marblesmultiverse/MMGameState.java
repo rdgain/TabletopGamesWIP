@@ -85,7 +85,17 @@ public class MMGameState extends AbstractGameState {
     @Override
     protected MMGameState _copy(int playerId) {
         MMGameState copy = new MMGameState(gameParameters, getNPlayers());
-        // TODO: deep copy all variables to the new game state.
+        copy.deckOfRules = new ArrayList<>(deckOfRules);
+        copy.rulesInPlay = new HashMap<>(rulesInPlay);
+        copy.board = board.emptyCopy();
+        for (int i = 0; i < board.getHeight(); i++) {
+            for (int j = 0; j < board.getWidth(); j++) {
+                BoardSpot spot = board.getElement(j, i);
+                if (spot != null)
+                    copy.board.setElement(j, i, spot.copy());
+            }
+        }
+
         return copy;
     }
 
