@@ -44,9 +44,6 @@ public class BoardSpot extends BoardNode {
         if(type == MMTypes.SpotType.VORTEX || type == MMTypes.SpotType.BLOCKAGE){
             return false;
         }
-        if(occupant == null){
-            return false;
-        }
         else {
             occupant = newOccupant;
             return true;
