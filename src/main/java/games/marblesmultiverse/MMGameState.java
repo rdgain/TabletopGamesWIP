@@ -6,10 +6,9 @@ import core.components.*;
 import games.GameType;
 import games.marblesmultiverse.components.BoardSpot;
 import games.marblesmultiverse.components.Card;
+import games.marblesmultiverse.components.MMTypes;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * <p>The game state encapsulates all game information. It is a data-only class, with game functionality present
@@ -21,8 +20,8 @@ import java.util.Objects;
  */
 public class MMGameState extends AbstractGameState {
 
-    List<Card> cardsInPlay = new ArrayList<>();
-    List<Card> deckOfRules = new ArrayList<>();
+    List<Card> deckOfRules;
+    Map<MMTypes.CardType, Card> rulesInPlay = new HashMap<>();
     GridBoard<BoardSpot> board;
 
     /**
@@ -37,12 +36,12 @@ public class MMGameState extends AbstractGameState {
         return board;
     }
 
-    public List<Card> getCardsInPlay() {
-        return cardsInPlay;
-    }
-
     public List<Card> getDeckOfRules() {
         return deckOfRules;
+    }
+
+    public Map<MMTypes.CardType, Card> getRulesInPlay() {
+        return rulesInPlay;
     }
 
     /**
@@ -119,12 +118,13 @@ public class MMGameState extends AbstractGameState {
     public boolean _equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
         MMGameState that = (MMGameState) o;
-        return Objects.equals(cardsInPlay, that.cardsInPlay) && Objects.equals(deckOfRules, that.deckOfRules) && Objects.equals(board, that.board);
+        return Objects.equals(deckOfRules, that.deckOfRules) && Objects.equals(rulesInPlay, that.rulesInPlay) && Objects.equals(board, that.board);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(cardsInPlay, deckOfRules, board);
+        return Objects.hash(super.hashCode(), deckOfRules, rulesInPlay, board);
     }
 }

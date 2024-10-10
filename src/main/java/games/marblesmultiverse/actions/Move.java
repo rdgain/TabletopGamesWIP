@@ -3,8 +3,21 @@ package games.marblesmultiverse.actions;
 import core.AbstractGameState;
 import core.actions.AbstractAction;
 import core.components.Component;
+import games.marblesmultiverse.MMGameState;
+import games.marblesmultiverse.components.BoardSpot;
+import utilities.Vector2D;
+
+import java.util.Objects;
 
 public class Move extends AbstractAction {
+    final int playerID;
+    final Vector2D from, to;
+
+    public Move(int playerID, Vector2D from, Vector2D to) {
+        this.playerID = playerID;
+        this.from = from;
+        this.to = to;
+    }
 
     /**
      * Executes this action, applying its effect to the given game state. Can access any component IDs stored
@@ -14,7 +27,14 @@ public class Move extends AbstractAction {
      */
     @Override
     public boolean execute(AbstractGameState gs) {
-        // TODO: Some functionality applied which changes the given game state.
+        MMGameState state = (MMGameState) gs;
+        BoardSpot boardSpotFrom = state.getBoard().getElement(from);
+        BoardSpot boardSpotTo = state.getBoard().getElement(to);
+        boardSpotTo.addMarble(boardSpotFrom.getOccupant());
+        boardSpotFrom.removeMarble();
+
+        // todo push etc
+
         return true;
     }
 
@@ -26,26 +46,25 @@ public class Move extends AbstractAction {
      */
     @Override
     public Move copy() {
-        // TODO: copy non-final variables appropriately
         return this;
     }
 
     @Override
-    public boolean equals(Object obj) {
-        // TODO: compare all other variables in the class
-        return obj instanceof Move;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Move move = (Move) o;
+        return playerID == move.playerID && Objects.equals(from, move.from) && Objects.equals(to, move.to);
     }
 
     @Override
     public int hashCode() {
-        // TODO: return the hash of all other variables in the class
-        return 0;
+        return Objects.hash(playerID, from, to);
     }
 
     @Override
     public String toString() {
-        // TODO: Replace with appropriate string, including any action parameters
-        return "My action name";
+        return "p" + playerID + " move from " + from + " to " + to;
     }
 
     /**
@@ -59,20 +78,4 @@ public class Move extends AbstractAction {
         return toString();
     }
 
-
-    /**
-     * This next one is optional.
-     *
-     *  May optionally be implemented if Actions are not fully visible
-     *  The only impact this has is in the GUI, to avoid this giving too much information to the human player.
-     *
-     *  An example is in Resistance or Sushi Go, in which all cards are technically revealed simultaneously,
-     *  but the game engine asks for the moves sequentially. In this case, the action should be able to
-     *  output something like "Player N plays card", without saying what the card is.
-     * @param gameState - game state to be used to generate the string.
-     * @param playerId - player to whom the action should be represented.
-     * @return
-     */
-   // @Override
-   // public String getString(AbstractGameState gameState, int playerId);
 }

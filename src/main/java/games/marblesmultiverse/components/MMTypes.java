@@ -7,7 +7,11 @@ public class MMTypes {
         RED,
         YELLOW,
         PURPLE,
-        NEUTRAL,
+        NEUTRAL;
+
+        public static MarbleType player(int playerID) {
+            return MarbleType.values()[playerID];
+        }
     }
 
     public enum CardType{

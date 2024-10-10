@@ -4,15 +4,11 @@ import core.AbstractGameState;
 import core.StandardForwardModel;
 import core.actions.AbstractAction;
 import core.components.GridBoard;
-import games.marblesmultiverse.actions.Move;
 import games.marblesmultiverse.components.*;
 import gametemplate.MMParameters;
-import gametemplate.actions.GTAction;
 import utilities.Vector2D;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 /**
  * <p>The forward model contains all the game rules and logic. It is mainly responsible for declaring rules for:</p>
@@ -41,33 +37,34 @@ public class MMForwardModel extends StandardForwardModel {
         MMGameState state = (MMGameState) firstState;
         MMParameters params = (MMParameters) state.getGameParameters();
         // create deck of all cards
-        ArrayList<Card> deck = new ArrayList<>();
+        List<Card> deck = new ArrayList<>();
         Collections.addAll(deck, Card.values());
         
         // select first rules
-        ArrayList<Card> initialSetup = new ArrayList<>();
-        initialSetup.add(Card.YOUR_COLOR);
-        initialSetup.add(Card.MOVE_1);
-        initialSetup.add(Card.PUSH_1);
-        initialSetup.add(Card.MORE);
-        initialSetup.add(Card.OUT_IS_GONE);
+        Map<MMTypes.CardType, Card> initialSetup = new HashMap<>();
+        initialSetup.put(MMTypes.CardType.Victory, Card.YOUR_COLOR);
+        initialSetup.put(MMTypes.CardType.Movement, Card.MOVE_1);
+        initialSetup.put(MMTypes.CardType.Push, Card.PUSH_1);
+        initialSetup.put(MMTypes.CardType.PushRequirement, Card.MORE);
+        initialSetup.put(MMTypes.CardType.PushOut, Card.OUT_IS_GONE);
 
-        for(Card card : initialSetup){
+        for(Card card : initialSetup.values()){
             deck.remove(card);
         }
 
-        state.cardsInPlay = initialSetup;
+        state.rulesInPlay = initialSetup;
         state.deckOfRules = deck;
 
         // create game board
-        state.board = setupGameBoard(null);
+        state.board = new GridBoard<>(params.gridSize, params.gridSize);
+        Card.TWO_SIDES.parseSetup(state.board);
+//        state.board =  setupGameBoard(params);
+
+        state.setFirstPlayer(0);
     }
 
-    GridBoard<BoardSpot> setupGameBoard(Card setup) {
-        //setup empty board
-        GridBoard<BoardSpot> board= new GridBoard<BoardSpot>(9,9);
-
-        int centerCoord = (int) Math.floor((double) board.getHeight() /2);
+    GridBoard<BoardSpot> setupGameBoard(GridBoard<BoardSpot> board, MMParameters params) {
+        int centerCoord = (int) Math.floor((double) params.gridSize /2);
 
         List<Vector2D> stack = new ArrayList<>();
         // for now only do basic setup sets all as normal and defines null spots
@@ -96,16 +93,16 @@ public class MMForwardModel extends StandardForwardModel {
 
         // get top spots
         // top left is index 0 top right is index 5
-        Vector2D topLeft = center.add(Constants.neighbor_directions[parity][0].mult(4));
-        Vector2D topRight = center.add(Constants.neighbor_directions[parity][5].mult(4));
+        Vector2D topLeft = center.add(Constants.neighbor_directions[parity][0].mult(centerCoord));
+        Vector2D topRight = center.add(Constants.neighbor_directions[parity][5].mult(centerCoord));
         board.setElement(topLeft.getX(), topLeft.getY(), new BoardSpot(topLeft.getX(),topLeft.getY(), MMTypes.SpotType.VICTORY, MMTypes.MarbleType.BLUE));
         board.setElement(topRight.getX(), topRight.getY(), new BoardSpot(topRight.getX(),topRight.getY(), MMTypes.SpotType.VICTORY, MMTypes.MarbleType.BLUE));
 
 
         // get bottom spots
         // bottom left is index 2 bottom right is index 3
-        Vector2D bottomLeft = center.add(Constants.neighbor_directions[parity][2].mult(4));
-        Vector2D bottomRight = center.add(Constants.neighbor_directions[parity][3].mult(4));
+        Vector2D bottomLeft = center.add(Constants.neighbor_directions[parity][2].mult(centerCoord));
+        Vector2D bottomRight = center.add(Constants.neighbor_directions[parity][3].mult(centerCoord));
         board.setElement(bottomLeft.getX(), bottomLeft.getY(), new BoardSpot(bottomLeft.getX(),bottomLeft.getY(), MMTypes.SpotType.VICTORY, MMTypes.MarbleType.GREEN));
         board.setElement(bottomRight.getX(), bottomRight.getY(), new BoardSpot(bottomRight.getX(),bottomRight.getY(), MMTypes.SpotType.VICTORY, MMTypes.MarbleType.GREEN));
 
@@ -130,7 +127,7 @@ public class MMForwardModel extends StandardForwardModel {
         board.getElement(leftBottomLeftBottomLeftMiddle).addMarble(MMTypes.MarbleType.GREEN);
 
         Vector2D nextStep = leftBottomLeftBottomLeftMiddle.add(Constants.neighbor_directions[0][4]);
-        for (int i = 0; i<4; i++){
+        for (int i = 0; i<centerCoord; i++){
             board.getElement(nextStep).addMarble(MMTypes.MarbleType.GREEN);
             nextStep = nextStep.add(Constants.neighbor_directions[0][4]);
         }
@@ -155,7 +152,7 @@ public class MMForwardModel extends StandardForwardModel {
         board.getElement(leftTopLeftTopLeftMiddle).addMarble(MMTypes.MarbleType.GREEN);
 
         nextStep = leftBottomLeftBottomLeftMiddle.add(Constants.neighbor_directions[0][4]);
-        for(int i = 0; i<4; i++){
+        for(int i = 0; i<centerCoord; i++){
             board.getElement(nextStep).addMarble(MMTypes.MarbleType.GREEN);
             nextStep =nextStep.add(Constants.neighbor_directions[0][4]);
         }
@@ -167,9 +164,7 @@ public class MMForwardModel extends StandardForwardModel {
      */
     @Override
     protected List<AbstractAction> _computeAvailableActions(AbstractGameState gameState) {
-        List<AbstractAction> actions = new ArrayList<>();
-        // TODO: create action classes for the current player in the given game state and add them to the list. Below just an example that does nothing, remove.
-        actions.add(new Move());
-        return actions;
+        Map<MMTypes.CardType, Card> rules = ((MMGameState) gameState).getRulesInPlay();
+        return new ArrayList<>(rules.get(MMTypes.CardType.Movement).generateMoveActions((MMGameState) gameState, gameState.getCurrentPlayer()));
     }
 }

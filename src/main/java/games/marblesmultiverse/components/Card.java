@@ -1,5 +1,18 @@
 package games.marblesmultiverse.components;
 
+import core.actions.AbstractAction;
+import core.components.GridBoard;
+import games.marblesmultiverse.Constants;
+import games.marblesmultiverse.MMGameState;
+import games.marblesmultiverse.actions.Move;
+import utilities.Vector2D;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 public enum Card {
     YOUR_COLOR("Occupy all goals of your color.", MMTypes.CardType.Victory),
     ONE_OF_EACH("Occupy 1 goal of each color.", MMTypes.CardType.Victory),
@@ -36,7 +49,8 @@ public enum Card {
     REPLACEMENT("The last pushed out marble replaces an opponent's marble of their choice. You cannot push out your own marbles.", MMTypes.CardType.PushOut),
     WARP_AROUND("Instead of being pushed out, marbles \"wrap around\" to the other end of the line.", MMTypes.CardType.PushOut),
     TELEPORT_IF_FREE("Pushed out marbles appear on the other end of the line, if that space is free. Else they are removed.", MMTypes.CardType.PushOut),
-    TELEPORT_REPLACE("Pushed out marbles appear on the other end of the line. Remove any pre-existing marble. You cannot push out your own marbles.", MMTypes.CardType.PushOut);
+    TELEPORT_REPLACE("Pushed out marbles appear on the other end of the line. Remove any pre-existing marble. You cannot push out your own marbles.", MMTypes.CardType.PushOut),
+    TWO_SIDES("TwoSides.txt", MMTypes.CardType.Setup);
 
     public final String description;
     public final MMTypes.CardType type;
@@ -44,5 +58,95 @@ public enum Card {
     Card(String description, MMTypes.CardType type){
         this.description =description;
         this.type=type;
+    }
+
+    public List<AbstractAction> generateMoveActions(MMGameState gs, int playerID) {
+        List<AbstractAction> actions = new ArrayList<>();
+        switch (this) {
+            case MOVE_1:
+                // Check all neighbours distance 1
+                for (int i = 0; i < gs.getBoard().getHeight(); i++) {
+                    for (int j = 0; j < gs.getBoard().getWidth(); j++) {
+                        BoardSpot boardSpot = gs.getBoard().getElement(j, i);
+                        if (boardSpot != null && boardSpot.occupant == MMTypes.MarbleType.player(playerID)) {
+                            Vector2D from = new Vector2D(j, i);
+                            for (Vector2D to: Constants.getNeighbours(from)) {
+                                BoardSpot spot = gs.getBoard().getElement(to.getX(), to.getY());
+                                if (spot != null) {
+                                    if (spot.occupant == null) {
+                                        // It's a legal move!
+                                        actions.add(new Move(playerID, from, to));
+                                    } else if (spot.occupant == MMTypes.MarbleType.player(playerID)) {
+                                        // Check push requirements
+                                        if (gs.getRulesInPlay().get(MMTypes.CardType.Push).canPush(gs, from, to)) {
+                                            actions.add(new Move(playerID, from, to));
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                break;
+            default: return actions;
+        }
+        return actions;
+    }
+
+    public boolean canPush(MMGameState gs, Vector2D from, Vector2D to) {
+        switch(this) {
+            case PUSH_1:  // todo
+                return false;
+            default:
+                return false;
+        }
+    }
+
+    public void parseSetup(GridBoard<BoardSpot> board) {
+        if (this.type != MMTypes.CardType.Setup) return;
+
+        try (BufferedReader reader = new BufferedReader(new FileReader("data/marbles/setup/" + description))) {
+            String line;
+            int y = 0;
+            boolean marbleSection = false;
+
+            // First parse the board spots and create BoardSpot objects
+            while ((line = reader.readLine()) != null) {
+                if (line.trim().isEmpty()) {
+                    // Switch to marble section when an empty line is encountered
+                    marbleSection = true;
+                    y = 0; // Reset y for marble placement
+                    continue;
+                }
+
+                String[] tokens = line.split(",");
+                for (int x = 0; x < tokens.length; x++) {
+                    if (!marbleSection) {
+                        // Parsing the first part: board spot types
+                        BoardSpot spot = null;
+                        switch (tokens[x]) {
+                            case "-1": // No board spot here
+                                break;
+                            case "0":
+                                spot = new BoardSpot(x, y, MMTypes.SpotType.NORMAL, null);
+                                break;
+                            default:
+                                spot = new BoardSpot(x, y, MMTypes.SpotType.VICTORY, MMTypes.MarbleType.valueOf(tokens[x]));
+                                break;
+                        }
+                        board.setElement(x, y, spot);
+                    } else {
+                        // Parsing the second part: marble placements
+                        BoardSpot spot = board.getElement(x, y);
+                        if (spot != null && !tokens[x].equals("0")) {
+                            spot.addMarble(MMTypes.MarbleType.valueOf(tokens[x]));
+                        }
+                    }
+                }
+                y++; // Move to the next row
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
