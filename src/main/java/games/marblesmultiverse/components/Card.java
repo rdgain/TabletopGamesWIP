@@ -165,7 +165,9 @@ public enum Card {
                     for (int j = 0; j < gs.getBoard().getWidth(); j++) {
                         BoardSpot boardSpot = gs.getBoard().getElement(j, i);
                         if (boardSpot != null && boardSpot.victoryOwner != null &&
-                            boardSpot.occupant != boardSpot.victoryOwner) win[boardSpot.victoryOwner.ordinal()] = false;
+                                boardSpot.victoryOwner.ordinal() < gs.getNPlayers() &&
+                                boardSpot.occupant != boardSpot.victoryOwner)
+                            win[boardSpot.victoryOwner.ordinal()] = false;
                     }
                 }
                 for (int i = 0; i < win.length; i++) {
