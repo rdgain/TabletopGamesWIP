@@ -35,6 +35,8 @@ import games.loveletter.*;
 import games.loveletter.gui.LoveLetterGUIManager;
 import games.marblesmultiverse.MMForwardModel;
 import games.marblesmultiverse.MMGameState;
+import games.marblesmultiverse.MMParameters;
+import games.marblesmultiverse.gui.MMGUIManager;
 import games.pandemic.*;
 import games.pandemic.gui.PandemicGUIManager;
 import games.puertorico.*;
@@ -203,7 +205,7 @@ public enum GameType {
     MultiverseMarbles(2, 2,
                     Arrays.asList(Strategy, Abstract),
             Arrays.asList(GridMovement),
-    MMGameState .class, MMForwardModel .class, gametemplate.MMParameters .class, CCGUIManager.class);
+    MMGameState .class, MMForwardModel .class, MMParameters.class, MMGUIManager.class);
 
 
     // Core classes where the game is defined
