@@ -6,7 +6,6 @@ import core.StandardForwardModel;
 import core.actions.AbstractAction;
 import core.components.GridBoard;
 import games.marblesmultiverse.components.*;
-import gametemplate.MMParameters;
 import utilities.Vector2D;
 
 import java.util.*;
