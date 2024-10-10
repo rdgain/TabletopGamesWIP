@@ -41,7 +41,7 @@ public class MMBoardView extends ComponentView {
 
     @Override
     protected void paintComponent(Graphics g) {
-        drawHexGrid((Graphics2D) g, 0, 0);
+        drawHexGrid((Graphics2D) g, 10, 10);
     }
 
     protected void drawCell(Graphics2D g, int x, int y, String text, BoardSpot spot) {

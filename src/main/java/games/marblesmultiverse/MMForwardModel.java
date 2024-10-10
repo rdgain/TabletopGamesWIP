@@ -42,6 +42,7 @@ public class MMForwardModel extends StandardForwardModel {
 
         // select first rules
         Map<MMTypes.CardType, Card> initialSetup = new HashMap<>();
+        initialSetup.put(MMTypes.CardType.Setup, Card.TWO_SIDES);
         initialSetup.put(MMTypes.CardType.Victory, Card.YOUR_COLOR);
         initialSetup.put(MMTypes.CardType.Movement, Card.MOVE_1);
         initialSetup.put(MMTypes.CardType.Push, Card.PUSH_1);
@@ -57,7 +58,8 @@ public class MMForwardModel extends StandardForwardModel {
 
         // create game board
         state.board = new GridBoard<>(params.gridSize, params.gridSize);
-        Card.TWO_SIDES.parseSetup(state.board);
+
+        state.rulesInPlay.get(MMTypes.CardType.Setup).parseSetup(state.board);
 //        state.board =  setupGameBoard(params);
 
         state.setFirstPlayer(0);
