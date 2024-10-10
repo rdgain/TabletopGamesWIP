@@ -1,6 +1,7 @@
 package games.marblesmultiverse;
 
 import core.AbstractGameState;
+import core.CoreConstants;
 import core.StandardForwardModel;
 import core.actions.AbstractAction;
 import core.components.GridBoard;
@@ -39,7 +40,7 @@ public class MMForwardModel extends StandardForwardModel {
         // create deck of all cards
         List<Card> deck = new ArrayList<>();
         Collections.addAll(deck, Card.values());
-        
+
         // select first rules
         Map<MMTypes.CardType, Card> initialSetup = new HashMap<>();
         initialSetup.put(MMTypes.CardType.Victory, Card.YOUR_COLOR);
@@ -48,7 +49,7 @@ public class MMForwardModel extends StandardForwardModel {
         initialSetup.put(MMTypes.CardType.PushRequirement, Card.MORE);
         initialSetup.put(MMTypes.CardType.PushOut, Card.OUT_IS_GONE);
 
-        for(Card card : initialSetup.values()){
+        for (Card card : initialSetup.values()) {
             deck.remove(card);
         }
 
@@ -64,24 +65,24 @@ public class MMForwardModel extends StandardForwardModel {
     }
 
     GridBoard<BoardSpot> setupGameBoard(GridBoard<BoardSpot> board, MMParameters params) {
-        int centerCoord = (int) Math.floor((double) params.gridSize /2);
+        int centerCoord = (int) Math.floor((double) params.gridSize / 2);
 
         List<Vector2D> stack = new ArrayList<>();
         // for now only do basic setup sets all as normal and defines null spots
-        board.setElement(centerCoord,centerCoord,new BoardSpot(centerCoord, centerCoord, MMTypes.SpotType.NORMAL));
-        Vector2D center = new Vector2D(centerCoord,centerCoord);
+        board.setElement(centerCoord, centerCoord, new BoardSpot(centerCoord, centerCoord, MMTypes.SpotType.NORMAL));
+        Vector2D center = new Vector2D(centerCoord, centerCoord);
         int parity = Math.abs(center.getY() % 2);
-        for (Vector2D v: Constants.neighbor_directions[parity]) {
+        for (Vector2D v : Constants.neighbor_directions[parity]) {
             stack.add(center.add(v));
         }
-        while (!stack.isEmpty()){
+        while (!stack.isEmpty()) {
             Vector2D lookingAt = stack.remove(0);
-            if (Constants.grid_distance(lookingAt,center)<5){
+            if (Constants.grid_distance(lookingAt, center) < 5) {
                 // if within range become normal
                 board.setElement(lookingAt.getX(), lookingAt.getY(), new BoardSpot(lookingAt.getX(), lookingAt.getY(), MMTypes.SpotType.NORMAL));
                 // then add neighbours to list
                 int newParity = Math.abs(lookingAt.getY() % 2);
-                for (Vector2D v: Constants.neighbor_directions[newParity]) {
+                for (Vector2D v : Constants.neighbor_directions[newParity]) {
                     stack.add(lookingAt.add(v));
                 }
             }
@@ -95,20 +96,20 @@ public class MMForwardModel extends StandardForwardModel {
         // top left is index 0 top right is index 5
         Vector2D topLeft = center.add(Constants.neighbor_directions[parity][0].mult(centerCoord));
         Vector2D topRight = center.add(Constants.neighbor_directions[parity][5].mult(centerCoord));
-        board.setElement(topLeft.getX(), topLeft.getY(), new BoardSpot(topLeft.getX(),topLeft.getY(), MMTypes.SpotType.VICTORY, MMTypes.MarbleType.BLUE));
-        board.setElement(topRight.getX(), topRight.getY(), new BoardSpot(topRight.getX(),topRight.getY(), MMTypes.SpotType.VICTORY, MMTypes.MarbleType.BLUE));
+        board.setElement(topLeft.getX(), topLeft.getY(), new BoardSpot(topLeft.getX(), topLeft.getY(), MMTypes.SpotType.VICTORY, MMTypes.MarbleType.BLUE));
+        board.setElement(topRight.getX(), topRight.getY(), new BoardSpot(topRight.getX(), topRight.getY(), MMTypes.SpotType.VICTORY, MMTypes.MarbleType.BLUE));
 
 
         // get bottom spots
         // bottom left is index 2 bottom right is index 3
         Vector2D bottomLeft = center.add(Constants.neighbor_directions[parity][2].mult(centerCoord));
         Vector2D bottomRight = center.add(Constants.neighbor_directions[parity][3].mult(centerCoord));
-        board.setElement(bottomLeft.getX(), bottomLeft.getY(), new BoardSpot(bottomLeft.getX(),bottomLeft.getY(), MMTypes.SpotType.VICTORY, MMTypes.MarbleType.GREEN));
-        board.setElement(bottomRight.getX(), bottomRight.getY(), new BoardSpot(bottomRight.getX(),bottomRight.getY(), MMTypes.SpotType.VICTORY, MMTypes.MarbleType.GREEN));
+        board.setElement(bottomLeft.getX(), bottomLeft.getY(), new BoardSpot(bottomLeft.getX(), bottomLeft.getY(), MMTypes.SpotType.VICTORY, MMTypes.MarbleType.GREEN));
+        board.setElement(bottomRight.getX(), bottomRight.getY(), new BoardSpot(bottomRight.getX(), bottomRight.getY(), MMTypes.SpotType.VICTORY, MMTypes.MarbleType.GREEN));
 
         // Define starting marble spaces
         // GREEN
-        Vector2D topMiddle = new Vector2D(centerCoord,0);
+        Vector2D topMiddle = new Vector2D(centerCoord, 0);
         board.getElement(topMiddle).addMarble(MMTypes.MarbleType.GREEN);
 
         Vector2D bottomLeftMiddle = topMiddle.add(Constants.neighbor_directions[0][2]);
@@ -127,13 +128,13 @@ public class MMForwardModel extends StandardForwardModel {
         board.getElement(leftBottomLeftBottomLeftMiddle).addMarble(MMTypes.MarbleType.GREEN);
 
         Vector2D nextStep = leftBottomLeftBottomLeftMiddle.add(Constants.neighbor_directions[0][4]);
-        for (int i = 0; i<centerCoord; i++){
+        for (int i = 0; i < centerCoord; i++) {
             board.getElement(nextStep).addMarble(MMTypes.MarbleType.GREEN);
             nextStep = nextStep.add(Constants.neighbor_directions[0][4]);
         }
 
         // BLUE
-        Vector2D bottomMiddle = new Vector2D(centerCoord, board.getHeight()-1);
+        Vector2D bottomMiddle = new Vector2D(centerCoord, board.getHeight() - 1);
         board.getElement(bottomMiddle).addMarble(MMTypes.MarbleType.BLUE);
 
         Vector2D topLeftMiddle = topMiddle.add(Constants.neighbor_directions[0][0]);
@@ -152,14 +153,16 @@ public class MMForwardModel extends StandardForwardModel {
         board.getElement(leftTopLeftTopLeftMiddle).addMarble(MMTypes.MarbleType.GREEN);
 
         nextStep = leftBottomLeftBottomLeftMiddle.add(Constants.neighbor_directions[0][4]);
-        for(int i = 0; i<centerCoord; i++){
+        for (int i = 0; i < centerCoord; i++) {
             board.getElement(nextStep).addMarble(MMTypes.MarbleType.GREEN);
-            nextStep =nextStep.add(Constants.neighbor_directions[0][4]);
+            nextStep = nextStep.add(Constants.neighbor_directions[0][4]);
         }
         return board;
     }
+
     /**
      * Calculates the list of currently available actions, possibly depending on the game phase.
+     *
      * @return - List of AbstractAction objects.
      */
     @Override
@@ -167,4 +170,33 @@ public class MMForwardModel extends StandardForwardModel {
         Map<MMTypes.CardType, Card> rules = ((MMGameState) gameState).getRulesInPlay();
         return new ArrayList<>(rules.get(MMTypes.CardType.Movement).generateMoveActions((MMGameState) gameState, gameState.getCurrentPlayer()));
     }
+
+    @Override
+    protected void _afterAction(AbstractGameState currentState, AbstractAction actionTaken) {
+        if (currentState.isActionInProgress()) return;
+
+        // Check default game end: 1 marble left for a player todo
+
+        // Check victory rules active
+        int winner = ((MMGameState) currentState).rulesInPlay.get(MMTypes.CardType.Victory).checkVictory((MMGameState) currentState);
+        if (winner != -1) {
+            currentState.setGameStatus(CoreConstants.GameResult.GAME_END);
+            for (int i = 0; i < currentState.getNPlayers(); i++) {
+                if (i == winner) currentState.setPlayerResult(CoreConstants.GameResult.WIN_GAME, i);
+                else currentState.setPlayerResult(CoreConstants.GameResult.LOSE_GAME, i);
+            }
+            return;
+        }
+
+        endPlayerTurn(currentState);
+    }
+
+    @Override
+    protected void endGame(AbstractGameState gs) {
+        if (gs.getCoreGameParameters().verbose) {
+            System.out.println(Arrays.toString(gs.getPlayerResults()));
+        }
+    }
 }
+
+

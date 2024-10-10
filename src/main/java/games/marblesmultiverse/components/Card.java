@@ -11,6 +11,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public enum Card {
@@ -62,6 +63,8 @@ public enum Card {
 
     public List<AbstractAction> generateMoveActions(MMGameState gs, int playerID) {
         List<AbstractAction> actions = new ArrayList<>();
+        if (this.type != MMTypes.CardType.Movement) return actions;
+
         switch (this) {
             case MOVE_1:
                 // Check all neighbours distance 1
@@ -94,6 +97,7 @@ public enum Card {
     }
 
     public boolean canPush(MMGameState gs, Vector2D from, Vector2D to) {
+        if (this.type != MMTypes.CardType.Push) return false;
         switch(this) {
             case PUSH_1:  // todo
                 return false;
@@ -147,6 +151,28 @@ public enum Card {
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    public int checkVictory(MMGameState gs) {
+        if (this.type != MMTypes.CardType.Victory) return -1;
+
+        switch(this) {
+            case YOUR_COLOR:
+                boolean[] win = new boolean[gs.getNPlayers()];
+                Arrays.fill(win, true);
+                for (int i = 0; i < gs.getBoard().getHeight(); i++) {
+                    for (int j = 0; j < gs.getBoard().getWidth(); j++) {
+                        BoardSpot boardSpot = gs.getBoard().getElement(j, i);
+                        if (boardSpot != null && boardSpot.victoryOwner != null &&
+                            boardSpot.occupant != boardSpot.victoryOwner) win[boardSpot.victoryOwner.ordinal()] = false;
+                    }
+                }
+                for (int i = 0; i < win.length; i++) {
+                    if (win[i]) return i;
+                }
+                return -1;
+            default: return -1;
         }
     }
 }
