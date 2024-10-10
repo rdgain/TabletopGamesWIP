@@ -540,7 +540,7 @@ public class Game {
             if (gameState.getHistory().size() > 1) {
                 lastAction = gameState.getHistory().get(gameState.getHistory().size() - 1).b;
             }
-            throw new AssertionError("No actions available for player " + activePlayer
+            throw new AssertionError("No actions available for player " + activePlayer + ". Tick: " + getTick()
                     + (lastAction != null ? ". Last action: " + lastAction.getClass().getSimpleName() + " (" + lastAction + ")" : ". No actions in history")
                     + ". Actions in progress: " + actionsInProgress.size()
                     + (topOfStack != null ? ". Top of stack: " + topOfStack.getClass().getSimpleName() + " (" + topOfStack + ")" : ""));
@@ -837,7 +837,7 @@ public class Game {
         /* Set up players for the game */
         ArrayList<AbstractPlayer> players = new ArrayList<>();
         players.add(new RandomPlayer());
-        players.add(new RandomPlayer());
+//        players.add(new RandomPlayer());
 //        players.add(new BasicMCTSPlayer());
 
 //        RMHCParams params = new RMHCParams();
@@ -852,7 +852,7 @@ public class Game {
 
 //        players.add(new OSLAPlayer());
 //        players.add(new RMHCPlayer());
-//        players.add(new HumanGUIPlayer(ac));
+        players.add(new HumanGUIPlayer(ac));
 //        players.add(new HumanConsolePlayer());
 //        players.add(new FirstActionPlayer());
 

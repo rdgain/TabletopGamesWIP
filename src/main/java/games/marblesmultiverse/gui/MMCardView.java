@@ -1,7 +1,6 @@
 package games.marblesmultiverse.gui;
 
-import core.components.Card;
-import core.components.Component;
+import games.marblesmultiverse.components.Card;
 import gui.views.CardView;
 import gui.views.ComponentView;
 
@@ -12,10 +11,11 @@ import java.awt.*;
 public class MMCardView extends ComponentView {
     final static int cardWidth = 150;
     final static int cardHeight = 200;
-    public MMCardView(Component c) {
-        super(c, cardWidth, cardHeight);
+
+    public MMCardView(Card c) {
+        super(null, cardWidth, cardHeight);
         this.setLayout(new FlowLayout());
-        JTextArea desc = new JTextArea("Lorem ipsum dolor sit amet. Sed quia quia nam assumenda quasi ea enim facilis ut sapiente nisi et");
+        JTextArea desc = new JTextArea(c.description);
         desc.setLineWrap(true);
         desc.setWrapStyleWord(true);
         desc.setFont(desc.getFont().deriveFont(13f));
@@ -30,7 +30,7 @@ public class MMCardView extends ComponentView {
         Rectangle rect = new Rectangle(5, 5, width-5, height-5);
 //        g.drawString("Lorem ipsum dolor sit amet. Sed quia quia nam assumenda quasi ea enim facilis ut sapiente nisi et nulla beatae quo sequi quae ex praesentium animi. Et vitae neque ea consequatur odio et voluptate exercitationem est nihil quos.", 5, 5);
         g.drawRect(5, 5, cardWidth-5, cardHeight-5);
-        CardView.drawCard(g2d, null, rect);
+//        CardView.drawCard(g2d, null, rect);
 //        g.drawString("Lorem ipsum dolor sit amet. Sed quia quia nam assumenda quasi ea enim facilis ut sapiente nisi et ", 2, (int) (20 + fontSize * 1.5));
     }
 

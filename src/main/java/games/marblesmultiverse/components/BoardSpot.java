@@ -63,6 +63,14 @@ public class BoardSpot extends BoardNode {
         return occupant;
     }
 
+    public MMTypes.MarbleType getVictoryOwner() {
+        return victoryOwner;
+    }
+
+    public MMTypes.SpotType getSpotType() {
+        return type;
+    }
+
     @Override
     public BoardSpot copy() {
         BoardSpot copy = new BoardSpot(x, y, type, componentID);

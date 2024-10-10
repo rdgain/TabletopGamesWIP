@@ -43,7 +43,7 @@ public enum Card {
     MINORITY("You can push opposing marbles if you have fewer marbles anywhere in the line.", MMTypes.CardType.PushRequirement),
     UNEVEN("You can push your opposing marbles if you use an uneven number of marbles (1, 3 or 5). Do not split your column while pushing the opponent.", MMTypes.CardType.PushRequirement),
     EVEN("You can push opposing marbles if you use an even number of marbles (2, 4 or 6). Do not split your column while pushing the opponent.", MMTypes.CardType.PushRequirement),
-    OUT_IS_GONE("ushed out marbles are removed from play", MMTypes.CardType.PushOut),
+    OUT_IS_GONE("Pushed out marbles are removed from play", MMTypes.CardType.PushOut),
     CENTER_IF_FREE("Pushed out marbles return to the center, if it is free. Else they are removed.", MMTypes.CardType.PushOut),
     CENTER_REPLACE("Pushed out marbles return to the center. Remove any pre-existing marble.", MMTypes.CardType.PushOut),
     THE_RETURN("The last pushed out marble returns to a free space of the next opponent's choice.", MMTypes.CardType.PushOut),

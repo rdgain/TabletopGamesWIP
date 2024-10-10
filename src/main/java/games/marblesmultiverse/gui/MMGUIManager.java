@@ -2,11 +2,12 @@ package games.marblesmultiverse.gui;
 
 import core.AbstractGameState;
 import core.AbstractPlayer;
-import core.CoreConstants;
 import core.Game;
-import gametemplate.GTComponent;
+import games.marblesmultiverse.MMGameState;
+import games.marblesmultiverse.components.Card;
 import gui.AbstractGUIManager;
 import gui.GamePanel;
+import gui.IScreenHighlight;
 import players.human.ActionController;
 
 import javax.swing.*;
@@ -29,27 +30,24 @@ import java.util.Set;
  */
 public class MMGUIManager extends AbstractGUIManager {
 
-    private int gridHeight = 9;
-    private int gridWidth = 5;
-
     private int cardWidth = 50;
     private int cardHeight = 100;
 
     public MMGUIManager(GamePanel parent, Game game, ActionController ac, Set<Integer> human) {
         super(parent, game, ac, human);
-        AbstractGameState gameState = game.getGameState();
+        MMGameState gameState = (MMGameState) game.getGameState();
 
         // Main Game area
         JPanel mainGameArea = new JPanel(new FlowLayout());
 
 //        JButton boardPlaceHolder = new JButton("HEX GRID");
-        MMBoardView boardPlaceHolder = new MMBoardView(new GTComponent(CoreConstants.ComponentType.BOARD, "HEX BOARD"));
+        MMBoardView boardPlaceHolder = new MMBoardView(gameState);
 
         // Rule Panel to display current rules
         JPanel rulePanel = new JPanel(new GridLayout(3, 2));
-        for (int i=0; i<6; i++) {
+        for (Card card: gameState.getRulesInPlay().values()) {
             //JButton rule = new JButton("Rule " + i);
-            MMCardView rule = new MMCardView(new GTComponent(CoreConstants.ComponentType.CARD, "RULE CARD"));
+            MMCardView rule = new MMCardView(card);
             rulePanel.add(rule);
         }
         // Panel to display draw pile and discard pile
@@ -64,12 +62,12 @@ public class MMGUIManager extends AbstractGUIManager {
         mainGameArea.add(drawDiscardPanel);
 
 //        JPanel infoPanel = createGameStateInfoPanel("Multiverse Marbles", gameState, width, defaultInfoPanelHeight);
-//        JComponent actionPanel = createActionPanel(new IScreenHighlight[0], width, defaultActionPanelHeight, false, true, null, null, null);
+        JComponent actionPanel = createActionPanel(new IScreenHighlight[0], width, defaultActionPanelHeight, false, true, null, null, null);
 
         parent.setLayout(new BorderLayout());
         parent.add(mainGameArea, BorderLayout.CENTER);
 //        parent.add(infoPanel, BorderLayout.NORTH);
-//        parent.add(actionPanel, BorderLayout.SOUTH);
+        parent.add(actionPanel, BorderLayout.SOUTH);
         parent.revalidate();
         parent.setVisible(true);
         parent.repaint();
