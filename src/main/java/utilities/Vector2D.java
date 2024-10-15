@@ -64,12 +64,20 @@ public class Vector2D {
         return new Vector2D(x + b.x, y + b.y);
     }
 
+    public Vector2D subtract(Vector2D b) {
+        return new Vector2D(x - b.x, y - b.y);
+    }
+
     public Vector2D mult(int j) {
         return new Vector2D(x*j, y*j);
     }
 
     public Vector2D divide(int j) {
         return new Vector2D(x/j, y/j);
+    }
+
+    public int magnitude() {
+        return Math.abs(x) + Math.abs(y);
     }
 
     public enum Direction {

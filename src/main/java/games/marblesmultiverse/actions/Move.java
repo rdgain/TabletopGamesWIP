@@ -32,9 +32,6 @@ public class Move extends AbstractAction {
         BoardSpot boardSpotTo = state.getBoard().getElement(to);
         boardSpotTo.addMarble(boardSpotFrom.getOccupant());
         boardSpotFrom.removeMarble();
-
-        // todo push etc
-
         return true;
     }
 
