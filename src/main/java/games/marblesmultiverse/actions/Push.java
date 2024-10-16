@@ -51,6 +51,7 @@ public class Push extends AbstractAction {
             } else {
                 // push out rule
                 pushOutRule.pushOut(state, player);
+                break;
             }
         }
         state.getBoard().getElement(from).removeMarble();

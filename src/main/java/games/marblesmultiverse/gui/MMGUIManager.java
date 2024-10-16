@@ -82,7 +82,7 @@ public class MMGUIManager extends AbstractGUIManager {
     @Override
     public int getMaxActionSpace() {
         // TODO
-        return 10;
+        return 10000;
     }
 
     /**
