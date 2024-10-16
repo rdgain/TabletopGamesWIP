@@ -141,7 +141,7 @@ public enum Card {
                 int direction = Constants.direction(from, to);
                 // go from 'from' in the direction, stopping when we find an empty space or an opponent marble. count marbles in our column
                 Vector2D last = calculateColumn(gs.getBoard(), from, direction, playerPushing);
-                int count = last.subtract(from).magnitude();
+                int count = Constants.grid_distance(last, from);
                 // if current occupant is not empty, keep going until we find an empty space or a different player's marble
                 Vector2D current = Constants.add_direction(last, direction);
                 Vector2D oppStart = current.copy();
@@ -151,7 +151,7 @@ public enum Card {
                         && gs.getBoard().getElement(current).occupant != null) {
                     int opponent = gs.getBoard().getElement(current).occupant.ordinal();
                     Vector2D oppLast = calculateColumn(gs.getBoard(), current, direction, opponent);
-                    oppCount = oppLast.subtract(oppStart).magnitude();
+                    oppCount = Constants.grid_distance(oppLast, oppStart);
                     if (gs.getBoard().isInBounds(current.getX(), current.getY())
                             && gs.getBoard().getElement(current) != null
                             && gs.getBoard().getElement(current).occupant != null) {
@@ -182,12 +182,14 @@ public enum Card {
     // Returns the last spot in the column
     public static Vector2D calculateColumn(GridBoard<BoardSpot> board, Vector2D from, int direction, int playerID) {
         Vector2D current = from;
-        while (board.isInBounds(current.getX(), current.getY())
-                && board.getElement(current) != null
-                && board.getElement(current).occupant == MMTypes.MarbleType.player(playerID)) {
-            current = Constants.add_direction(current, direction);
+        Vector2D next = Constants.add_direction(current, direction);
+        while (board.isInBounds(next.getX(), next.getY())
+                && board.getElement(next) != null
+                && board.getElement(next).occupant == MMTypes.MarbleType.player(playerID)) {
+            current = next;
+            next = Constants.add_direction(current, direction);
         }
-        return Constants.subtract_direction(current, direction);
+        return current;
     }
 
     private boolean pushReq(int count, int oppCount) {
