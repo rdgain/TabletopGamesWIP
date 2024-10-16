@@ -35,10 +35,14 @@ public class Push extends DirectionalAction {
         int nColumns = 0;
         MMTypes.MarbleType player = MMTypes.MarbleType.player(playerID);
         List<BoardSpot> spots = new ArrayList<>();
+
+        // Iterate from 'from' onwards in the direction of 'to' for as many columns as we need.
         while (board.isInBounds(current.getX(), current.getY())
                 && board.getElement(current) != null
                 && nColumns < nColumnsInPush) {
             BoardSpot currentSpot = board.getElement(current);
+
+            // Check if we changed player (or spot is empty), increase number of columns and update player of current column
             if (currentSpot.getOccupant() != player) {
                 nColumns ++;
                 player = currentSpot.getOccupant();
@@ -48,21 +52,23 @@ public class Push extends DirectionalAction {
                 BoardSpot boardSpotFrom = spots.get(spots.size() - 1);
                 currentSpot.addMarble(boardSpotFrom.getOccupant());
             }
+            // Save the current spot
             spots.add(currentSpot);
 
+            // Move to the next spot
             Vector2D next = Constants.add_direction(current, direction);
             if (board.isInBounds(next.getX(), next.getY()) && board.getElement(next) != null) {
                 current = next;
             } else {
-                // push out rule
+                // push out rule, going off the grid
                 pushOutRule.pushOut(state, player);
                 break;
             }
         }
-        // Remove first marble
+        // Remove first marble which was pushed into others
         state.getBoard().getElement(from).removeMarble();
 
-        return false;
+        return true;
     }
 
     @Override
