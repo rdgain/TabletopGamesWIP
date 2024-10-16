@@ -1,8 +1,6 @@
 package games.marblesmultiverse.actions;
 
 import core.AbstractGameState;
-import core.actions.AbstractAction;
-import core.components.Component;
 import games.marblesmultiverse.MMGameState;
 import games.marblesmultiverse.components.BoardSpot;
 import utilities.Vector2D;

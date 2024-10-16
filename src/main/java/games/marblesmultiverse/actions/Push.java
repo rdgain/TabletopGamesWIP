@@ -1,14 +1,17 @@
 package games.marblesmultiverse.actions;
 
 import core.AbstractGameState;
-import core.actions.AbstractAction;
 import core.components.GridBoard;
+import games.marblesmultiverse.Constants;
 import games.marblesmultiverse.MMGameState;
 import games.marblesmultiverse.components.BoardSpot;
 import games.marblesmultiverse.components.Card;
 import games.marblesmultiverse.components.MMTypes;
+import spire.random.Const;
 import utilities.Vector2D;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class Push extends DirectionalAction {
@@ -27,22 +30,28 @@ public class Push extends DirectionalAction {
 
         // todo hardcoded to PUSH_1
 
-        Vector2D direction = to.subtract(from);
+        int direction = Constants.direction(from, to);
         Vector2D current = from;
         int nColumns = 0;
         MMTypes.MarbleType player = MMTypes.MarbleType.player(playerID);
+        List<BoardSpot> spots = new ArrayList<>();
         while (board.isInBounds(current.getX(), current.getY())
                 && board.getElement(current) != null
                 && nColumns < nColumnsInPush) {
-            if (board.getElement(current).getOccupant() != player) {
+            BoardSpot currentSpot = board.getElement(current);
+            if (currentSpot.getOccupant() != player) {
                 nColumns ++;
-                player = board.getElement(current).getOccupant();
+                player = currentSpot.getOccupant();
             }
-            Vector2D next = current.add(direction);
-            BoardSpot boardSpotFrom = state.getBoard().getElement(current);
+            // Put the marble from the last spot saved into the current spot
+            if (!spots.isEmpty()) {
+                BoardSpot boardSpotFrom = spots.get(spots.size() - 1);
+                currentSpot.addMarble(boardSpotFrom.getOccupant());
+            }
+            spots.add(currentSpot);
+
+            Vector2D next = Constants.add_direction(current, direction);
             if (board.isInBounds(next.getX(), next.getY()) && board.getElement(next) != null) {
-                BoardSpot boardSpotTo = state.getBoard().getElement(next);
-                boardSpotTo.addMarble(boardSpotFrom.getOccupant());
                 current = next;
             } else {
                 // push out rule
@@ -50,6 +59,7 @@ public class Push extends DirectionalAction {
                 break;
             }
         }
+        // Remove first marble
         state.getBoard().getElement(from).removeMarble();
 
         return false;

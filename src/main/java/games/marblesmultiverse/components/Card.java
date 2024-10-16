@@ -117,8 +117,9 @@ public enum Card {
                                     // todo some rules don't allow to split columns
                                     if (spot.occupant == MMTypes.MarbleType.player(playerID)) {
                                         // Check push requirements
-                                        if (gs.getRulesInPlay().get(MMTypes.CardType.Push).canPush(gs, from, to, playerID)) {
-                                            actions.add(new Push(playerID, from, to, 2));  // todo ncolumns
+                                        AbstractAction action = gs.getRulesInPlay().get(MMTypes.CardType.Push).canPush(gs, from, to, playerID, 1);
+                                        if (action != null) {
+                                            actions.add(action);  // todo ncolumns
                                         }
                                     }
                                 }
@@ -132,17 +133,17 @@ public enum Card {
         return actions;
     }
 
-    public boolean canPush(MMGameState gs, Vector2D from, Vector2D to, int playerPushing) {
-        if (this.type != MMTypes.CardType.Push) return false;
+    public AbstractAction canPush(MMGameState gs, Vector2D from, Vector2D to, int playerPushing, int nCols) {
+        if (this.type != MMTypes.CardType.Push) return null;
         switch(this) {
             case PUSH_1:
                 // find direction from -> to
-                Vector2D direction = to.subtract(from);
+                int direction = Constants.direction(from, to);
                 // go from 'from' in the direction, stopping when we find an empty space or an opponent marble. count marbles in our column
                 Vector2D last = calculateColumn(gs.getBoard(), from, direction, playerPushing);
                 int count = last.subtract(from).magnitude();
                 // if current occupant is not empty, keep going until we find an empty space or a different player's marble
-                Vector2D current = last.add(direction);
+                Vector2D current = Constants.add_direction(last, direction);
                 Vector2D oppStart = current.copy();
                 int oppCount = 0;
                 if (gs.getBoard().isInBounds(current.getX(), current.getY())
@@ -155,12 +156,15 @@ public enum Card {
                             && gs.getBoard().getElement(current) != null
                             && gs.getBoard().getElement(current).occupant != null) {
                         // Chain pushes
-                        return gs.getRulesInPlay().get(MMTypes.CardType.PushRequirement).pushReq(count, oppCount) && canPush(gs, oppStart, oppStart.add(direction), opponent);
+                        if (gs.getRulesInPlay().get(MMTypes.CardType.PushRequirement).pushReq(count, oppCount))
+                            return canPush(gs, oppStart, Constants.add_direction(oppStart, direction), opponent, nCols+1);
                     }
                 }
-                return gs.getRulesInPlay().get(MMTypes.CardType.PushRequirement).pushReq(count, oppCount);
+                if (gs.getRulesInPlay().get(MMTypes.CardType.PushRequirement).pushReq(count, oppCount)) {
+                    return new Push(playerPushing, from, to, nCols);
+                } else return null;
             default:
-                return false;
+                return null;
         }
     }
 
@@ -176,14 +180,14 @@ public enum Card {
     }
 
     // Returns the last spot in the column
-    public static Vector2D calculateColumn(GridBoard<BoardSpot> board, Vector2D from, Vector2D direction, int playerID) {
+    public static Vector2D calculateColumn(GridBoard<BoardSpot> board, Vector2D from, int direction, int playerID) {
         Vector2D current = from;
         while (board.isInBounds(current.getX(), current.getY())
                 && board.getElement(current) != null
                 && board.getElement(current).occupant == MMTypes.MarbleType.player(playerID)) {
-            current = current.add(direction);
+            current = Constants.add_direction(current, direction);
         }
-        return current.subtract(direction);
+        return Constants.subtract_direction(current, direction);
     }
 
     private boolean pushReq(int count, int oppCount) {
