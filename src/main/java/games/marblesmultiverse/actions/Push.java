@@ -11,15 +11,11 @@ import utilities.Vector2D;
 
 import java.util.Objects;
 
-public class Push extends AbstractAction {
-    final int playerID;
-    final Vector2D from, to;
+public class Push extends DirectionalAction {
     final int nColumnsInPush;  // BBBB0 = 1; BBBBCC = 2; BBBCCB = 3 etc.
 
     public Push(int playerID, Vector2D from, Vector2D vector2D, int nColumnsInPush) {
-        this.playerID = playerID;
-        this.from = from;
-        to = vector2D;
+        super(playerID, from, vector2D);
         this.nColumnsInPush = nColumnsInPush;
     }
 

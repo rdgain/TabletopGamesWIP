@@ -9,14 +9,10 @@ import utilities.Vector2D;
 
 import java.util.Objects;
 
-public class Move extends AbstractAction {
-    final int playerID;
-    final Vector2D from, to;
+public class Move extends DirectionalAction {
 
     public Move(int playerID, Vector2D from, Vector2D to) {
-        this.playerID = playerID;
-        this.from = from;
-        this.to = to;
+        super(playerID, from, to);
     }
 
     /**
