@@ -61,7 +61,7 @@ public class Push extends DirectionalAction {
                 current = next;
             } else {
                 // push out rule, going off the grid
-                pushOutRule.pushOut(state, player);
+                pushOutRule.pushOut(state, player, playerID);
                 break;
             }
         }

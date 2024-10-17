@@ -24,7 +24,8 @@ public class MMGameState extends AbstractGameState {
     Map<MMTypes.CardType, Card> rulesInPlay = new HashMap<>();
     GridBoard<BoardSpot> board;
 
-    List<Counter> playerMarblesOnBoard = new ArrayList<>(), playerMarblesPushedOut = new ArrayList<>();
+    List<Counter> playerMarblesOnBoard = new ArrayList<>();
+    List<List<Integer>> playerMarblesPushedOut = new ArrayList<>();  // for player i, list of what players pushed their marbles out. size of list.get(i) indicates how many marbles of player i were pushed out in total.
 
     /**
      * @param gameParameters - game parameters.
@@ -50,7 +51,7 @@ public class MMGameState extends AbstractGameState {
         return playerMarblesOnBoard;
     }
 
-    public List<Counter> getPlayerMarblesPushedOut() {
+    public List<List<Integer>> getPlayerMarblesPushedOut() {
         return playerMarblesPushedOut;
     }
 
@@ -107,7 +108,7 @@ public class MMGameState extends AbstractGameState {
         }
 
         for (int i = 0; i < nPlayers; i++) {
-            copy.playerMarblesPushedOut.add(playerMarblesPushedOut.get(i).copy());
+            copy.playerMarblesPushedOut.add(new ArrayList<>(playerMarblesPushedOut.get(i)));
             copy.playerMarblesOnBoard.add(playerMarblesOnBoard.get(i).copy());
         }
 

@@ -12,9 +12,7 @@ import utilities.Vector2D;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public enum Card {
     YOUR_COLOR("Occupy all goals of your color.", MMTypes.CardType.Victory),
@@ -172,12 +170,12 @@ public enum Card {
         }
     }
 
-    public void pushOut(MMGameState state, MMTypes.MarbleType player) {
+    public void pushOut(MMGameState state, MMTypes.MarbleType player, int playerPushing) {
         if (this.type != MMTypes.CardType.PushOut) return;
         switch (this) {
             case OUT_IS_GONE:
                 // Nothing to do, it's just gone, just update counters
-                state.getPlayerMarblesPushedOut().get(player.ordinal()).increment();
+                state.getPlayerMarblesPushedOut().get(player.ordinal()).add(playerPushing);
                 state.getPlayerMarblesOnBoard().get(player.ordinal()).decrement();
                 break;
             default:
@@ -268,6 +266,14 @@ public enum Card {
         return nMarblesPerPlayer;
     }
 
+    /**
+     YOUR_COLOR("Occupy all goals of your color.", MMTypes.CardType.Victory),
+     ONE_OF_EACH("Occupy 1 goal of each color.", MMTypes.CardType.Victory),
+     DIAGONAL("Occupy 2 opposing goals and the center (if it exists).", MMTypes.CardType.Victory),
+     ANY_THREE("Occupy 3 non-neighbouring goals.", MMTypes.CardType.Victory),
+     BORDERLANDS("Put 1 marble on each side of the board. Corners do not count.", MMTypes.CardType.Victory),
+     PUSH_OUT("Push out 3 opposing marbles.", MMTypes.CardType.Victory),
+     */
     public int checkVictory(MMGameState gs) {
         if (this.type != MMTypes.CardType.Victory) return -1;
 
@@ -288,6 +294,51 @@ public enum Card {
                     if (win[i]) return i;
                 }
                 return -1;
+            case ONE_OF_EACH:
+                List<Set<MMTypes.MarbleType>> victoryOccupiedPerPlayer = new ArrayList<>();
+                for (int i = 0; i < gs.getNPlayers(); i++) victoryOccupiedPerPlayer.add(new HashSet<>());
+                for (int i = 0; i < gs.getBoard().getHeight(); i++) {
+                    for (int j = 0; j < gs.getBoard().getWidth(); j++) {
+                        BoardSpot boardSpot = gs.getBoard().getElement(j, i);
+                        if (boardSpot != null && boardSpot.victoryOwner != null &&
+                                boardSpot.victoryOwner.ordinal() < gs.getNPlayers())
+                            if (boardSpot.occupant != null) victoryOccupiedPerPlayer.get(boardSpot.occupant.ordinal()).add(boardSpot.victoryOwner);
+                    }
+                }
+                for (int i = 0; i < gs.getNPlayers(); i++) {
+                    if (victoryOccupiedPerPlayer.get(i).size() == gs.getNPlayers()) return i;
+                }
+                return -1;
+            case ANY_THREE:
+                int[] nOccupied = new int[gs.getNPlayers()];
+                for (int i = 0; i < gs.getBoard().getHeight(); i++) {
+                    for (int j = 0; j < gs.getBoard().getWidth(); j++) {
+                        BoardSpot boardSpot = gs.getBoard().getElement(j, i);
+                        if (boardSpot != null && boardSpot.victoryOwner != null &&
+                                boardSpot.victoryOwner.ordinal() < gs.getNPlayers())
+                            if (boardSpot.occupant != null) nOccupied[boardSpot.occupant.ordinal()] ++;
+                    }
+                }
+                for (int i = 0; i < gs.getNPlayers(); i++) {
+                    if (nOccupied[i] >= 3) return i;  // todo param?
+                }
+                return -1;
+            case PUSH_OUT:
+                for (int i = 0; i < gs.getNPlayers(); i++) {
+                    // count how many opposing marbles they pushed out
+                    int counter = 0;
+                    for (int j = 0; j < gs.getNPlayers(); j++) {
+                        if (i == j) continue;
+                        List<Integer> get = gs.getPlayerMarblesPushedOut().get(j);
+                        for (int pushedOut : get) {
+                            if (pushedOut == i) counter++;
+                        }
+                    }
+                    if (counter >= 3) return i;  // todo param?
+                }
+                return -1;
+            case DIAGONAL:
+            case BORDERLANDS:
             default: return -1;
         }
     }
