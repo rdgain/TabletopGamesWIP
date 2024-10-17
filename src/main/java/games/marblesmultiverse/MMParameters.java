@@ -3,6 +3,9 @@ package games.marblesmultiverse;
 import core.AbstractGameState;
 import core.AbstractParameters;
 import evaluation.optimisation.TunableParameters;
+import utilities.Vector2D;
+
+import java.util.Objects;
 
 /**
  * <p>This class should hold a series of variables representing game parameters (e.g. number of cards dealt to players,
@@ -17,6 +20,7 @@ import evaluation.optimisation.TunableParameters;
 public class MMParameters extends AbstractParameters {
 
     public int gridSize = 9;
+    public Vector2D gridCenter = new Vector2D(4,4);  // depending on gridsize
 
     @Override
     protected AbstractParameters _copy() {
@@ -25,14 +29,15 @@ public class MMParameters extends AbstractParameters {
     }
 
     @Override
-    protected boolean _equals(Object o) {
-        // TODO: compare all variables.
-        return o instanceof MMParameters;
+    public boolean _equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        MMParameters that = (MMParameters) o;
+        return gridSize == that.gridSize && Objects.equals(gridCenter, that.gridCenter);
     }
 
     @Override
     public int hashCode() {
-        // TODO: include the hashcode of all variables.
-        return super.hashCode();
+        return Objects.hash(gridSize, gridCenter);
     }
 }

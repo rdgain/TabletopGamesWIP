@@ -4,6 +4,7 @@ import core.actions.AbstractAction;
 import core.components.GridBoard;
 import games.marblesmultiverse.Constants;
 import games.marblesmultiverse.MMGameState;
+import games.marblesmultiverse.MMParameters;
 import games.marblesmultiverse.actions.Move;
 import games.marblesmultiverse.actions.Push;
 import utilities.Pair;
@@ -170,14 +171,48 @@ public enum Card {
         }
     }
 
+    /**
+     OUT_IS_GONE("Pushed out marbles are removed from play", MMTypes.CardType.PushOut),
+     CENTER_IF_FREE("Pushed out marbles return to the center, if it is free. Else they are removed.", MMTypes.CardType.PushOut),
+     CENTER_REPLACE("Pushed out marbles return to the center. Remove any pre-existing marble.", MMTypes.CardType.PushOut),
+     THE_RETURN("The last pushed out marble returns to a free space of the next opponent's choice.", MMTypes.CardType.PushOut),
+     REPLACEMENT("The last pushed out marble replaces an opponent's marble of their choice. You cannot push out your own marbles.", MMTypes.CardType.PushOut),
+     WARP_AROUND("Instead of being pushed out, marbles \"wrap around\" to the other end of the line.", MMTypes.CardType.PushOut),
+     TELEPORT_IF_FREE("Pushed out marbles appear on the other end of the line, if that space is free. Else they are removed.", MMTypes.CardType.PushOut),
+     TELEPORT_REPLACE("Pushed out marbles appear on the other end of the line. Remove any pre-existing marble. You cannot push out your own marbles.", MMTypes.CardType.PushOut),
+     */
     public void pushOut(MMGameState state, MMTypes.MarbleType player, int playerPushing) {
         if (this.type != MMTypes.CardType.PushOut) return;
+
+        Vector2D center = ((MMParameters)state.getGameParameters()).gridCenter;
+        BoardSpot centerSpot = state.getBoard().getElement(center);
+
         switch (this) {
             case OUT_IS_GONE:
                 // Nothing to do, it's just gone, just update counters
                 state.getPlayerMarblesPushedOut().get(player.ordinal()).add(playerPushing);
                 state.getPlayerMarblesOnBoard().get(player.ordinal()).decrement();
                 break;
+            case CENTER_IF_FREE:
+                state.getPlayerMarblesPushedOut().get(player.ordinal()).add(playerPushing);
+                if (centerSpot.occupant == null) {
+                    centerSpot.addMarble(player);
+                } else {
+                    state.getPlayerMarblesOnBoard().get(player.ordinal()).decrement();
+                }
+                break;
+            case CENTER_REPLACE:
+                state.getPlayerMarblesPushedOut().get(player.ordinal()).add(playerPushing);
+                if (centerSpot.occupant != null) {
+                    state.getPlayerMarblesOnBoard().get(centerSpot.occupant.ordinal()).decrement();
+                }
+                centerSpot.addMarble(player);
+                break;
+            case THE_RETURN:  // todo
+            case REPLACEMENT:  // todo
+            case WARP_AROUND:  // todo
+            case TELEPORT_IF_FREE:  // todo
+            case TELEPORT_REPLACE:  // todo
             default:
                 break;
         }
