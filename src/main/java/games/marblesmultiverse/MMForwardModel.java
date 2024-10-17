@@ -4,6 +4,7 @@ import core.AbstractGameState;
 import core.CoreConstants;
 import core.StandardForwardModel;
 import core.actions.AbstractAction;
+import core.components.Counter;
 import core.components.GridBoard;
 import games.marblesmultiverse.components.*;
 import utilities.Vector2D;
@@ -55,14 +56,57 @@ public class MMForwardModel extends StandardForwardModel {
 
         state.rulesInPlay = initialSetup;
         state.deckOfRules = deck;
-
-        // create game board
         state.board = new GridBoard<>(params.gridSize, params.gridSize);
+        int nMarblesPerPlayer = state.rulesInPlay.get(MMTypes.CardType.Setup).parseSetup(state.board);
 
-        state.rulesInPlay.get(MMTypes.CardType.Setup).parseSetup(state.board);
-//        state.board =  setupGameBoard(params);
+        for (int i = 0; i < state.getNPlayers(); i++) {
+            state.playerMarblesOnBoard.add(new Counter(nMarblesPerPlayer, 0, nMarblesPerPlayer, "Marbles on board p" + i));
+            state.playerMarblesPushedOut.add(new Counter());
+        }
 
         state.setFirstPlayer(0);
+    }
+
+    /**
+     * Calculates the list of currently available actions, possibly depending on the game phase.
+     *
+     * @return - List of AbstractAction objects.
+     */
+    @Override
+    protected List<AbstractAction> _computeAvailableActions(AbstractGameState gameState) {
+        MMGameState gs = (MMGameState) gameState;
+        Map<MMTypes.CardType, Card> rules = gs.getRulesInPlay();
+        int currentPlayer = gs.getCurrentPlayer();
+        List<AbstractAction> actions = new ArrayList<>(rules.get(MMTypes.CardType.Movement).generateMoveActions(gs, currentPlayer));
+        actions.addAll(rules.get(MMTypes.CardType.Push).generatePushActions(gs, currentPlayer));
+        return actions;
+    }
+
+    @Override
+    protected void _afterAction(AbstractGameState currentState, AbstractAction actionTaken) {
+        if (currentState.isActionInProgress()) return;
+
+        // Check default game end: 1 marble left for a player todo
+
+        // Check victory rules active
+        int winner = ((MMGameState) currentState).rulesInPlay.get(MMTypes.CardType.Victory).checkVictory((MMGameState) currentState);
+        if (winner != -1) {
+            currentState.setGameStatus(CoreConstants.GameResult.GAME_END);
+            for (int i = 0; i < currentState.getNPlayers(); i++) {
+                if (i == winner) currentState.setPlayerResult(CoreConstants.GameResult.WIN_GAME, i);
+                else currentState.setPlayerResult(CoreConstants.GameResult.LOSE_GAME, i);
+            }
+            return;
+        }
+
+        endPlayerTurn(currentState);
+    }
+
+    @Override
+    protected void endGame(AbstractGameState gs) {
+        if (gs.getCoreGameParameters().verbose) {
+            System.out.println(Arrays.toString(gs.getPlayerResults()));
+        }
     }
 
     GridBoard<BoardSpot> setupGameBoard(GridBoard<BoardSpot> board, MMParameters params) {
@@ -159,48 +203,6 @@ public class MMForwardModel extends StandardForwardModel {
             nextStep = nextStep.add(Constants.neighbor_directions[0][4]);
         }
         return board;
-    }
-
-    /**
-     * Calculates the list of currently available actions, possibly depending on the game phase.
-     *
-     * @return - List of AbstractAction objects.
-     */
-    @Override
-    protected List<AbstractAction> _computeAvailableActions(AbstractGameState gameState) {
-        MMGameState gs = (MMGameState) gameState;
-        Map<MMTypes.CardType, Card> rules = gs.getRulesInPlay();
-        int currentPlayer = gs.getCurrentPlayer();
-        List<AbstractAction> actions = new ArrayList<>(rules.get(MMTypes.CardType.Movement).generateMoveActions(gs, currentPlayer));
-        actions.addAll(rules.get(MMTypes.CardType.Push).generatePushActions(gs, currentPlayer));
-        return actions;
-    }
-
-    @Override
-    protected void _afterAction(AbstractGameState currentState, AbstractAction actionTaken) {
-        if (currentState.isActionInProgress()) return;
-
-        // Check default game end: 1 marble left for a player todo
-
-        // Check victory rules active
-        int winner = ((MMGameState) currentState).rulesInPlay.get(MMTypes.CardType.Victory).checkVictory((MMGameState) currentState);
-        if (winner != -1) {
-            currentState.setGameStatus(CoreConstants.GameResult.GAME_END);
-            for (int i = 0; i < currentState.getNPlayers(); i++) {
-                if (i == winner) currentState.setPlayerResult(CoreConstants.GameResult.WIN_GAME, i);
-                else currentState.setPlayerResult(CoreConstants.GameResult.LOSE_GAME, i);
-            }
-            return;
-        }
-
-        endPlayerTurn(currentState);
-    }
-
-    @Override
-    protected void endGame(AbstractGameState gs) {
-        if (gs.getCoreGameParameters().verbose) {
-            System.out.println(Arrays.toString(gs.getPlayerResults()));
-        }
     }
 }
 

@@ -24,6 +24,8 @@ public class MMGameState extends AbstractGameState {
     Map<MMTypes.CardType, Card> rulesInPlay = new HashMap<>();
     GridBoard<BoardSpot> board;
 
+    List<Counter> playerMarblesOnBoard = new ArrayList<>(), playerMarblesPushedOut = new ArrayList<>();
+
     /**
      * @param gameParameters - game parameters.
      * @param nPlayers       - number of players in the game
@@ -42,6 +44,14 @@ public class MMGameState extends AbstractGameState {
 
     public Map<MMTypes.CardType, Card> getRulesInPlay() {
         return rulesInPlay;
+    }
+
+    public List<Counter> getPlayerMarblesOnBoard() {
+        return playerMarblesOnBoard;
+    }
+
+    public List<Counter> getPlayerMarblesPushedOut() {
+        return playerMarblesPushedOut;
     }
 
     /**
@@ -96,6 +106,11 @@ public class MMGameState extends AbstractGameState {
             }
         }
 
+        for (int i = 0; i < nPlayers; i++) {
+            copy.playerMarblesPushedOut.add(playerMarblesPushedOut.get(i).copy());
+            copy.playerMarblesOnBoard.add(playerMarblesOnBoard.get(i).copy());
+        }
+
         return copy;
     }
 
@@ -128,13 +143,12 @@ public class MMGameState extends AbstractGameState {
     public boolean _equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
         MMGameState that = (MMGameState) o;
-        return Objects.equals(deckOfRules, that.deckOfRules) && Objects.equals(rulesInPlay, that.rulesInPlay) && Objects.equals(board, that.board);
+        return Objects.equals(deckOfRules, that.deckOfRules) && Objects.equals(rulesInPlay, that.rulesInPlay) && Objects.equals(board, that.board) && Objects.equals(playerMarblesOnBoard, that.playerMarblesOnBoard) && Objects.equals(playerMarblesPushedOut, that.playerMarblesPushedOut);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), deckOfRules, rulesInPlay, board);
+        return Objects.hash(deckOfRules, rulesInPlay, board, playerMarblesOnBoard, playerMarblesPushedOut);
     }
 }

@@ -176,7 +176,9 @@ public enum Card {
         if (this.type != MMTypes.CardType.PushOut) return;
         switch (this) {
             case OUT_IS_GONE:
-                // Nothing to do, it's just gone
+                // Nothing to do, it's just gone, just update counters
+                state.getPlayerMarblesPushedOut().get(player.ordinal()).increment();
+                state.getPlayerMarblesOnBoard().get(player.ordinal()).decrement();
                 break;
             default:
                 break;
@@ -212,8 +214,10 @@ public enum Card {
         };
     }
 
-    public void parseSetup(GridBoard<BoardSpot> board) {
-        if (this.type != MMTypes.CardType.Setup) return;
+    // Returns number of marbles per player
+    public int parseSetup(GridBoard<BoardSpot> board) {
+        int nMarblesPerPlayer = 0;
+        if (this.type != MMTypes.CardType.Setup) return nMarblesPerPlayer;
 
         try (BufferedReader reader = new BufferedReader(new FileReader("data/marbles/setup/" + description))) {
             String line;
@@ -249,7 +253,9 @@ public enum Card {
                         // Parsing the second part: marble placements
                         BoardSpot spot = board.getElement(x, y);
                         if (spot != null && !tokens[x].equals("0")) {
-                            spot.addMarble(MMTypes.MarbleType.valueOf(tokens[x]));
+                            MMTypes.MarbleType marble = MMTypes.MarbleType.valueOf(tokens[x]);
+                            if (marble.ordinal() == 0) nMarblesPerPlayer++;
+                            spot.addMarble(marble);
                         }
                     }
                 }
@@ -258,6 +264,8 @@ public enum Card {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
+        return nMarblesPerPlayer;
     }
 
     public int checkVictory(MMGameState gs) {
