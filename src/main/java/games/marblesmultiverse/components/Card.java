@@ -195,6 +195,11 @@ public enum Card {
                 if (gs.getRulesInPlay().get(MMTypes.CardType.PushRequirement).pushReq(count, oppCount)) {
                     return new Pair<>(new Push(playerPushing, from, to, nCols), nCols);
                 } else return null;
+            case PUSH_2:  // todo
+            case SPLIT_PUSH:  // todo
+            case MUST_PUSH_OPPONENT:  // todo
+            case MUST_PUSH_ANY:  // todo
+            case MOMENTUM:  // todo
             default:
                 return null;
         }
