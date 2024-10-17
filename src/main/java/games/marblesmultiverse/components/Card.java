@@ -67,6 +67,15 @@ public enum Card {
         this.type=type;
     }
 
+    /**
+     MOVE_1("Move 1 marble by 1 space in any direction.", MMTypes.CardType.Movement),
+     MOVE_EXACTLY_2("Move 1 marble exactly 2 spaces in any direction.", MMTypes.CardType.Movement),
+     MOVE_2("Move 1 marble by up to 3 spaces in any direction in a straight line.", MMTypes.CardType.Movement),
+     SPLIT_MOVE("Move 1 or 2 marbles by 1 space in any direction.", MMTypes.CardType.Movement),
+     SIDESTEP("Move a column of marbles orthogonally by 1 space or move 1 marble by 1 space in any direction.", MMTypes.CardType.Movement),
+     LEAPFROG("Jump over 1 marble or blocker or move a marble by 1 space in any direction", MMTypes.CardType.Movement),
+     CHAIN_FROG("Repeatedly jump over 1 marble or blocker or move a marble by 1 space in any direction", MMTypes.CardType.Movement),
+     */
     public List<AbstractAction> generateMoveActions(MMGameState gs, int playerID) {
         List<AbstractAction> actions = new ArrayList<>();
         if (this.type != MMTypes.CardType.Movement) return actions;
@@ -98,6 +107,15 @@ public enum Card {
         return actions;
     }
 
+
+    /**
+     PUSH_1("Push a column of marbles by 1 space in any direction", MMTypes.CardType.Push),
+     PUSH_2("Push a column of marbles by up to 2 spaces in any direction.", MMTypes.CardType.Push),
+     SPLIT_PUSH("Push a column of marbles by up to 2 spaces in any direction.", MMTypes.CardType.Push),
+     MUST_PUSH_OPPONENT("You must push a column of opposing marbles by 1 space, if you can.", MMTypes.CardType.Push),
+     MUST_PUSH_ANY("You must push a column of marbles by 1 space, if you can. Including your own.", MMTypes.CardType.Push),
+     MOMENTUM("Push all the way in any direction until your first marble reaches the edge or you cannot push anymore.", MMTypes.CardType.Push),
+     */
     public List<AbstractAction> generatePushActions(MMGameState gs, int playerID) {
         List<AbstractAction> actions = new ArrayList<>();
         if (this.type != MMTypes.CardType.Push) return actions;
