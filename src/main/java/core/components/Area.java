@@ -122,7 +122,9 @@ public class Area extends Component implements IComponentContainer<Component> {
      */
     public void putComponents(List<? extends Component> components) {
         for (Component c: components) {
-            putComponent(c);
+            if (c != null) {
+                putComponent(c);
+            }
         }
     }
 

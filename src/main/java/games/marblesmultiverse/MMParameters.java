@@ -1,4 +1,4 @@
-package gametemplate;
+package games.marblesmultiverse;
 
 import core.AbstractGameState;
 import core.AbstractParameters;
@@ -16,6 +16,8 @@ import evaluation.optimisation.TunableParameters;
  */
 public class MMParameters extends AbstractParameters {
 
+    public int gridSize = 9;
+
     @Override
     protected AbstractParameters _copy() {
         // TODO: deep copy of all variables.
@@ -25,7 +27,7 @@ public class MMParameters extends AbstractParameters {
     @Override
     protected boolean _equals(Object o) {
         // TODO: compare all variables.
-        return o instanceof GTParameters;
+        return o instanceof MMParameters;
     }
 
     @Override

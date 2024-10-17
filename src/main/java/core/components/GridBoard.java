@@ -419,4 +419,8 @@ public class GridBoard<T extends Component> extends Component implements ICompon
     public CoreConstants.VisibilityMode getVisibilityMode() {
         return CoreConstants.VisibilityMode.VISIBLE_TO_ALL;
     }
+
+    public boolean isInBounds(int x, int y) {
+        return x >= 0 && x < width && y >= 0 && y < height;
+    }
 }
