@@ -59,7 +59,7 @@ public class Push extends DirectionalAction {
             Vector2D next = Constants.add_direction(current, direction);
             if (board.isInBounds(next.getX(), next.getY()) && board.getElement(next) != null) {
                 current = next;
-            } else {
+            } else if (player != null) {
                 // push out rule, going off the grid
                 pushOutRule.pushOut(state, player, playerID);
                 break;
