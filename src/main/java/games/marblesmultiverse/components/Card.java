@@ -102,6 +102,12 @@ public enum Card {
                     }
                 }
                 break;
+            case MOVE_EXACTLY_2:  // todo
+            case MOVE_2:  // todo
+            case SPLIT_MOVE:  // todo
+            case SIDESTEP:  // todo
+            case LEAPFROG:  // todo
+            case CHAIN_FROG:  // todo
             default: return actions;
         }
         return actions;
@@ -146,6 +152,11 @@ public enum Card {
                     }
                 }
                 break;
+            case PUSH_2:  // todo
+            case SPLIT_PUSH:  // todo
+            case MUST_PUSH_OPPONENT:  // todo
+            case MUST_PUSH_ANY:  // todo
+            case MOMENTUM:  // todo
             default: return actions;
         }
         return actions;
@@ -390,8 +401,8 @@ public enum Card {
                     if (counter >= 3) return i;  // todo param?
                 }
                 return -1;
-            case DIAGONAL:
-            case BORDERLANDS:
+            case DIAGONAL:  // todo
+            case BORDERLANDS:  // todo
             default: return -1;
         }
     }
