@@ -35,9 +35,6 @@ import java.util.Set;
  */
 public class MMGUIManager extends AbstractGUIManager {
 
-    private int cardWidth = 50;
-    private int cardHeight = 100;
-
     MMBoardView boardView;
 
     public MMGUIManager(GamePanel parent, Game game, ActionController ac, Set<Integer> human) {
@@ -56,24 +53,19 @@ public class MMGUIManager extends AbstractGUIManager {
             MMCardView rule = new MMCardView(card);
             rulePanel.add(rule);
         }
-        // Panel to display draw pile and discard pile
-        JPanel drawDiscardPanel = new JPanel(new FlowLayout());
-        JButton drawPile = new JButton("Draw Pile");
-        JButton discardPile = new JButton("DiscardPile");
-        drawDiscardPanel.add(drawPile);
-        drawDiscardPanel.add(discardPile);
 
         mainGameArea.add(boardView);
         mainGameArea.add(rulePanel);
-        mainGameArea.add(drawDiscardPanel);
 
-//        JPanel infoPanel = createGameStateInfoPanel("Multiverse Marbles", gameState, width, defaultInfoPanelHeight);
-        JComponent actionPanel = createActionPanel(new IScreenHighlight[]{boardView}, width, defaultActionPanelHeight, false, true, null, null, null);
+        width = boardView.getPreferredSize().width + MMCardView.cardWidth*2;
 
-        parent.setLayout(new BorderLayout());
-        parent.add(mainGameArea, BorderLayout.CENTER);
-//        parent.add(infoPanel, BorderLayout.NORTH);
-        parent.add(actionPanel, BorderLayout.SOUTH);
+        JPanel infoPanel = createGameStateInfoPanel("Multiverse Marbles", gameState, width, defaultInfoPanelHeight);
+        JComponent actionPanel = createActionPanel(new IScreenHighlight[]{boardView}, width, defaultActionPanelHeight/2, false, true, null, null, null);
+
+        parent.setLayout(new BoxLayout(parent, BoxLayout.Y_AXIS));
+        parent.add(infoPanel);
+        parent.add(mainGameArea);
+        parent.add(actionPanel);
         parent.revalidate();
         parent.setVisible(true);
         parent.repaint();
