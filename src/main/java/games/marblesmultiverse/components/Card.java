@@ -5,6 +5,8 @@ import core.components.GridBoard;
 import games.marblesmultiverse.Constants;
 import games.marblesmultiverse.MMGameState;
 import games.marblesmultiverse.actions.Move;
+import games.marblesmultiverse.actions.Push;
+import utilities.Pair;
 import utilities.Vector2D;
 
 import java.io.BufferedReader;
@@ -21,6 +23,7 @@ public enum Card {
     ANY_THREE("Occupy 3 non-neighbouring goals.", MMTypes.CardType.Victory),
     BORDERLANDS("Put 1 marble on each side of the board. Corners do not count.", MMTypes.CardType.Victory),
     PUSH_OUT("Push out 3 opposing marbles.", MMTypes.CardType.Victory),
+
     MOVE_1("Move 1 marble by 1 space in any direction.", MMTypes.CardType.Movement),
     MOVE_EXACTLY_2("Move 1 marble exactly 2 spaces in any direction.", MMTypes.CardType.Movement),
     MOVE_2("Move 1 marble by up to 3 spaces in any direction in a straight line.", MMTypes.CardType.Movement),
@@ -28,12 +31,14 @@ public enum Card {
     SIDESTEP("Move a column of marbles orthogonally by 1 space or move 1 marble by 1 space in any direction.", MMTypes.CardType.Movement),
     LEAPFROG("Jump over 1 marble or blocker or move a marble by 1 space in any direction", MMTypes.CardType.Movement),
     CHAIN_FROG("Repeatedly jump over 1 marble or blocker or move a marble by 1 space in any direction", MMTypes.CardType.Movement),
+
     PUSH_1("Push a column of marbles by 1 space in any direction", MMTypes.CardType.Push),
     PUSH_2("Push a column of marbles by up to 2 spaces in any direction.", MMTypes.CardType.Push),
     SPLIT_PUSH("Push a column of marbles by up to 2 spaces in any direction.", MMTypes.CardType.Push),
     MUST_PUSH_OPPONENT("You must push a column of opposing marbles by 1 space, if you can.", MMTypes.CardType.Push),
     MUST_PUSH_ANY("You must push a column of marbles by 1 space, if you can. Including your own.", MMTypes.CardType.Push),
     MOMENTUM("Push all the way in any direction until your first marble reaches the edge or you cannot push anymore.", MMTypes.CardType.Push),
+
     MORE("You can push opposing marbles if you use more marbles.", MMTypes.CardType.PushRequirement),
     MORE_OR_EQUAL("You can push opposing marbles if you use more or equal marbles. Do not split your column while pushing the opponent.", MMTypes.CardType.PushRequirement),
     EQUAL("You can push opposing marbles if you use equal marbles. Do not split your column while pushing the opponent.", MMTypes.CardType.PushRequirement),
@@ -43,6 +48,7 @@ public enum Card {
     MINORITY("You can push opposing marbles if you have fewer marbles anywhere in the line.", MMTypes.CardType.PushRequirement),
     UNEVEN("You can push your opposing marbles if you use an uneven number of marbles (1, 3 or 5). Do not split your column while pushing the opponent.", MMTypes.CardType.PushRequirement),
     EVEN("You can push opposing marbles if you use an even number of marbles (2, 4 or 6). Do not split your column while pushing the opponent.", MMTypes.CardType.PushRequirement),
+
     OUT_IS_GONE("Pushed out marbles are removed from play", MMTypes.CardType.PushOut),
     CENTER_IF_FREE("Pushed out marbles return to the center, if it is free. Else they are removed.", MMTypes.CardType.PushOut),
     CENTER_REPLACE("Pushed out marbles return to the center. Remove any pre-existing marble.", MMTypes.CardType.PushOut),
@@ -51,6 +57,7 @@ public enum Card {
     WARP_AROUND("Instead of being pushed out, marbles \"wrap around\" to the other end of the line.", MMTypes.CardType.PushOut),
     TELEPORT_IF_FREE("Pushed out marbles appear on the other end of the line, if that space is free. Else they are removed.", MMTypes.CardType.PushOut),
     TELEPORT_REPLACE("Pushed out marbles appear on the other end of the line. Remove any pre-existing marble. You cannot push out your own marbles.", MMTypes.CardType.PushOut),
+
     TWO_SIDES("TwoSides.txt", MMTypes.CardType.Setup);
 
     public final String description;
@@ -74,15 +81,46 @@ public enum Card {
                         if (boardSpot != null && boardSpot.occupant == MMTypes.MarbleType.player(playerID)) {
                             Vector2D from = new Vector2D(j, i);
                             for (Vector2D to: Constants.getNeighbours(from)) {
+                                // 1 space away
                                 BoardSpot spot = gs.getBoard().getElement(to.getX(), to.getY());
                                 if (spot != null) {
                                     if (spot.occupant == null) {
-                                        // It's a legal move!
+                                        // Move is always to an empty spot
                                         actions.add(new Move(playerID, from, to));
-                                    } else if (spot.occupant == MMTypes.MarbleType.player(playerID)) {
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                break;
+            default: return actions;
+        }
+        return actions;
+    }
+
+    public List<AbstractAction> generatePushActions(MMGameState gs, int playerID) {
+        List<AbstractAction> actions = new ArrayList<>();
+        if (this.type != MMTypes.CardType.Push) return actions;
+
+        switch (this) {
+            case PUSH_1:
+                // Check all neighbours distance 1
+                for (int i = 0; i < gs.getBoard().getHeight(); i++) {
+                    for (int j = 0; j < gs.getBoard().getWidth(); j++) {
+                        BoardSpot boardSpot = gs.getBoard().getElement(j, i);
+                        if (boardSpot != null && boardSpot.occupant == MMTypes.MarbleType.player(playerID)) {
+                            Vector2D from = new Vector2D(j, i);
+                            for (Vector2D to: Constants.getNeighbours(from)) {
+                                // 1 space away
+                                BoardSpot spot = gs.getBoard().getElement(to.getX(), to.getY());
+                                if (spot != null) {
+                                    // todo some rules don't allow to split columns
+                                    if (spot.occupant == MMTypes.MarbleType.player(playerID)) {
                                         // Check push requirements
-                                        if (gs.getRulesInPlay().get(MMTypes.CardType.Push).canPush(gs, from, to)) {
-                                            actions.add(new Move(playerID, from, to));
+                                        Pair<AbstractAction,Integer> action = gs.getRulesInPlay().get(MMTypes.CardType.Push).canPush(gs, from, to, playerID, 1);
+                                        if (action != null) {
+                                            actions.add(action.a);
                                         }
                                     }
                                 }
@@ -96,14 +134,82 @@ public enum Card {
         return actions;
     }
 
-    public boolean canPush(MMGameState gs, Vector2D from, Vector2D to) {
-        if (this.type != MMTypes.CardType.Push) return false;
+    public Pair<AbstractAction,Integer> canPush(MMGameState gs, Vector2D from, Vector2D to, int playerPushing, int nCols) {
+        if (this.type != MMTypes.CardType.Push) return null;
         switch(this) {
-            case PUSH_1:  // todo
-                return false;
+            case PUSH_1:
+                // find direction from -> to
+                int direction = Constants.direction(from, to);
+                // go from 'from' in the direction, stopping when we find an empty space or an opponent marble. count marbles in our column
+                Vector2D last = calculateColumn(gs.getBoard(), from, direction, playerPushing);
+                int count = 1+Constants.grid_distance(last, from);
+                // if current occupant is not empty, keep going until we find an empty space or a different player's marble
+                Vector2D current = Constants.add_direction(last, direction);
+                Vector2D oppStart = current.copy();
+                int oppCount = 0;
+                if (gs.getBoard().isInBounds(current.getX(), current.getY())
+                        && gs.getBoard().getElement(current) != null
+                        && gs.getBoard().getElement(current).occupant != null) {
+                    int opponent = gs.getBoard().getElement(current).occupant.ordinal();
+                    Vector2D oppLast = calculateColumn(gs.getBoard(), current, direction, opponent);
+                    oppCount = 1+Constants.grid_distance(oppLast, oppStart);
+                    if (gs.getBoard().isInBounds(current.getX(), current.getY())
+                            && gs.getBoard().getElement(current) != null
+                            && gs.getBoard().getElement(current).occupant != null) {
+                        if (gs.getRulesInPlay().get(MMTypes.CardType.PushRequirement).pushReq(count, oppCount)) {
+                            Pair<AbstractAction, Integer> a = canPush(gs, oppStart, Constants.add_direction(oppStart, direction), opponent, nCols + 1);
+                            if (a != null) {
+                                return new Pair<>(new Push(playerPushing, from, to, a.b), a.b);
+                            }
+                        }
+                    }
+                }
+                if (gs.getRulesInPlay().get(MMTypes.CardType.PushRequirement).pushReq(count, oppCount)) {
+                    return new Pair<>(new Push(playerPushing, from, to, nCols), nCols);
+                } else return null;
             default:
-                return false;
+                return null;
         }
+    }
+
+    public void pushOut(MMGameState state, MMTypes.MarbleType player) {
+        if (this.type != MMTypes.CardType.PushOut) return;
+        switch (this) {
+            case OUT_IS_GONE:
+                // Nothing to do, it's just gone
+                break;
+            default:
+                break;
+        }
+    }
+
+    // Returns the last spot in the column
+    public static Vector2D calculateColumn(GridBoard<BoardSpot> board, Vector2D from, int direction, int playerID) {
+        Vector2D current = from;
+        Vector2D next = Constants.add_direction(current, direction);
+        while (board.isInBounds(next.getX(), next.getY())
+                && board.getElement(next) != null
+                && board.getElement(next).occupant == MMTypes.MarbleType.player(playerID)) {
+            current = next;
+            next = Constants.add_direction(current, direction);
+        }
+        return current;
+    }
+
+    private boolean pushReq(int count, int oppCount) {
+        if (this.type != MMTypes.CardType.PushRequirement) return false;
+        return switch (this) {
+            case MORE -> count > oppCount;
+            case MORE_OR_EQUAL -> count >= oppCount;
+            case EQUAL -> count == oppCount;
+            case FEWER_OR_MORE -> count != oppCount;
+            case FEWER_OR_EQUAL -> count <= oppCount;
+            case MAJORITY -> count > oppCount;  // todo, this is different...
+            case MINORITY -> count < oppCount;  // todo, this is different...
+            case UNEVEN -> count % 2 == 1;
+            case EVEN -> count % 2 == 0;
+            default -> false;
+        };
     }
 
     public void parseSetup(GridBoard<BoardSpot> board) {

@@ -168,8 +168,12 @@ public class MMForwardModel extends StandardForwardModel {
      */
     @Override
     protected List<AbstractAction> _computeAvailableActions(AbstractGameState gameState) {
-        Map<MMTypes.CardType, Card> rules = ((MMGameState) gameState).getRulesInPlay();
-        return new ArrayList<>(rules.get(MMTypes.CardType.Movement).generateMoveActions((MMGameState) gameState, gameState.getCurrentPlayer()));
+        MMGameState gs = (MMGameState) gameState;
+        Map<MMTypes.CardType, Card> rules = gs.getRulesInPlay();
+        int currentPlayer = gs.getCurrentPlayer();
+        List<AbstractAction> actions = new ArrayList<>(rules.get(MMTypes.CardType.Movement).generateMoveActions(gs, currentPlayer));
+        actions.addAll(rules.get(MMTypes.CardType.Push).generatePushActions(gs, currentPlayer));
+        return actions;
     }
 
     @Override

@@ -2,16 +2,21 @@ package games.marblesmultiverse.gui;
 
 import core.AbstractGameState;
 import core.AbstractPlayer;
+import core.CoreConstants;
 import core.Game;
+import core.actions.AbstractAction;
 import games.marblesmultiverse.MMGameState;
+import games.marblesmultiverse.actions.DirectionalAction;
 import games.marblesmultiverse.components.Card;
 import gui.AbstractGUIManager;
 import gui.GamePanel;
 import gui.IScreenHighlight;
 import players.human.ActionController;
+import utilities.Vector2D;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -33,6 +38,8 @@ public class MMGUIManager extends AbstractGUIManager {
     private int cardWidth = 50;
     private int cardHeight = 100;
 
+    MMBoardView boardView;
+
     public MMGUIManager(GamePanel parent, Game game, ActionController ac, Set<Integer> human) {
         super(parent, game, ac, human);
         MMGameState gameState = (MMGameState) game.getGameState();
@@ -40,8 +47,7 @@ public class MMGUIManager extends AbstractGUIManager {
         // Main Game area
         JPanel mainGameArea = new JPanel(new FlowLayout());
 
-//        JButton boardPlaceHolder = new JButton("HEX GRID");
-        MMBoardView boardPlaceHolder = new MMBoardView(gameState);
+        boardView = new MMBoardView(gameState);
 
         // Rule Panel to display current rules
         JPanel rulePanel = new JPanel(new GridLayout(3, 2));
@@ -57,12 +63,12 @@ public class MMGUIManager extends AbstractGUIManager {
         drawDiscardPanel.add(drawPile);
         drawDiscardPanel.add(discardPile);
 
-        mainGameArea.add(boardPlaceHolder);
+        mainGameArea.add(boardView);
         mainGameArea.add(rulePanel);
         mainGameArea.add(drawDiscardPanel);
 
 //        JPanel infoPanel = createGameStateInfoPanel("Multiverse Marbles", gameState, width, defaultInfoPanelHeight);
-        JComponent actionPanel = createActionPanel(new IScreenHighlight[0], width, defaultActionPanelHeight, false, true, null, null, null);
+        JComponent actionPanel = createActionPanel(new IScreenHighlight[]{boardView}, width, defaultActionPanelHeight, false, true, null, null, null);
 
         parent.setLayout(new BorderLayout());
         parent.add(mainGameArea, BorderLayout.CENTER);
@@ -82,7 +88,34 @@ public class MMGUIManager extends AbstractGUIManager {
     @Override
     public int getMaxActionSpace() {
         // TODO
-        return 10;
+        return 10000;
+    }
+
+    @Override
+    protected void updateActionButtons(AbstractPlayer player, AbstractGameState gameState) {
+        if (gameState.getGameStatus() == CoreConstants.GameResult.GAME_ONGOING && !(actionButtons == null)) {
+            List<AbstractAction> actions = player.getForwardModel().computeAvailableActions(gameState, gameState.getCoreGameParameters().actionSpace);
+            for (int i = 0; i < actions.size() && i < maxActionSpace; i++) {
+                DirectionalAction action = (DirectionalAction) actions.get(i);
+                Vector2D from = action.from();
+                Vector2D to = action.to();
+                boolean show = boardView.getHighlights().isEmpty() ||
+                        boardView.getHighlights().size() == 1 && boardView.isHighlighted(from, 0) ||
+                        boardView.getHighlights().size() == 2 && boardView.isHighlighted(from, 0) && boardView.isHighlighted(to, 1);
+                if (show) {
+                    actionButtons[i].setVisible(true);
+                    actionButtons[i].setButtonAction(actions.get(i), gameState);
+                    actionButtons[i].setBackground(Color.white);
+                } else {
+                    actionButtons[i].setVisible(false);
+                    actionButtons[i].setButtonAction(null, "");
+                }
+            }
+            for (int i = actions.size(); i < actionButtons.length; i++) {
+                actionButtons[i].setVisible(false);
+                actionButtons[i].setButtonAction(null, "");
+            }
+        }
     }
 
     /**

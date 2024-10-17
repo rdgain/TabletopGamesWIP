@@ -1,22 +1,16 @@
 package games.marblesmultiverse.actions;
 
 import core.AbstractGameState;
-import core.actions.AbstractAction;
-import core.components.Component;
 import games.marblesmultiverse.MMGameState;
 import games.marblesmultiverse.components.BoardSpot;
 import utilities.Vector2D;
 
 import java.util.Objects;
 
-public class Move extends AbstractAction {
-    final int playerID;
-    final Vector2D from, to;
+public class Move extends DirectionalAction {
 
     public Move(int playerID, Vector2D from, Vector2D to) {
-        this.playerID = playerID;
-        this.from = from;
-        this.to = to;
+        super(playerID, from, to);
     }
 
     /**
@@ -32,9 +26,6 @@ public class Move extends AbstractAction {
         BoardSpot boardSpotTo = state.getBoard().getElement(to);
         boardSpotTo.addMarble(boardSpotFrom.getOccupant());
         boardSpotFrom.removeMarble();
-
-        // todo push etc
-
         return true;
     }
 
