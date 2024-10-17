@@ -33,7 +33,7 @@ public class Push extends DirectionalAction {
         Vector2D current = from;
         int nColumns = 0;
         MMTypes.MarbleType player = MMTypes.MarbleType.player(playerID);
-        List<BoardSpot> spots = new ArrayList<>();
+        List<MMTypes.MarbleType> spots = new ArrayList<>();
 
         // Iterate from 'from' onwards in the direction of 'to' for as many columns as we need.
         while (board.isInBounds(current.getX(), current.getY())
@@ -46,13 +46,14 @@ public class Push extends DirectionalAction {
                 nColumns ++;
                 player = currentSpot.getOccupant();
             }
-            // Put the marble from the last spot saved into the current spot
-            if (!spots.isEmpty()) {
-                BoardSpot boardSpotFrom = spots.get(spots.size() - 1);
-                currentSpot.addMarble(boardSpotFrom.getOccupant());
-            }
+
             // Save the current spot
-            spots.add(currentSpot);
+            spots.add(currentSpot.getOccupant());
+
+            // Put the marble from the last spot saved into the current spot
+            if (spots.size() > 1) {
+                currentSpot.addMarble(spots.get(spots.size() - 2));
+            }
 
             // Move to the next spot
             Vector2D next = Constants.add_direction(current, direction);

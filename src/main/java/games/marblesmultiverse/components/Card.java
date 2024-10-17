@@ -6,6 +6,7 @@ import games.marblesmultiverse.Constants;
 import games.marblesmultiverse.MMGameState;
 import games.marblesmultiverse.actions.Move;
 import games.marblesmultiverse.actions.Push;
+import utilities.Pair;
 import utilities.Vector2D;
 
 import java.io.BufferedReader;
@@ -117,9 +118,9 @@ public enum Card {
                                     // todo some rules don't allow to split columns
                                     if (spot.occupant == MMTypes.MarbleType.player(playerID)) {
                                         // Check push requirements
-                                        AbstractAction action = gs.getRulesInPlay().get(MMTypes.CardType.Push).canPush(gs, from, to, playerID, 1);
+                                        Pair<AbstractAction,Integer> action = gs.getRulesInPlay().get(MMTypes.CardType.Push).canPush(gs, from, to, playerID, 1);
                                         if (action != null) {
-                                            actions.add(action);  // todo ncolumns
+                                            actions.add(action.a);
                                         }
                                     }
                                 }
@@ -133,7 +134,7 @@ public enum Card {
         return actions;
     }
 
-    public AbstractAction canPush(MMGameState gs, Vector2D from, Vector2D to, int playerPushing, int nCols) {
+    public Pair<AbstractAction,Integer> canPush(MMGameState gs, Vector2D from, Vector2D to, int playerPushing, int nCols) {
         if (this.type != MMTypes.CardType.Push) return null;
         switch(this) {
             case PUSH_1:
@@ -141,7 +142,7 @@ public enum Card {
                 int direction = Constants.direction(from, to);
                 // go from 'from' in the direction, stopping when we find an empty space or an opponent marble. count marbles in our column
                 Vector2D last = calculateColumn(gs.getBoard(), from, direction, playerPushing);
-                int count = Constants.grid_distance(last, from);
+                int count = 1+Constants.grid_distance(last, from);
                 // if current occupant is not empty, keep going until we find an empty space or a different player's marble
                 Vector2D current = Constants.add_direction(last, direction);
                 Vector2D oppStart = current.copy();
@@ -151,17 +152,20 @@ public enum Card {
                         && gs.getBoard().getElement(current).occupant != null) {
                     int opponent = gs.getBoard().getElement(current).occupant.ordinal();
                     Vector2D oppLast = calculateColumn(gs.getBoard(), current, direction, opponent);
-                    oppCount = Constants.grid_distance(oppLast, oppStart);
+                    oppCount = 1+Constants.grid_distance(oppLast, oppStart);
                     if (gs.getBoard().isInBounds(current.getX(), current.getY())
                             && gs.getBoard().getElement(current) != null
                             && gs.getBoard().getElement(current).occupant != null) {
-                        // Chain pushes
-                        if (gs.getRulesInPlay().get(MMTypes.CardType.PushRequirement).pushReq(count, oppCount))
-                            return canPush(gs, oppStart, Constants.add_direction(oppStart, direction), opponent, nCols+1);
+                        if (gs.getRulesInPlay().get(MMTypes.CardType.PushRequirement).pushReq(count, oppCount)) {
+                            Pair<AbstractAction, Integer> a = canPush(gs, oppStart, Constants.add_direction(oppStart, direction), opponent, nCols + 1);
+                            if (a != null) {
+                                return new Pair<>(new Push(playerPushing, from, to, a.b), a.b);
+                            }
+                        }
                     }
                 }
                 if (gs.getRulesInPlay().get(MMTypes.CardType.PushRequirement).pushReq(count, oppCount)) {
-                    return new Push(playerPushing, from, to, nCols);
+                    return new Pair<>(new Push(playerPushing, from, to, nCols), nCols);
                 } else return null;
             default:
                 return null;

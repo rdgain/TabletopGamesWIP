@@ -58,14 +58,23 @@ public class Constants {
     }
 
     public static int grid_distance( Vector2D a, Vector2D b ){
-        int x0 = (int) (a.getX()-Math.floor((double) b.getX() /2));
-        int y0 = b.getX();
-        int x1 = (int) (a.getY()-Math.floor((double) b.getY() /2));
-        int y1 = b.getY();
-        int dx = x1 - x0;
-        int dy = y1 - y0;
-        int dist = Math.max(Math.abs(dx), Math.abs(dy));
-        dist = Math.max(dist, Math.abs(dx+dy));
-        return dist;
+        // Convert r-odd coordinates to axial coordinates
+        int[] a_axial = rOffsetToAxial(a);
+        int[] b_axial = rOffsetToAxial(b);
+
+        // Calculate the distance using axial coordinates
+        int distance = (Math.abs(a_axial[0] - b_axial[0])
+                + Math.abs(a_axial[0] + a_axial[1] - b_axial[0] - b_axial[1])
+                + Math.abs(a_axial[1] - b_axial[1])) / 2;
+
+        return distance;
+    }
+
+    // Helper function to convert r-odd (x, y) to axial (q, r)
+    public static int[] rOffsetToAxial(Vector2D point) {
+        int q = point.x - (point.y - (point.y & 1)) / 2; // Calculate the q coordinate
+        int r = point.y; // The r coordinate is the same as y
+
+        return new int[]{q, r}; // Return the axial coordinates [q, r]
     }
 }
