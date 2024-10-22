@@ -37,22 +37,37 @@ public class MMForwardModel extends StandardForwardModel {
     protected void _setup(AbstractGameState firstState) {
         MMGameState state = (MMGameState) firstState;
         MMParameters params = (MMParameters) state.getGameParameters();
-        // create deck of all cards
+
+        // Create deck of all cards and shuffle
         List<Card> deck = new ArrayList<>();
-        Collections.addAll(deck, Card.values());
+//        Collections.addAll(deck, Card.values());
+        deck.addAll(Card.implementedCards);
+        Collections.shuffle(deck, state.getRnd());
 
         // select first rules
         Map<MMTypes.CardType, Card> initialSetup = new HashMap<>();
-        initialSetup.put(MMTypes.CardType.Setup, Card.TWO_SIDES);
-        initialSetup.put(MMTypes.CardType.Victory, Card.YOUR_COLOR);
-        initialSetup.put(MMTypes.CardType.Movement, Card.MOVE_1);
-        initialSetup.put(MMTypes.CardType.Push, Card.PUSH_1);
-        initialSetup.put(MMTypes.CardType.PushRequirement, Card.MORE);
-        initialSetup.put(MMTypes.CardType.PushOut, Card.OUT_IS_GONE);
-
-        for (Card card : initialSetup.values()) {
-            deck.remove(card);
+        int ct = 0;
+        while (initialSetup.size() < MMTypes.CardType.values().length && ct < deck.size()) {
+            Card card = deck.get(ct);
+            if (initialSetup.containsKey(card.type)) {
+                ct++;
+                continue;
+            }
+            initialSetup.put(card.type, card);
+            deck.remove(ct);
         }
+        if (initialSetup.size() < MMTypes.CardType.values().length) {
+            throw new AssertionError("Not enough cards to setup the game");
+        }
+//        initialSetup.put(MMTypes.CardType.Setup, Card.TWO_SIDES);
+//        initialSetup.put(MMTypes.CardType.Victory, Card.YOUR_COLOR);
+//        initialSetup.put(MMTypes.CardType.Movement, Card.MOVE_1);
+//        initialSetup.put(MMTypes.CardType.Push, Card.PUSH_1);
+//        initialSetup.put(MMTypes.CardType.PushRequirement, Card.MORE);
+//        initialSetup.put(MMTypes.CardType.PushOut, Card.OUT_IS_GONE);
+//        for (Card card : initialSetup.values()) {
+//            deck.remove(card);
+//        }
 
         state.rulesInPlay = initialSetup;
         state.deckOfRules = deck;

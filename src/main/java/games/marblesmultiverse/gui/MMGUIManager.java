@@ -42,9 +42,11 @@ public class MMGUIManager extends AbstractGUIManager {
         MMGameState gameState = (MMGameState) game.getGameState();
 
         // Main Game area
-        JPanel mainGameArea = new JPanel(new FlowLayout());
+        JPanel mainGameArea = new JPanel();
+        mainGameArea.setLayout(new BoxLayout(mainGameArea, BoxLayout.X_AXIS));
 
         boardView = new MMBoardView(gameState);
+        mainGameArea.add(boardView);
 
         // Rule Panel to display current rules
         JPanel rulePanel = new JPanel(new GridLayout(3, 2));
@@ -53,11 +55,11 @@ public class MMGUIManager extends AbstractGUIManager {
             MMCardView rule = new MMCardView(card);
             rulePanel.add(rule);
         }
-
-        mainGameArea.add(boardView);
         mainGameArea.add(rulePanel);
 
         width = boardView.getPreferredSize().width + MMCardView.cardWidth*2;
+        height = boardView.getPreferredSize().height + defaultActionPanelHeight/2 + defaultInfoPanelHeight;
+        mainGameArea.setMaximumSize(new Dimension(width, boardView.getPreferredSize().height));
 
         JPanel infoPanel = createGameStateInfoPanel("Multiverse Marbles", gameState, width, defaultInfoPanelHeight);
         JComponent actionPanel = createActionPanel(new IScreenHighlight[]{boardView}, width, defaultActionPanelHeight/2, false, true, null, null, null);
