@@ -64,7 +64,7 @@ public enum Card {
 
     public static List<Card> implementedCards = Arrays.asList(
             YOUR_COLOR, ONE_OF_EACH, ANY_THREE, PUSH_OUT,
-            MOVE_1,
+            MOVE_1,MOVE_2,MOVE_EXACTLY_2,LEAPFROG,
             PUSH_1,
             MORE, MORE_OR_EQUAL, EQUAL, FEWER_OR_MORE, FEWER_OR_EQUAL, UNEVEN, EVEN,
             OUT_IS_GONE, CENTER_IF_FREE, CENTER_REPLACE,
@@ -110,7 +110,7 @@ public enum Card {
                     }
                 }
                 break;
-            case MOVE_EXACTLY_2:  // todo test
+            case MOVE_EXACTLY_2:
                 // Check all neighbours distance 1
                 for (int i = 0; i < gs.getBoard().getHeight(); i++) {
                     for (int j = 0; j < gs.getBoard().getWidth(); j++) {
@@ -140,7 +140,7 @@ public enum Card {
                     }
                 }
                 break;
-            case MOVE_2:  // todo test
+            case MOVE_2:
                 // Check all neighbours distance 1
                 for (int i = 0; i < gs.getBoard().getHeight(); i++) {
                     for (int j = 0; j < gs.getBoard().getWidth(); j++) {
@@ -174,7 +174,7 @@ public enum Card {
                 break;
             case SPLIT_MOVE:  // todo
             case SIDESTEP:  // todo
-            case LEAPFROG:  // todo
+            case LEAPFROG:
                 // Check all neighbours distance 1
                 for (int i = 0; i < gs.getBoard().getHeight(); i++) {
                     for (int j = 0; j < gs.getBoard().getWidth(); j++) {
