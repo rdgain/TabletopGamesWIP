@@ -64,7 +64,7 @@ public enum Card {
 
     public static List<Card> implementedCards = Arrays.asList(
             YOUR_COLOR, ONE_OF_EACH, ANY_THREE, PUSH_OUT,
-            MOVE_1,
+            MOVE_1,MOVE_2,MOVE_EXACTLY_2,LEAPFROG,
             PUSH_1,
             MORE, MORE_OR_EQUAL, EQUAL, FEWER_OR_MORE, FEWER_OR_EQUAL, UNEVEN, EVEN,
             OUT_IS_GONE, CENTER_IF_FREE, CENTER_REPLACE,
@@ -110,11 +110,103 @@ public enum Card {
                     }
                 }
                 break;
-            case MOVE_EXACTLY_2:  // todo
-            case MOVE_2:  // todo
+            case MOVE_EXACTLY_2:
+                // Check all neighbours distance 1
+                for (int i = 0; i < gs.getBoard().getHeight(); i++) {
+                    for (int j = 0; j < gs.getBoard().getWidth(); j++) {
+                        BoardSpot boardSpot = gs.getBoard().getElement(j, i);
+                        if (boardSpot != null && boardSpot.occupant == MMTypes.MarbleType.player(playerID)) {
+                            Vector2D from = new Vector2D(j, i);
+                            for (Vector2D to: Constants.getNeighbours(from)) {
+                                // 2 space away checking if someone is on the way
+                                BoardSpot firstSpot = gs.getBoard().getElement(to.getX(), to.getY());
+                                if (firstSpot != null) {
+                                    if (firstSpot.occupant == null) {
+                                        // check if the next one in this direction is empty too
+                                        int direction = Constants.direction(from, to);
+                                        Vector2D secondSpotCoord = Constants.getNeighbours(to).get(direction);
+                                        BoardSpot secondSpot = gs.getBoard().getElement(secondSpotCoord.getX(), secondSpotCoord.getY());
+                                        if (secondSpot != null) {
+                                            if (secondSpot.occupant == null) {
+                                                // then add move if the next one is empty too
+                                                actions.add(new Move(playerID, from, secondSpotCoord));
+                                            }
+                                        }
+
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                break;
+            case MOVE_2:
+                // Check all neighbours distance 1
+                for (int i = 0; i < gs.getBoard().getHeight(); i++) {
+                    for (int j = 0; j < gs.getBoard().getWidth(); j++) {
+                        BoardSpot boardSpot = gs.getBoard().getElement(j, i);
+                        if (boardSpot != null && boardSpot.occupant == MMTypes.MarbleType.player(playerID)) {
+                            Vector2D from = new Vector2D(j, i);
+                            for (Vector2D to: Constants.getNeighbours(from)) {
+                                // 2 space away checking if someone is on the way
+                                BoardSpot firstSpot = gs.getBoard().getElement(to.getX(), to.getY());
+                                if (firstSpot != null) {
+                                    if (firstSpot.occupant == null) {
+                                        // move one in this direction
+                                        actions.add(new Move(playerID, from, to));
+                                        // check if the next one in this direction is empty too
+                                        int direction = Constants.direction(from, to);
+                                        Vector2D secondSpotCoord = Constants.getNeighbours(to).get(direction);
+                                        BoardSpot secondSpot = gs.getBoard().getElement(secondSpotCoord.getX(), secondSpotCoord.getY());
+                                        if (secondSpot != null) {
+                                            if (secondSpot.occupant == null) {
+                                                // then add move if the next one is empty too
+                                                actions.add(new Move(playerID, from, secondSpotCoord));
+                                            }
+                                        }
+
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                break;
             case SPLIT_MOVE:  // todo
             case SIDESTEP:  // todo
-            case LEAPFROG:  // todo
+            case LEAPFROG:
+                // Check all neighbours distance 1
+                for (int i = 0; i < gs.getBoard().getHeight(); i++) {
+                    for (int j = 0; j < gs.getBoard().getWidth(); j++) {
+                        BoardSpot boardSpot = gs.getBoard().getElement(j, i);
+                        if (boardSpot != null && boardSpot.occupant == MMTypes.MarbleType.player(playerID)) {
+                            Vector2D from = new Vector2D(j, i);
+                            for (Vector2D to: Constants.getNeighbours(from)) {
+                                // 2 space away checking if someone is on the way
+                                BoardSpot firstSpot = gs.getBoard().getElement(to.getX(), to.getY());
+                                if (firstSpot != null) {
+                                    if (firstSpot.occupant != null) {
+                                        // check if the next one in this direction is empty too
+                                        int direction = Constants.direction(from, to);
+                                        Vector2D secondSpotCoord = Constants.getNeighbours(to).get(direction);
+                                        BoardSpot secondSpot = gs.getBoard().getElement(secondSpotCoord.getX(), secondSpotCoord.getY());
+                                        if (secondSpot != null) {
+                                            if (secondSpot.occupant == null) {
+                                                // then add move if the next one is empty too
+                                                actions.add(new Move(playerID, from, secondSpotCoord));
+                                            }
+                                        }
+
+                                    }
+                                    else {
+                                        actions.add(new Move(playerID, from, to));
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                break;
             case CHAIN_FROG:  // todo
             default: return actions;
         }
