@@ -1,0 +1,15 @@
+{
+  "game": "MultiverseMarbles",
+  "listener": "metrics/MetricsGameListener.json",
+  "destDir": "param-optimisation/",
+  "repeats": 20,
+  "iterations": 100,
+  "evalGames": 50,
+  "matchups": 100,
+  "neighbourhood": 100,
+  "evalMethod": "Win",
+  "nPlayers": 2,
+  "output": "results_optimisation.txt",
+  "searchSpace": "json/optimisation/mcts-multiversemarbles.json",
+  "verbose": true
+}
