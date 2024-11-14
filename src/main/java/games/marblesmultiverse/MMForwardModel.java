@@ -94,17 +94,59 @@ public class MMForwardModel extends StandardForwardModel {
         int currentPlayer = gs.getCurrentPlayer();
         List<AbstractAction> actions = new ArrayList<>(rules.get(MMTypes.CardType.Movement).generateMoveActions(gs, currentPlayer));
         actions.addAll(rules.get(MMTypes.CardType.Push).generatePushActions(gs, currentPlayer));
+        // check end game if player has no actions
+        if(actions.isEmpty()){
+            gameState.setGameStatus(CoreConstants.GameResult.GAME_END);
+            for (int i = 0; i < gameState.getNPlayers(); i++) {
+                if (i == gameState.getCurrentPlayer()) gameState.setPlayerResult(CoreConstants.GameResult.LOSE_GAME, i);
+                else gameState.setPlayerResult(CoreConstants.GameResult.WIN_GAME, i);
+            }
+            return actions;
+        }
         return actions;
+    }
+
+    @Override
+    protected void _beforeAction(AbstractGameState currentState, AbstractAction actionChosen) {
+        super._beforeAction(currentState, actionChosen);
+        if (currentState.isActionInProgress()) return;
+        // force the game to end?? todo
+
     }
 
     @Override
     protected void _afterAction(AbstractGameState currentState, AbstractAction actionTaken) {
         if (currentState.isActionInProgress()) return;
-
+        int loser = -1;
         // Check default game end: 1 marble left for a player todo
+        MMGameState gameState = (MMGameState) currentState;
+        for (int i = 0; i < currentState.getNPlayers(); i++) {
+            int nPlayerMarbles=0;
+            GridBoard<BoardSpot> currentBoard = gameState.getBoard();
+            for (int j = 0; j < currentBoard.getWidth(); j++) {
+                for (int k = 0; k < currentBoard.getHeight(); k++) {
+                    if(currentBoard.getElement(j, k)!=null){
+                        if (MMTypes.MarbleType.player(i) == currentBoard.getElement(j, k).getOccupant()) {
+                            nPlayerMarbles++;
+                        }
+                    }
+                }
+            }
+            if (nPlayerMarbles <2) loser = i;
+        }
+
+        if (loser != -1) {
+            currentState.setGameStatus(CoreConstants.GameResult.GAME_END);
+            for (int i = 0; i < currentState.getNPlayers(); i++) {
+                if (i == loser) currentState.setPlayerResult(CoreConstants.GameResult.WIN_GAME, i);
+                else currentState.setPlayerResult(CoreConstants.GameResult.LOSE_GAME, i);
+            }
+            return;
+        }
 
         // Check victory rules active
         int winner = ((MMGameState) currentState).rulesInPlay.get(MMTypes.CardType.Victory).checkVictory((MMGameState) currentState);
+
         if (winner != -1) {
             currentState.setGameStatus(CoreConstants.GameResult.GAME_END);
             for (int i = 0; i < currentState.getNPlayers(); i++) {
@@ -113,7 +155,6 @@ public class MMForwardModel extends StandardForwardModel {
             }
             return;
         }
-
         endPlayerTurn(currentState);
     }
 

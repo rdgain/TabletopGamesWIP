@@ -446,6 +446,9 @@ public enum Card {
     public int checkVictory(MMGameState gs) {
         if (this.type != MMTypes.CardType.Victory) return -1;
 
+        //check for standard victory (player don't have any moves)
+
+        // check for card defined victory
         switch(this) {
             case YOUR_COLOR:
                 boolean[] win = new boolean[gs.getNPlayers()];
