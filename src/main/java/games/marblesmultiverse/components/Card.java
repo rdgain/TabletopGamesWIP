@@ -64,10 +64,13 @@ public enum Card {
 
     public static List<Card> implementedCards = Arrays.asList(
             YOUR_COLOR, ONE_OF_EACH, ANY_THREE, PUSH_OUT,
+
             MOVE_1,MOVE_2,MOVE_EXACTLY_2,LEAPFROG,
             PUSH_1,
-            MORE, MORE_OR_EQUAL, EQUAL, FEWER_OR_MORE, FEWER_OR_EQUAL, UNEVEN, EVEN,
-            OUT_IS_GONE, CENTER_IF_FREE, CENTER_REPLACE,
+
+            MORE, MORE_OR_EQUAL,EQUAL, FEWER_OR_MORE, FEWER_OR_EQUAL, UNEVEN, EVEN,
+
+            OUT_IS_GONE,CENTER_IF_FREE, CENTER_REPLACE,
             TWO_SIDES);
 
     Card(String description, MMTypes.CardType type){
@@ -446,6 +449,9 @@ public enum Card {
     public int checkVictory(MMGameState gs) {
         if (this.type != MMTypes.CardType.Victory) return -1;
 
+        //check for standard victory (player don't have any moves)
+
+        // check for card defined victory
         switch(this) {
             case YOUR_COLOR:
                 boolean[] win = new boolean[gs.getNPlayers()];
