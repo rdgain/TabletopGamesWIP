@@ -145,7 +145,7 @@ public class MMGameState extends AbstractGameState {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         MMGameState that = (MMGameState) o;
-        return Objects.equals(deckOfRules, that.deckOfRules) && Objects.equals(rulesInPlay, that.rulesInPlay) && Objects.equals(board, that.board) && Objects.equals(playerMarblesOnBoard, that.playerMarblesOnBoard) && Objects.equals(playerMarblesPushedOut, that.playerMarblesPushedOut);
+        return Objects.equals(deckOfRules, that.deckOfRules) && Objects.equals(rulesInPlay, that.rulesInPlay) && Objects.equals(board, that.board) && Objects.equals(playerMarblesOnBoard, that.playerMarblesOnBoard) && Objects.deepEquals(playerMarblesPushedOut, that.playerMarblesPushedOut);
     }
 
     @Override

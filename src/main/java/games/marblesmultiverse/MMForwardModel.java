@@ -74,6 +74,8 @@ public class MMForwardModel extends StandardForwardModel {
         state.board = new GridBoard<>(params.gridSize, params.gridSize);
         int nMarblesPerPlayer = state.rulesInPlay.get(MMTypes.CardType.Setup).parseSetup(state.board);
 
+        state.playerMarblesOnBoard.clear();
+        state.playerMarblesPushedOut.clear();
         for (int i = 0; i < state.getNPlayers(); i++) {
             state.playerMarblesOnBoard.add(new Counter(nMarblesPerPlayer, 0, nMarblesPerPlayer, "Marbles on board p" + i));
             state.playerMarblesPushedOut.add(new ArrayList<>());
