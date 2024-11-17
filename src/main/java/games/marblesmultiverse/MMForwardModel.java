@@ -74,6 +74,8 @@ public class MMForwardModel extends StandardForwardModel {
         state.board = new GridBoard<>(params.gridSize, params.gridSize);
         int nMarblesPerPlayer = state.rulesInPlay.get(MMTypes.CardType.Setup).parseSetup(state.board);
 
+        state.playerMarblesOnBoard.clear();
+        state.playerMarblesPushedOut.clear();
         for (int i = 0; i < state.getNPlayers(); i++) {
             state.playerMarblesOnBoard.add(new Counter(nMarblesPerPlayer, 0, nMarblesPerPlayer, "Marbles on board p" + i));
             state.playerMarblesPushedOut.add(new ArrayList<>());
@@ -101,7 +103,23 @@ public class MMForwardModel extends StandardForwardModel {
     protected void _afterAction(AbstractGameState currentState, AbstractAction actionTaken) {
         if (currentState.isActionInProgress()) return;
 
-        // Check default game end: 1 marble left for a player todo
+        // Check default game end: 1 marble left for a player
+        int loser = -1;
+        MMGameState gameState = (MMGameState) currentState;
+        for (int i = 0; i < currentState.getNPlayers(); i++) {
+            if (gameState.getPlayerMarblesOnBoard().get(i).getValue() < 2) {
+                loser = i;
+                break;
+            }
+        }
+        if (loser != -1) {
+            currentState.setGameStatus(CoreConstants.GameResult.GAME_END);
+            for (int i = 0; i < currentState.getNPlayers(); i++) {
+                if (i == loser) currentState.setPlayerResult(CoreConstants.GameResult.LOSE_GAME, i);
+                else currentState.setPlayerResult(CoreConstants.GameResult.WIN_GAME, i);
+            }
+            return;
+        }
 
         // Check victory rules active
         int winner = ((MMGameState) currentState).rulesInPlay.get(MMTypes.CardType.Victory).checkVictory((MMGameState) currentState);
@@ -113,8 +131,17 @@ public class MMForwardModel extends StandardForwardModel {
             }
             return;
         }
-
         endPlayerTurn(currentState);
+
+        // Check end game if next player has no actions
+//        List<AbstractAction> actions = computeAvailableActions(gameState);
+//        if(actions.isEmpty()){
+//            gameState.setGameStatus(CoreConstants.GameResult.GAME_END);
+//            for (int i = 0; i < gameState.getNPlayers(); i++) {
+//                if (i == gameState.getCurrentPlayer()) gameState.setPlayerResult(CoreConstants.GameResult.LOSE_GAME, i);
+//                else gameState.setPlayerResult(CoreConstants.GameResult.WIN_GAME, i);
+//            }
+//        }
     }
 
     @Override
