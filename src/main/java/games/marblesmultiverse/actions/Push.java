@@ -90,7 +90,10 @@ public class Push extends DirectionalAction {
 
     @Override
     public String getString(AbstractGameState gameState) {
-        return toString();
+        Card push = ((MMGameState)gameState).getRulesInPlay().get(MMTypes.CardType.Push);
+        Card pushReq = ((MMGameState)gameState).getRulesInPlay().get(MMTypes.CardType.PushRequirement);
+        Card pushOut = ((MMGameState)gameState).getRulesInPlay().get(MMTypes.CardType.PushOut);
+        return "[" + push + ";" + pushReq + ";" + pushOut + "]: " + this;
     }
 
     @Override

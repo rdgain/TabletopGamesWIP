@@ -3,6 +3,8 @@ package games.marblesmultiverse.actions;
 import core.AbstractGameState;
 import games.marblesmultiverse.MMGameState;
 import games.marblesmultiverse.components.BoardSpot;
+import games.marblesmultiverse.components.Card;
+import games.marblesmultiverse.components.MMTypes;
 import utilities.Vector2D;
 
 import java.util.Objects;
@@ -66,7 +68,8 @@ public class Move extends DirectionalAction {
      */
     @Override
     public String getString(AbstractGameState gameState) {
-        return toString();
+        Card move = ((MMGameState)gameState).getRulesInPlay().get(MMTypes.CardType.Movement);
+        return "[" + move + "]: " + this;
     }
 
 }
