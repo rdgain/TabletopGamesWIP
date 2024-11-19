@@ -895,7 +895,9 @@ public class SingleTreeNode {
             while (!finishRollout(rolloutState)) {
                 List<AbstractAction> availableActions = forwardModel.computeAvailableActions(rolloutState, params.actionSpace);
                 if (availableActions.isEmpty()) {
-                    throw new AssertionError("No actions available in rollout!" + (next != null ? " Last action: " + next : ""));
+
+                    forwardModel.computeAvailableActions(rolloutState, params.actionSpace);
+                    throw new AssertionError("No actions available in rollout!" + (next != null ? " Last action: " + next.getString(rolloutState) : ""));
                 }
                 AbstractPlayer agent = rolloutState.getCurrentPlayer() == root.decisionPlayer ? params.getRolloutStrategy() : params.getOpponentModel();
                 next = agent.getAction(rolloutState, availableActions);

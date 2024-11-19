@@ -6,6 +6,7 @@ import core.StandardForwardModel;
 import core.actions.AbstractAction;
 import core.components.Counter;
 import core.components.GridBoard;
+import evaluation.metrics.Event;
 import games.marblesmultiverse.components.*;
 import utilities.Vector2D;
 
@@ -102,10 +103,10 @@ public class MMForwardModel extends StandardForwardModel {
     @Override
     protected void _afterAction(AbstractGameState currentState, AbstractAction actionTaken) {
         if (currentState.isActionInProgress()) return;
+        MMGameState gameState = (MMGameState) currentState;
 
         // Check default game end: 1 marble left for a player
         int loser = -1;
-        MMGameState gameState = (MMGameState) currentState;
         for (int i = 0; i < currentState.getNPlayers(); i++) {
             if (gameState.getPlayerMarblesOnBoard().get(i).getValue() < 2) {
                 loser = i;
@@ -118,17 +119,20 @@ public class MMForwardModel extends StandardForwardModel {
                 if (i == loser) currentState.setPlayerResult(CoreConstants.GameResult.LOSE_GAME, i);
                 else currentState.setPlayerResult(CoreConstants.GameResult.WIN_GAME, i);
             }
+            currentState.logEvent(Event.GameEvent.GAME_EVENT, "Game over: 1 marble left for p" + loser);
             return;
         }
 
         // Check victory rules active
-        int winner = ((MMGameState) currentState).rulesInPlay.get(MMTypes.CardType.Victory).checkVictory((MMGameState) currentState);
+        Card victoryCard = ((MMGameState) currentState).rulesInPlay.get(MMTypes.CardType.Victory);
+        int winner = victoryCard.checkVictory((MMGameState) currentState);
         if (winner != -1) {
             currentState.setGameStatus(CoreConstants.GameResult.GAME_END);
             for (int i = 0; i < currentState.getNPlayers(); i++) {
                 if (i == winner) currentState.setPlayerResult(CoreConstants.GameResult.WIN_GAME, i);
                 else currentState.setPlayerResult(CoreConstants.GameResult.LOSE_GAME, i);
             }
+            currentState.logEvent(Event.GameEvent.GAME_EVENT, "Game over: victory condition " + victoryCard.name() + " triggered by p" + winner);
             return;
         }
 
@@ -142,6 +146,7 @@ public class MMForwardModel extends StandardForwardModel {
             for (int i = 0; i < currentState.getNPlayers(); i++) {
                 currentState.setPlayerResult(CoreConstants.GameResult.TIMEOUT, i);
             }
+            currentState.logEvent(Event.GameEvent.GAME_EVENT, "Game over: max turns exceeded, all players timeout.");
             return;
         }
 
@@ -153,6 +158,7 @@ public class MMForwardModel extends StandardForwardModel {
 //                if (i == gameState.getCurrentPlayer()) gameState.setPlayerResult(CoreConstants.GameResult.LOSE_GAME, i);
 //                else gameState.setPlayerResult(CoreConstants.GameResult.WIN_GAME, i);
 //            }
+//            currentState.logEvent(Event.GameEvent.GAME_EVENT, "Game over: no moves remaining for p" + gameState.getCurrentPlayer());
 //        }
     }
 

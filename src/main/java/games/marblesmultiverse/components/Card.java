@@ -62,15 +62,15 @@ public enum Card {
     public final String description;
     public final MMTypes.CardType type;
 
-    public static List<Card> implementedCards = Arrays.asList(
+    public static final List<Card> implementedCards = Arrays.asList(
             YOUR_COLOR, ONE_OF_EACH, ANY_THREE, PUSH_OUT,
 
-            MOVE_1,MOVE_2,MOVE_EXACTLY_2,LEAPFROG,
+            MOVE_1,MOVE_2,MOVE_EXACTLY_2, LEAPFROG,
             PUSH_1,
 
             MORE, MORE_OR_EQUAL,EQUAL, FEWER_OR_MORE, FEWER_OR_EQUAL, UNEVEN, EVEN,
 
-            OUT_IS_GONE,CENTER_IF_FREE, CENTER_REPLACE,
+            OUT_IS_GONE, CENTER_IF_FREE, CENTER_REPLACE,
             TWO_SIDES);
 
     Card(String description, MMTypes.CardType type){
@@ -289,13 +289,13 @@ public enum Card {
                         if (gs.getRulesInPlay().get(MMTypes.CardType.PushRequirement).pushReq(count, oppCount)) {
                             Pair<AbstractAction, Integer> a = canPush(gs, oppStart, Constants.add_direction(oppStart, direction), opponent, nCols + 1);
                             if (a != null) {
-                                return new Pair<>(new Push(playerPushing, from, to, a.b), a.b);
+                                return new Pair<>(new Push(playerPushing, from, to), a.b);
                             }
                         }
                     }
                 }
                 if (gs.getRulesInPlay().get(MMTypes.CardType.PushRequirement).pushReq(count, oppCount)) {
-                    return new Pair<>(new Push(playerPushing, from, to, nCols), nCols);
+                    return new Pair<>(new Push(playerPushing, from, to), nCols);
                 } else return null;
             case PUSH_2:  // todo
             case SPLIT_PUSH:  // todo
