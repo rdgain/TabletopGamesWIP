@@ -6,6 +6,10 @@ import org.junit.Test;
 
 public class ForwardModelTestsWithMCTS {
 
+    @Test
+    public void testMarbles() {
+        new ForwardModelTester("game=MultiverseMarbles", "nGames=5", "nPlayers=2", "agent=json\\players\\gameSpecific\\Battlelore.json");
+    }
 
     @Test
     public void testBattleLore() {

@@ -103,7 +103,7 @@ public enum Card {
                                 // 1 space away
                                 BoardSpot spot = gs.getBoard().getElement(to.getX(), to.getY());
                                 if (spot != null) {
-                                    if (spot.occupant == null) {
+                                    if (spot.occupant == null && spot.type != MMTypes.SpotType.BLOCKAGE) {
                                         // Move is always to an empty spot
                                         actions.add(new Move(playerID, from, to));
                                     }
@@ -124,19 +124,18 @@ public enum Card {
                                 // 2 space away checking if someone is on the way
                                 BoardSpot firstSpot = gs.getBoard().getElement(to.getX(), to.getY());
                                 if (firstSpot != null) {
-                                    if (firstSpot.occupant == null) {
+//                                    if (firstSpot.occupant == null) {
                                         // check if the next one in this direction is empty too
                                         int direction = Constants.direction(from, to);
                                         Vector2D secondSpotCoord = Constants.getNeighbours(to).get(direction);
                                         BoardSpot secondSpot = gs.getBoard().getElement(secondSpotCoord.getX(), secondSpotCoord.getY());
                                         if (secondSpot != null) {
-                                            if (secondSpot.occupant == null) {
+                                            if (secondSpot.occupant == null && secondSpot.type != MMTypes.SpotType.BLOCKAGE) {
                                                 // then add move if the next one is empty too
                                                 actions.add(new Move(playerID, from, secondSpotCoord));
                                             }
                                         }
-
-                                    }
+//                                    }
                                 }
                             }
                         }
@@ -154,20 +153,20 @@ public enum Card {
                                 // 2 space away checking if someone is on the way
                                 BoardSpot firstSpot = gs.getBoard().getElement(to.getX(), to.getY());
                                 if (firstSpot != null) {
-                                    if (firstSpot.occupant == null) {
+                                    if (firstSpot.occupant == null && firstSpot.type != MMTypes.SpotType.BLOCKAGE) {
                                         // move one in this direction
                                         actions.add(new Move(playerID, from, to));
+                                    } else if (firstSpot.occupant != MMTypes.MarbleType.player(playerID) || firstSpot.type == MMTypes.SpotType.BLOCKAGE) {
                                         // check if the next one in this direction is empty too
                                         int direction = Constants.direction(from, to);
                                         Vector2D secondSpotCoord = Constants.getNeighbours(to).get(direction);
                                         BoardSpot secondSpot = gs.getBoard().getElement(secondSpotCoord.getX(), secondSpotCoord.getY());
                                         if (secondSpot != null) {
-                                            if (secondSpot.occupant == null) {
+                                            if (secondSpot.occupant == null && secondSpot.type != MMTypes.SpotType.BLOCKAGE) {
                                                 // then add move if the next one is empty too
                                                 actions.add(new Move(playerID, from, secondSpotCoord));
                                             }
                                         }
-
                                     }
                                 }
                             }

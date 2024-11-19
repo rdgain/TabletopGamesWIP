@@ -92,4 +92,19 @@ public class BoardSpot extends BoardNode {
     public int hashCode() {
         return Objects.hash(super.hashCode(), type, x, y, occupant, victoryOwner);
     }
+
+    @Override
+    public String toString() {
+        return "BoardSpot{" +
+                "x=" + x +
+                ", y=" + y +
+                ", type=" + type +
+                ", occupant=" + occupant +
+                ", victoryOwner=" + victoryOwner +
+                '}';
+    }
+
+    public String simpleString() {
+        return "(" + type.name().charAt(0) + "/" + victoryOwner.name().charAt(0) + "/" + occupant.name().charAt(0) + ")";
+    }
 }

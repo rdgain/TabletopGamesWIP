@@ -152,4 +152,18 @@ public class MMGameState extends AbstractGameState {
     public int hashCode() {
         return Objects.hash(deckOfRules, rulesInPlay, board, playerMarblesOnBoard, playerMarblesPushedOut);
     }
+
+    @Override
+    public String toString() {
+        String str = "";
+        for (int i = 0; i < getBoard().getHeight(); i++) {
+            for (int j = 0; j < getBoard().getWidth(); j++) {
+                BoardSpot spot = board.getElement(j,i);
+                if (spot == null) str += " _ ";
+                else str += spot.simpleString();
+            }
+            str += "\n";
+        }
+        return str;
+    }
 }

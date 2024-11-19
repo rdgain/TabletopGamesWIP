@@ -131,7 +131,19 @@ public class MMForwardModel extends StandardForwardModel {
             }
             return;
         }
+
         endPlayerTurn(currentState);
+
+        // Cap on length of games
+        MMParameters params = (MMParameters) currentState.getGameParameters();
+        if (params.maxTurns != -1 && currentState.getTurnCounter() >= params.maxTurns) {
+            // Check max rounds counter
+            currentState.setGameStatus(CoreConstants.GameResult.GAME_END);
+            for (int i = 0; i < currentState.getNPlayers(); i++) {
+                currentState.setPlayerResult(CoreConstants.GameResult.TIMEOUT, i);
+            }
+            return;
+        }
 
         // Check end game if next player has no actions
 //        List<AbstractAction> actions = computeAvailableActions(gameState);
