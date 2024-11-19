@@ -138,6 +138,7 @@ public class NTBEA {
     public Pair<Object, int[]> run() {
 
         for (currentIteration = 0; currentIteration < params.repeats; currentIteration++) {
+            System.out.println("Iteration: " + (1+currentIteration) + "/" + params.repeats);
             runIteration();
             writeAgentJSON(winnerSettings.get(winnerSettings.size() - 1),
                     params.destDir + File.separator + "Recommended_" + currentIteration + ".json");

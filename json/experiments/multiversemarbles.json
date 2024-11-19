@@ -1,0 +1,9 @@
+{
+  "game": "MultiverseMarbles",
+  "nPlayers": 2,
+  "playerDirectory": "json/players/gameSpecific/multiversemarbles/",
+  "matchups": 1000,
+  "listener": "json/listeners/basiclistener.json",
+  "reportPeriod": 100,
+  "verbose": true
+}
