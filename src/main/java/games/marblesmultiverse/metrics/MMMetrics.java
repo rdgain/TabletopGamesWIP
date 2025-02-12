@@ -7,6 +7,8 @@ import evaluation.metrics.Event;
 import evaluation.metrics.IMetricsCollection;
 import games.marblesmultiverse.MMGameState;
 
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -19,17 +21,21 @@ public class MMMetrics implements IMetricsCollection {
             for (int i=0; i< state.getNPlayers() ;i++){
                 records.put("Player"+ i+ "Marbles",state.getPlayerMarblesOnBoard().get(i));
             }
-            return false;
+            return true;
         }
 
         @Override
         public Set<IGameEvent> getDefaultEventTypes() {
-            return null;
+            return Collections.singleton(Event.GameEvent.GAME_OVER);
         }
 
         @Override
         public Map<String, Class<?>> getColumns(int nPlayersPerGame, Set<String> playerNames) {
-            return null;
+            Map<String, Class<?>> columns = new HashMap<>();
+            for (int i=0; i< nPlayersPerGame ;i++){
+                columns.put("Player"+ i+ "Marbles", Integer.class);
+            }
+            return columns;
         }
     }
 }
