@@ -19,7 +19,7 @@ public class MMMetrics implements IMetricsCollection {
         protected boolean _run(MetricsGameListener listener, Event e, Map<String, Object> records) {
             MMGameState state= (MMGameState) e.state;
             for (int i=0; i< state.getNPlayers() ;i++){
-                records.put("Player"+ i+ "Marbles",state.getPlayerMarblesOnBoard().get(i));
+                records.put("Player"+ i+ "Remaining Marbles",state.getPlayerMarblesOnBoard().get(i));
             }
             return true;
         }
@@ -33,7 +33,7 @@ public class MMMetrics implements IMetricsCollection {
         public Map<String, Class<?>> getColumns(int nPlayersPerGame, Set<String> playerNames) {
             Map<String, Class<?>> columns = new HashMap<>();
             for (int i=0; i< nPlayersPerGame ;i++){
-                columns.put("Player"+ i+ "Marbles", Integer.class);
+                columns.put("Player"+ i+ "Remaining Marbles", Integer.class);
             }
             return columns;
         }
@@ -59,9 +59,11 @@ public class MMMetrics implements IMetricsCollection {
         public Map<String, Class<?>> getColumns(int nPlayersPerGame, Set<String> playerNames) {
             Map<String, Class<?>> columns = new HashMap<>();
             for (int i=0; i< nPlayersPerGame ;i++){
-                columns.put("Player"+ i+ "Pusehd Marbles", Integer.class);
+                columns.put("Player"+ i+ "Pushed Marbles", Integer.class);
             }
             return columns;
         }
     }
+
+    // TODO: add metric for cards used? or this goes automagically?
 }
