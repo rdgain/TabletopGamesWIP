@@ -44,23 +44,6 @@ public class MMMetrics implements IMetricsCollection {
                 return columns;
             }
         }
-}
-
-package games.marblesmultiverse.metrics;
-
-import core.interfaces.IGameEvent;
-import evaluation.listeners.MetricsGameListener;
-import evaluation.metrics.AbstractMetric;
-import evaluation.metrics.Event;
-import evaluation.metrics.IMetricsCollection;
-import games.marblesmultiverse.MMGameState;
-
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-
-public class MMMetrics implements IMetricsCollection {
     public static class MarbelsPerPlayer extends AbstractMetric {
 
         @Override
@@ -112,6 +95,6 @@ public class MMMetrics implements IMetricsCollection {
             return columns;
         }
     }
-
-    // TODO: add metric for cards used? or this goes automagically?
 }
+
+
