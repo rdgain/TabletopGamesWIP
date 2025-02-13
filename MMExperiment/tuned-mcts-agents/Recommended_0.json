@@ -1,0 +1,14 @@
+{
+	"rolloutLength" : 100,
+	"opponentTreePolicy" : "SelfOnly",
+	"heuristic" : {
+		"class" : "players.heuristics.WinOnlyHeuristic"
+	},
+	"information" : "Open_Loop",
+	"K" : 0.1,
+	"class" : "players.mcts.MCTSParams",
+	"maxTreeDepth" : 5,
+	"treePolicy" : "UCB_Tuned",
+	"budgetType" : "BUDGET_TIME",
+	"budget" : 1000
+}
