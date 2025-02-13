@@ -1,0 +1,137 @@
+Game: MultiverseMarbles, Players: 2, Mode: RANDOM, TotalGames: 100, GamesPerMatchup: 1
+Alpha calculations using Delta Ordinal
+Alpha: 10.0
+	0.333	BasicMCTS
+	0.333	mcts
+	0.333	Random
+
+Transition matrix for alpha = 10.0
+0.333	0.333	0.333	
+0.333	0.333	0.333	
+0.333	0.333	0.333	
+B matrix for alpha = 10.0
+0.667	0.667	0.667	
+0.667	0.667	0.667	
+0.667	0.667	0.667	
+The following agents cluster together, and may be considered equivalent: 
+	Cluster for BasicMCTS
+		BasicMCTS
+		mcts
+		Random
+
+Alpha calculations using Win Rate
+Alpha: 10.0
+	0.406	BasicMCTS
+	0.247	mcts
+	0.347	Random
+
+Transition matrix for alpha = 10.0
+0.404	0.298	0.298	
+0.326	0.241	0.433	
+0.465	0.191	0.344	
+B matrix for alpha = 10.0
+0.827	0.620	0.769	
+0.620	0.535	0.605	
+0.769	0.605	0.766	
+The following agents cluster together, and may be considered equivalent: 
+	Cluster for BasicMCTS
+		BasicMCTS
+		mcts
+		Random
+
+BasicMCTS got 6.00 points. BasicMCTS won 6.0% of the 100 games of the tournament. BasicMCTS won 9.1% of the 66 games it played during the tournament.
+BasicMCTS won 9.1% of the 33 games against mcts.
+BasicMCTS won 9.1% of the 33 games against Random.
+
+mcts got 4.00 points. mcts won 4.0% of the 100 games of the tournament. mcts won 6.0% of the 67 games it played during the tournament.
+mcts won 6.1% of the 33 games against BasicMCTS.
+mcts won 5.9% of the 34 games against Random.
+
+Random got 6.00 points. Random won 6.0% of the 100 games of the tournament. Random won 9.0% of the 67 games it played during the tournament.
+Random won 6.1% of the 33 games against BasicMCTS.
+Random won 11.8% of the 34 games against mcts.
+
+---- Ranking ---- (+/- are standard errors on the mean calculated using a Normal approximation) 
+BasicMCTS: Win rate 0.09 +/- 0.035	Mean Ordinal 1.00 +/- 0.00
+Random: Win rate 0.09 +/- 0.035	Mean Ordinal 1.00 +/- 0.00
+mcts: Win rate 0.06 +/- 0.029	Mean Ordinal 1.00 +/- 0.00
+
+Alpha-rank by Win Rate
+	BasicMCTS                     	0.41
+	Random                        	0.35
+	mcts                          	0.25
+
+Alpha-rank by Ordinal Position
+	BasicMCTS                     	0.33
+	mcts                          	0.33
+	Random                        	0.33
+
+------------------------------------------ test pushedOut heuristic ----------------------
+
+Game: MultiverseMarbles, Players: 2, Mode: RANDOM, TotalGames: 100, GamesPerMatchup: 1
+Alpha calculations using Delta Ordinal
+Alpha: 10.0
+	0.333	BasicMCTS
+	0.333	mcts
+	0.333	Random
+
+Transition matrix for alpha = 10.0
+0.333	0.333	0.333	
+0.333	0.333	0.333	
+0.333	0.333	0.333	
+B matrix for alpha = 10.0
+0.667	0.667	0.667	
+0.667	0.667	0.667	
+0.667	0.667	0.667	
+The following agents cluster together, and may be considered equivalent: 
+	Cluster for BasicMCTS
+		BasicMCTS
+		mcts
+		Random
+
+Alpha calculations using Win Rate
+Alpha: 10.0
+	0.367	BasicMCTS
+	0.195	mcts
+	0.438	Random
+
+Transition matrix for alpha = 10.0
+0.364	0.147	0.489	
+0.467	0.188	0.345	
+0.325	0.238	0.437	
+B matrix for alpha = 10.0
+0.850	0.585	0.848	
+0.585	0.486	0.588	
+0.848	0.588	0.902	
+The following agents cluster together, and may be considered equivalent: 
+	Cluster for BasicMCTS
+		BasicMCTS
+		Random
+
+BasicMCTS got 5.00 points. BasicMCTS won 5.0% of the 100 games of the tournament. BasicMCTS won 7.5% of the 67 games it played during the tournament.
+BasicMCTS won 12.1% of the 33 games against mcts.
+BasicMCTS won 2.9% of the 34 games against Random.
+
+mcts got 3.00 points. mcts won 3.0% of the 100 games of the tournament. mcts won 4.5% of the 66 games it played during the tournament.
+mcts won 3.0% of the 33 games against BasicMCTS.
+mcts won 6.1% of the 33 games against Random.
+
+Random got 6.00 points. Random won 6.0% of the 100 games of the tournament. Random won 9.0% of the 67 games it played during the tournament.
+Random won 5.9% of the 34 games against BasicMCTS.
+Random won 12.1% of the 33 games against mcts.
+
+---- Ranking ---- (+/- are standard errors on the mean calculated using a Normal approximation) 
+Random: Win rate 0.09 +/- 0.035	Mean Ordinal 1.00 +/- 0.00
+BasicMCTS: Win rate 0.07 +/- 0.032	Mean Ordinal 1.00 +/- 0.00
+mcts: Win rate 0.05 +/- 0.026	Mean Ordinal 1.00 +/- 0.00
+
+Alpha-rank by Win Rate
+	Random                        	0.44
+	BasicMCTS                     	0.37
+	mcts                          	0.19
+
+Alpha-rank by Ordinal Position
+	BasicMCTS                     	0.33
+	mcts                          	0.33
+	Random                        	0.33
+
