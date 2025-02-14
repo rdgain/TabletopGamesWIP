@@ -122,9 +122,43 @@ public class MMGameState extends AbstractGameState {
      */
     @Override
     protected double _getHeuristicScore(int playerId) {
+        if (playerId == 0) {
+            return getGameScore(playerId);
+        }
         if (isNotTerminal()) {
             // TODO calculate an approximate value
-            return getGameScore(playerId);
+            if (rulesInPlay.get(MMTypes.CardType.Victory) == Card.PUSH_OUT){
+//                System.out.println("PUSH_OUT");
+                int[] pushedOutCounts = new int[getNPlayers()];
+                for (int i = 0; i < getNPlayers(); i++) {
+                    for (int pushedOut : playerMarblesPushedOut.get(i)) {
+                        if (pushedOut != i) { pushedOutCounts[pushedOut]++; }
+                    }
+                }
+//                return pushedOutCounts[playerId] -  pushedOutCounts[(playerId + 1) % getNPlayers()];
+                return (double) pushedOutCounts[playerId] / 3;
+            }
+            else if (rulesInPlay.get(MMTypes.CardType.Victory) == Card.YOUR_COLOR) {
+                int totalOwnVictorySpot = 0;
+                int occupiedOwnVictorySpot = 0;
+                for (int i = 0; i < getBoard().getHeight(); i++) {
+                    for (int j = 0; j < getBoard().getWidth(); j++) {
+                        BoardSpot boardSpot = getBoard().getElement(j, i);
+                        if (boardSpot != null && boardSpot.getVictoryOwner() != null
+                                && boardSpot.getSpotType() == MMTypes.SpotType.VICTORY
+                                && boardSpot.getVictoryOwner().ordinal() == playerId) {
+                            totalOwnVictorySpot++;
+                            if (boardSpot.getOccupant() != null && boardSpot.getOccupant().ordinal() == playerId) {
+                                occupiedOwnVictorySpot++;
+                            }
+                        }
+                    }
+                }
+                return (double)occupiedOwnVictorySpot/totalOwnVictorySpot;
+            }
+            else {
+                return getGameScore(playerId);
+            }
         } else {
             // The game finished, we can instead return the actual result of the game for the given player.
             return getPlayerResults()[playerId].value;
@@ -137,7 +171,14 @@ public class MMGameState extends AbstractGameState {
      */
     @Override
     public double getGameScore(int playerId) {
-        return 0;  // no scoring
+//        int[] pushedOutCounts = new int[getNPlayers()];
+//        for (int i = 0; i < getNPlayers(); i++) {
+//            for (int pushedOut : playerMarblesPushedOut.get(i)) {
+//                if (pushedOut != i) { pushedOutCounts[pushedOut]++; }
+//            }
+//        }
+//        return pushedOutCounts[playerId];
+        return 0; // no scoring
     }
 
     @Override

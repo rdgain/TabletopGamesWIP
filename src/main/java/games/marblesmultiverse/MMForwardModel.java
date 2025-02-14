@@ -47,25 +47,26 @@ public class MMForwardModel extends StandardForwardModel {
 
         // select first rules
         Map<MMTypes.CardType, Card> initialSetup = new HashMap<>();
-        int ct = 0;
-        while (initialSetup.size() < MMTypes.CardType.values().length && ct < deck.size()) {
-            Card card = deck.get(ct);
-            if (initialSetup.containsKey(card.type)) {
-                ct++;
-                continue;
-            }
-            initialSetup.put(card.type, card);
-            deck.remove(ct);
-        }
-        if (initialSetup.size() < MMTypes.CardType.values().length) {
-            throw new AssertionError("Not enough cards to setup the game");
-        }
-//        initialSetup.put(MMTypes.CardType.Setup, Card.TWO_SIDES);
-//        initialSetup.put(MMTypes.CardType.Victory, Card.YOUR_COLOR);
-//        initialSetup.put(MMTypes.CardType.Movement, Card.MOVE_1);
-//        initialSetup.put(MMTypes.CardType.Push, Card.PUSH_1);
-//        initialSetup.put(MMTypes.CardType.PushRequirement, Card.MORE);
-//        initialSetup.put(MMTypes.CardType.PushOut, Card.OUT_IS_GONE);
+//        int ct = 0;
+//        while (initialSetup.size() < MMTypes.CardType.values().length && ct < deck.size()) {
+//            Card card = deck.get(ct);
+//            if (initialSetup.containsKey(card.type)) {
+//                ct++;
+//                continue;
+//            }
+//            initialSetup.put(card.type, card);
+//            deck.remove(ct);
+//        }
+//        if (initialSetup.size() < MMTypes.CardType.values().length) {
+//            throw new AssertionError("Not enough cards to setup the game");
+//        }
+        initialSetup.put(MMTypes.CardType.Setup, Card.TWO_SIDES);
+        initialSetup.put(MMTypes.CardType.Victory, Card.YOUR_COLOR);
+//        initialSetup.put(MMTypes.CardType.Victory, Card.PUSH_OUT);
+        initialSetup.put(MMTypes.CardType.Movement, Card.MOVE_2);
+        initialSetup.put(MMTypes.CardType.Push, Card.PUSH_1);
+        initialSetup.put(MMTypes.CardType.PushRequirement, Card.EVEN);
+        initialSetup.put(MMTypes.CardType.PushOut, Card.OUT_IS_GONE);
 //        for (Card card : initialSetup.values()) {
 //            deck.remove(card);
 //        }
@@ -167,6 +168,8 @@ public class MMForwardModel extends StandardForwardModel {
         if (gs.getCoreGameParameters().verbose) {
             System.out.println(Arrays.toString(gs.getPlayerResults()));
         }
+        MMGameState mmgs = (MMGameState) gs;
+        System.out.println(mmgs.getPlayerMarblesPushedOut());
     }
 
     GridBoard<BoardSpot> setupGameBoard(GridBoard<BoardSpot> board, MMParameters params) {
