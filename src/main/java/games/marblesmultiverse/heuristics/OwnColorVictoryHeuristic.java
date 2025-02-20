@@ -13,6 +13,7 @@ public class OwnColorVictoryHeuristic implements IStateHeuristic {
     public OwnColorVictoryHeuristic() {
         victoryDistance = new VictoryDistanceHeuristic();
         pushHeuristic = new PushHeuristic();
+        victorySpotHeuristic = new OwnVictorySpotHeuristic();
     }
 
     @Override
