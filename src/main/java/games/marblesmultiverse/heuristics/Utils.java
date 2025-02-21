@@ -8,6 +8,8 @@ import java.util.ArrayList;
 
 
 public class Utils {
+
+    private Utils(){}
     public static ArrayList<Vector2D> getPieces(MMGameState mmgs, int playerId) {
         ArrayList<Vector2D> pieces = new ArrayList<>();
         for (int i = 0; i < mmgs.getBoard().getHeight(); i++) {

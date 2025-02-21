@@ -131,7 +131,7 @@ public class MMGameState extends AbstractGameState {
      */
     @Override
     public double getGameScore(int playerId) {
-        return 0; // no scoring
+        return getPlayerResults()[playerId].value; // no scoring
     }
 
     @Override

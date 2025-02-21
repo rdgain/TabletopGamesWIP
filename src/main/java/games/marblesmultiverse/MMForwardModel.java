@@ -168,8 +168,6 @@ public class MMForwardModel extends StandardForwardModel {
         if (gs.getCoreGameParameters().verbose) {
             System.out.println(Arrays.toString(gs.getPlayerResults()));
         }
-        MMGameState mmgs = (MMGameState) gs;
-        System.out.println(mmgs.getPlayerMarblesPushedOut());
     }
 
     GridBoard<BoardSpot> setupGameBoard(GridBoard<BoardSpot> board, MMParameters params) {

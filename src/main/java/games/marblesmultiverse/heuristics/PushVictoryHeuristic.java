@@ -1,6 +1,7 @@
 package games.marblesmultiverse.heuristics;
 
 import core.AbstractGameState;
+import core.CoreConstants;
 import core.interfaces.IStateHeuristic;
 
 public class PushVictoryHeuristic implements IStateHeuristic {
@@ -16,9 +17,15 @@ public class PushVictoryHeuristic implements IStateHeuristic {
     }
     @Override
     public double evaluateState(AbstractGameState gs, int playerId) {
-        double pushScore = pushHeuristic.evaluateState(gs, playerId) / pushHeuristic.maxValue();
+        if (gs.getPlayerResults()[playerId] == CoreConstants.GameResult.WIN_GAME) {
+            return maxValue();
+        }
+        if (gs.getPlayerResults()[playerId] == CoreConstants.GameResult.LOSE_GAME) {
+            return minValue();
+        }
+        double pushScore = pushHeuristic.evaluateState(gs, playerId) / 3;
         double ownDistScore = ownDistance.evaluateState(gs, playerId) / ownDistance.maxValue();
         double enemyDistScore = enemyDistance.evaluateState(gs, playerId) / enemyDistance.maxValue();
-        return 0.8*pushScore + 0.1*ownDistScore + 0.1*enemyDistScore;
+        return 0.7*pushScore + 0.1*ownDistScore + 0.2*enemyDistScore;
     }
 }

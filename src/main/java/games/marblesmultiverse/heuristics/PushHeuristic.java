@@ -21,16 +21,16 @@ public class PushHeuristic implements IStateHeuristic {
                 if (pushedOut != i) { pushedOutCounts[pushedOut]++; }
             }
         }
-        return pushedOutCounts[playerId];
+        return pushedOutCounts[playerId] - mmgs.getPlayerMarblesPushedOut().get(playerId).size();
     }
 
     @Override
     public double minValue() {
-        return -10;
+        return -3;
     }
 
     @Override
     public double maxValue() {
-        return 10;
+        return 3;
     }
 }
