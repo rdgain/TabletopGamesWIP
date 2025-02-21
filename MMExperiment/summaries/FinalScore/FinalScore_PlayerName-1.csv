@@ -1,3 +1,4 @@
 Category,Count
-Recommended_4,5
-Recommended_4_heuristic,5
+Recommended_4,13
+Recommended_4_ownColorVictoryHeuristic,10
+Recommended_4_pushVictoryHeuristic,7

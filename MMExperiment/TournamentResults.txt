@@ -9,3 +9,80 @@ Recommended_4_heuristic won 100.0% of the 10 games against Recommended_4.
 Recommended_4_heuristic: Win rate 1.00 +/- 0.000	Mean Ordinal 1.00 +/- 0.00
 Recommended_4: Win rate 0.00 +/- 0.000	Mean Ordinal 2.00 +/- 0.00
 
+Game: MultiverseMarbles, Players: 2, Mode: RANDOM, TotalGames: 10, GamesPerMatchup: 1
+Recommended_4 got 4.00 points. Recommended_4 won 40.0% of the 10 games of the tournament. Recommended_4 won 40.0% of the 10 games it played during the tournament.
+Recommended_4 won 40.0% of the 10 games against Recommended_4_pushVictoryHeuristic.
+
+Recommended_4_pushVictoryHeuristic got 6.00 points. Recommended_4_pushVictoryHeuristic won 60.0% of the 10 games of the tournament. Recommended_4_pushVictoryHeuristic won 60.0% of the 10 games it played during the tournament.
+Recommended_4_pushVictoryHeuristic won 60.0% of the 10 games against Recommended_4.
+
+---- Ranking ---- (+/- are standard errors on the mean calculated using a Normal approximation) 
+Recommended_4_pushVictoryHeuristic: Win rate 0.60 +/- 0.155	Mean Ordinal 1.40 +/- 0.15
+Recommended_4: Win rate 0.40 +/- 0.155	Mean Ordinal 1.60 +/- 0.15
+
+Game: MultiverseMarbles, Players: 2, Mode: RANDOM, TotalGames: 30, GamesPerMatchup: 1
+Alpha calculations using Delta Ordinal
+Alpha: 10.0
+	0.002	Recommended_4
+	0.991	Recommended_4_ownColorVictoryHeuristic
+	0.007	Recommended_4_pushVictoryHeuristic
+
+Transition matrix for alpha = 10.0
+0.002	0.980	0.018	
+0.002	0.991	0.007	
+0.001	0.992	0.007	
+B matrix for alpha = 10.0
+0.960	0.977	0.972	
+0.977	3.908	1.014	
+0.972	1.014	0.985	
+The following agents cluster together, and may be considered equivalent: 
+	Cluster for Recommended_4
+		Recommended_4
+		Recommended_4_pushVictoryHeuristic
+
+Alpha calculations using Win Rate
+Alpha: 10.0
+	0.002	Recommended_4
+	0.991	Recommended_4_ownColorVictoryHeuristic
+	0.007	Recommended_4_pushVictoryHeuristic
+
+Transition matrix for alpha = 10.0
+0.002	0.980	0.018	
+0.002	0.991	0.007	
+0.001	0.992	0.007	
+B matrix for alpha = 10.0
+0.960	0.977	0.972	
+0.977	3.908	1.014	
+0.972	1.014	0.985	
+The following agents cluster together, and may be considered equivalent: 
+	Cluster for Recommended_4
+		Recommended_4
+		Recommended_4_pushVictoryHeuristic
+
+Recommended_4 got 6.00 points. Recommended_4 won 20.0% of the 30 games of the tournament. Recommended_4 won 30.0% of the 20 games it played during the tournament.
+Recommended_4 won 20.0% of the 10 games against Recommended_4_ownColorVictoryHeuristic.
+Recommended_4 won 40.0% of the 10 games against Recommended_4_pushVictoryHeuristic.
+
+Recommended_4_ownColorVictoryHeuristic got 15.00 points. Recommended_4_ownColorVictoryHeuristic won 50.0% of the 30 games of the tournament. Recommended_4_ownColorVictoryHeuristic won 75.0% of the 20 games it played during the tournament.
+Recommended_4_ownColorVictoryHeuristic won 80.0% of the 10 games against Recommended_4.
+Recommended_4_ownColorVictoryHeuristic won 70.0% of the 10 games against Recommended_4_pushVictoryHeuristic.
+
+Recommended_4_pushVictoryHeuristic got 8.00 points. Recommended_4_pushVictoryHeuristic won 26.7% of the 30 games of the tournament. Recommended_4_pushVictoryHeuristic won 40.0% of the 20 games it played during the tournament.
+Recommended_4_pushVictoryHeuristic won 60.0% of the 10 games against Recommended_4.
+Recommended_4_pushVictoryHeuristic won 20.0% of the 10 games against Recommended_4_ownColorVictoryHeuristic.
+
+---- Ranking ---- (+/- are standard errors on the mean calculated using a Normal approximation) 
+Recommended_4_ownColorVictoryHeuristic: Win rate 0.75 +/- 0.097	Mean Ordinal 1.20 +/- 0.09
+Recommended_4_pushVictoryHeuristic: Win rate 0.40 +/- 0.110	Mean Ordinal 1.55 +/- 0.11
+Recommended_4: Win rate 0.30 +/- 0.102	Mean Ordinal 1.70 +/- 0.10
+
+Alpha-rank by Win Rate
+	Recommended_4_ownColorVictoryHeuristic	0.99
+	Recommended_4_pushVictoryHeuristic	0.01
+	Recommended_4                 	0.00
+
+Alpha-rank by Ordinal Position
+	Recommended_4_ownColorVictoryHeuristic	0.99
+	Recommended_4_pushVictoryHeuristic	0.01
+	Recommended_4                 	0.00
+

@@ -1,9 +1,9 @@
 Measure,Value
-Count,10.0
-sum,15.0
-Mean,1.5
+Count,30.0
+sum,43.0
+Mean,1.4333333333333336
 Min,1.0
 Max,2.0
 Range,1.0
-Variance,0.2777777777777778
-Std. Dev,0.5270462766947299
+Variance,0.2540229885057471
+Std. Dev,0.5040069329937309

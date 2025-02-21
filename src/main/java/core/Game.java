@@ -9,6 +9,7 @@ import evaluation.listeners.IGameListener;
 import evaluation.metrics.Event;
 import evaluation.summarisers.TAGNumericStatSummary;
 import games.GameType;
+import games.marblesmultiverse.heuristics.OwnColorVictoryHeuristic;
 import games.marblesmultiverse.heuristics.PushVictoryHeuristic;
 import gui.AbstractGUIManager;
 import gui.GUI;
@@ -837,7 +838,7 @@ public class Game {
      */
     public static void main(String[] args) {
         String gameType = Utils.getArg(args, "game", "MultiverseMarbles");
-        boolean useGUI = Utils.getArg(args, "gui", false);
+        boolean useGUI = Utils.getArg(args, "gui", true);
         int turnPause = Utils.getArg(args, "turnPause", 0);
         long seed = Utils.getArg(args, "seed", System.currentTimeMillis());
         ActionController ac = new ActionController();
@@ -858,7 +859,8 @@ public class Game {
         MCTSParams params = loadClassFromJSON(loadJSONFile("MMExperiment/tuned-mcts-agents/Recommended_4.json"));
 //        params.budget = 1000;
 //        params.budgetType = PlayerConstants.BUDGET_TIME;
-        params.heuristic = new PushVictoryHeuristic();
+//        params.heuristic = new PushVictoryHeuristic();
+        params.heuristic = new OwnColorVictoryHeuristic();
         params.opponentTreePolicy = MCTSEnums.OpponentTreePolicy.OneTree;
 //        players.add(new HumanGUIPlayer(ac));
         players.add(new MCTSPlayer(params));
@@ -874,15 +876,15 @@ public class Game {
         String gameParams = null;
 
         /* Run! */
-//        runOne(GameType.valueOf(gameType), gameParams, players, seed, false, null, useGUI ? ac : null, turnPause);
+        runOne(GameType.valueOf(gameType), gameParams, players, seed, false, null, useGUI ? ac : null, turnPause);
 
         /* Run multiple games */
-        int n = 100;
-        long t = System.currentTimeMillis();
-        ArrayList<GameType> games = new ArrayList<>();
-        games.add(MultiverseMarbles);
-        runMany(games, players, null, n, false, true, null, turnPause);
-        System.out.println("FISNIHED RUNNING IN " + (System.currentTimeMillis() - t)/1000 + " SECONDS");
+//        int n = 100;
+//        long t = System.currentTimeMillis();
+//        ArrayList<GameType> games = new ArrayList<>();
+//        games.add(MultiverseMarbles);
+//        runMany(games, players, null, n, false, true, null, turnPause);
+//        System.out.println("FISNIHED RUNNING IN " + (System.currentTimeMillis() - t)/1000 + " SECONDS");
 //        runMany(new ArrayList<GameType>() {{add(Uno);}}, players, null, 100, false, false, null, turnPause);
     }
 
