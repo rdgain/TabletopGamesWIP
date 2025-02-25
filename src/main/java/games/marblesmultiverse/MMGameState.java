@@ -122,13 +122,7 @@ public class MMGameState extends AbstractGameState {
      */
     @Override
     protected double _getHeuristicScore(int playerId) {
-        if (isNotTerminal()) {
-            // TODO calculate an approximate value
-            return getGameScore(playerId);
-        } else {
-            // The game finished, we can instead return the actual result of the game for the given player.
-            return getPlayerResults()[playerId].value;
-        }
+        return getPlayerResults()[playerId].value;
     }
 
     /**
@@ -137,7 +131,7 @@ public class MMGameState extends AbstractGameState {
      */
     @Override
     public double getGameScore(int playerId) {
-        return 0;  // no scoring
+        return getPlayerResults()[playerId].value; // no scoring
     }
 
     @Override

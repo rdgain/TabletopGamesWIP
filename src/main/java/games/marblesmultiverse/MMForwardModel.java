@@ -62,9 +62,10 @@ public class MMForwardModel extends StandardForwardModel {
         }
 //        initialSetup.put(MMTypes.CardType.Setup, Card.TWO_SIDES);
 //        initialSetup.put(MMTypes.CardType.Victory, Card.YOUR_COLOR);
-//        initialSetup.put(MMTypes.CardType.Movement, Card.MOVE_1);
+////        initialSetup.put(MMTypes.CardType.Victory, Card.PUSH_OUT);
+//        initialSetup.put(MMTypes.CardType.Movement, Card.MOVE_2);
 //        initialSetup.put(MMTypes.CardType.Push, Card.PUSH_1);
-//        initialSetup.put(MMTypes.CardType.PushRequirement, Card.MORE);
+//        initialSetup.put(MMTypes.CardType.PushRequirement, Card.EVEN);
 //        initialSetup.put(MMTypes.CardType.PushOut, Card.OUT_IS_GONE);
 //        for (Card card : initialSetup.values()) {
 //            deck.remove(card);

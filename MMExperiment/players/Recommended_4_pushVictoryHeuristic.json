@@ -1,0 +1,16 @@
+{
+	"rolloutTermination" : "END_TURN",
+	"rolloutLength" : 100,
+	"opponentTreePolicy" : "SelfOnly",
+	"heuristic" : {
+		"class" : "games.marblesmultiverse.heuristics.PushVictoryHeuristic"
+	},
+	"information" : "Open_Loop",
+	"K" : 1.0,
+	"class" : "players.mcts.MCTSParams",
+	"exploreEpsilon" : 0.3,
+	"maxTreeDepth" : 10,
+	"budgetType" : "BUDGET_TIME",
+	"budget" : 1000,
+	"treePolicy" : "UCB_Tuned"
+}

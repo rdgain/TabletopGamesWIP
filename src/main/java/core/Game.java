@@ -9,13 +9,19 @@ import evaluation.listeners.IGameListener;
 import evaluation.metrics.Event;
 import evaluation.summarisers.TAGNumericStatSummary;
 import games.GameType;
+import games.marblesmultiverse.heuristics.OwnColorVictoryHeuristic;
+import games.marblesmultiverse.heuristics.PushVictoryHeuristic;
 import gui.AbstractGUIManager;
 import gui.GUI;
 import gui.GamePanel;
+import players.PlayerConstants;
 import players.basicMCTS.BasicMCTSPlayer;
+import players.heuristics.ScoreHeuristic;
 import players.human.ActionController;
 import players.human.HumanConsolePlayer;
 import players.human.HumanGUIPlayer;
+import players.mcts.MCTSEnums;
+import players.mcts.MCTSParams;
 import players.mcts.MCTSPlayer;
 import players.mcts.MCTSPlayer;
 import players.rmhc.RMHCParams;
@@ -23,6 +29,7 @@ import players.rmhc.RMHCPlayer;
 import players.simple.FirstActionPlayer;
 import players.simple.OSLAPlayer;
 import players.simple.RandomPlayer;
+import utilities.JSONUtils;
 import utilities.Pair;
 import utilities.Utils;
 
@@ -35,6 +42,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 import static games.GameType.*;
+
+import static utilities.JSONUtils.*;
 
 
 public class Game {
@@ -836,7 +845,7 @@ public class Game {
 
         /* Set up players for the game */
         ArrayList<AbstractPlayer> players = new ArrayList<>();
-        players.add(new RandomPlayer());
+//        players.add(new RandomPlayer());
 //        players.add(new RandomPlayer());
 //        players.add(new BasicMCTSPlayer());
 
@@ -847,12 +856,19 @@ public class Game {
 //        AbstractPlayer rmhcPlayer = new RMHCPlayer(params);
 //        players.add(rmhcPlayer);
 
-//        MCTSParams params = new MCTSParams();
-//        players.add(new MCTSPlayer(params));
+        MCTSParams params = loadClassFromJSON(loadJSONFile("MMExperiment/tuned-mcts-agents/Recommended_4.json"));
+//        params.budget = 1000;
+//        params.budgetType = PlayerConstants.BUDGET_TIME;
+//        params.heuristic = new PushVictoryHeuristic();
+        params.heuristic = new OwnColorVictoryHeuristic();
+        params.opponentTreePolicy = MCTSEnums.OpponentTreePolicy.OneTree;
+//        players.add(new HumanGUIPlayer(ac));
+        players.add(new MCTSPlayer(params));
+        players.add(new MCTSPlayer(params));
+//        players.add(new BasicMCTSPlayer());
 
 //        players.add(new OSLAPlayer());
 //        players.add(new RMHCPlayer());
-        players.add(new HumanGUIPlayer(ac));
 //        players.add(new HumanConsolePlayer());
 //        players.add(new FirstActionPlayer());
 
@@ -863,10 +879,13 @@ public class Game {
         runOne(GameType.valueOf(gameType), gameParams, players, seed, false, null, useGUI ? ac : null, turnPause);
 
         /* Run multiple games */
+//        int n = 100;
+//        long t = System.currentTimeMillis();
 //        ArrayList<GameType> games = new ArrayList<>();
-//        games.add(Connect4);
-//        runMany(games, players, 100L, 5, false, false, null, turnPause);
-//        runMany(new ArrayList<GameType>() {{add(Uno);}}, players, 100L, 100, false, false, null, turnPause);
+//        games.add(MultiverseMarbles);
+//        runMany(games, players, null, n, false, true, null, turnPause);
+//        System.out.println("FISNIHED RUNNING IN " + (System.currentTimeMillis() - t)/1000 + " SECONDS");
+//        runMany(new ArrayList<GameType>() {{add(Uno);}}, players, null, 100, false, false, null, turnPause);
     }
 
 }
