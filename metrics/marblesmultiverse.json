@@ -13,6 +13,7 @@
       {"class": "evaluation.metrics.GameMetrics$Winner" },
       {"class":  "games.marblesmultiverse.metrics.MMMetrics$RuleCardsUsed"},
       {"class":  "games.marblesmultiverse.metrics.MMMetrics$MarbelsPerPlayer"},
-      {"class":  "games.marblesmultiverse.metrics.MMMetrics$MarbelsPushedOut"}
+      {"class":  "games.marblesmultiverse.metrics.MMMetrics$MarbelsRemoved"},
+      {"class":  "games.marblesmultiverse.metrics.MMMetrics$WhoPushedOut"}
     ]]
 }

@@ -50,7 +50,7 @@ public class MMMetrics implements IMetricsCollection {
         protected boolean _run(MetricsGameListener listener, Event e, Map<String, Object> records) {
             MMGameState state= (MMGameState) e.state;
             for (int i=0; i< state.getNPlayers() ;i++){
-                records.put("Player"+ i+ "Remaining Marbles",state.getPlayerMarblesOnBoard().get(i));
+                records.put("Player"+ i+ "Remaining Marbles",state.getPlayerMarblesOnBoard().get(i).getValue());
             }
             return true;
         }
@@ -69,14 +69,14 @@ public class MMMetrics implements IMetricsCollection {
             return columns;
         }
     }
-
-    public static class MarbelsPushedOut extends AbstractMetric {
+//
+    public static class MarbelsRemoved extends AbstractMetric {
 
         @Override
         protected boolean _run(MetricsGameListener listener, Event e, Map<String, Object> records) {
             MMGameState state= (MMGameState) e.state;
             for (int i=0; i< state.getNPlayers() ;i++){
-                records.put("Player"+ i+ "Pushed Marbles",state.getPlayerMarblesPushedOut().get(i).size());
+                records.put("Player"+ i+ "removed marbles",state.getPlayerMarblesRemoved().get(i).toString());
             }
             return true;
         }
@@ -90,7 +90,33 @@ public class MMMetrics implements IMetricsCollection {
         public Map<String, Class<?>> getColumns(int nPlayersPerGame, Set<String> playerNames) {
             Map<String, Class<?>> columns = new HashMap<>();
             for (int i=0; i< nPlayersPerGame ;i++){
-                columns.put("Player"+ i+ "Pushed Marbles", Integer.class);
+                columns.put("Player"+ i+ "removed marbles", String.class);
+            }
+            return columns;
+        }
+    }
+
+    public static class WhoPushedOut extends AbstractMetric {
+
+        @Override
+        protected boolean _run(MetricsGameListener listener, Event e, Map<String, Object> records) {
+            MMGameState state= (MMGameState) e.state;
+            for (int i=0; i< state.getNPlayers() ;i++){
+                records.put("Player"+ i+ "Pushed Marbles",state.getPlayerMarblesPushedOut().get(i).toString());
+            }
+            return true;
+        }
+
+        @Override
+        public Set<IGameEvent> getDefaultEventTypes() {
+            return Collections.singleton(Event.GameEvent.GAME_OVER);
+        }
+
+        @Override
+        public Map<String, Class<?>> getColumns(int nPlayersPerGame, Set<String> playerNames) {
+            Map<String, Class<?>> columns = new HashMap<>();
+            for (int i=0; i< nPlayersPerGame ;i++){
+                columns.put("Player"+ i+ "Pushed Marbles", String.class);
             }
             return columns;
         }
