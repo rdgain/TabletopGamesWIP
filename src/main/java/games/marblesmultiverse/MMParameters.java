@@ -19,7 +19,7 @@ import java.util.Objects;
  */
 public class MMParameters extends AbstractParameters {
 
-    public int maxTurns = 200;
+    public int maxTurns = 1000;
     public int gridSize = 9;
     public Vector2D gridCenter = new Vector2D(4,4);  // depending on gridsize
 

@@ -159,8 +159,8 @@ public class MMGameState extends AbstractGameState {
         for (int i = 0; i < getBoard().getHeight(); i++) {
             for (int j = 0; j < getBoard().getWidth(); j++) {
                 BoardSpot spot = board.getElement(j,i);
-                if (spot == null) str += " _ ";
-                else str += spot.simpleString();
+                if (spot == null) str += "_,";
+                else str += spot.simpleString() + ",";
             }
             str += "\n";
         }

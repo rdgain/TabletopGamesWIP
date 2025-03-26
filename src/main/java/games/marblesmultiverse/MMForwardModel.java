@@ -151,15 +151,26 @@ public class MMForwardModel extends StandardForwardModel {
         }
 
         // Check end game if next player has no actions
-//        List<AbstractAction> actions = computeAvailableActions(gameState);
-//        if(actions.isEmpty()){
-//            gameState.setGameStatus(CoreConstants.GameResult.GAME_END);
-//            for (int i = 0; i < gameState.getNPlayers(); i++) {
-//                if (i == gameState.getCurrentPlayer()) gameState.setPlayerResult(CoreConstants.GameResult.LOSE_GAME, i);
-//                else gameState.setPlayerResult(CoreConstants.GameResult.WIN_GAME, i);
-//            }
-//            currentState.logEvent(Event.GameEvent.GAME_EVENT, "Game over: no moves remaining for p" + gameState.getCurrentPlayer());
-//        }
+        List<AbstractAction> actions = computeAvailableActions(gameState);
+
+        Card movementCard = ((MMGameState) currentState).rulesInPlay.get(MMTypes.CardType.Movement);
+        if(movementCard == Card.MOVE_EXACTLY_2) //TODO Work in Progress other combinations possible.
+        {
+            if(actions.isEmpty()){
+                gameState.setGameStatus(CoreConstants.GameResult.GAME_END);
+                for (int i = 0; i < gameState.getNPlayers(); i++) {
+                    if (i == gameState.getCurrentPlayer()) gameState.setPlayerResult(CoreConstants.GameResult.LOSE_GAME, i);
+                    else gameState.setPlayerResult(CoreConstants.GameResult.WIN_GAME, i);
+                }
+                currentState.logEvent(Event.GameEvent.GAME_EVENT, "Game over: no moves remaining for p" + gameState.getCurrentPlayer());
+
+//                System.out.println("Game over: no moves remaining for p" + gameState.getCurrentPlayer());
+//                System.out.println(((MMGameState) currentState).rulesInPlay);
+//                System.out.println(currentState);
+            }
+        }
+
+
     }
 
     @Override

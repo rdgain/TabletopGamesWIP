@@ -895,7 +895,6 @@ public class SingleTreeNode {
             while (!finishRollout(rolloutState)) {
                 List<AbstractAction> availableActions = forwardModel.computeAvailableActions(rolloutState, params.actionSpace);
                 if (availableActions.isEmpty()) {
-
                     forwardModel.computeAvailableActions(rolloutState, params.actionSpace);
                     throw new AssertionError("No actions available in rollout!" + (next != null ? " Last action: " + next.getString(rolloutState) : ""));
                 }
