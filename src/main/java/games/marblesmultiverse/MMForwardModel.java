@@ -78,9 +78,11 @@ public class MMForwardModel extends StandardForwardModel {
 
         state.playerMarblesOnBoard.clear();
         state.playerMarblesPushedOut.clear();
+        state.playerMarblesRemoved.clear();
         for (int i = 0; i < state.getNPlayers(); i++) {
             state.playerMarblesOnBoard.add(new Counter(nMarblesPerPlayer, 0, nMarblesPerPlayer, "Marbles on board p" + i));
             state.playerMarblesPushedOut.add(new ArrayList<>());
+            state.playerMarblesRemoved.add(new ArrayList<>());
         }
 
         state.setFirstPlayer(0);
@@ -152,15 +154,15 @@ public class MMForwardModel extends StandardForwardModel {
         }
 
         // Check end game if next player has no actions
-//        List<AbstractAction> actions = computeAvailableActions(gameState);
-//        if(actions.isEmpty()){
-//            gameState.setGameStatus(CoreConstants.GameResult.GAME_END);
-//            for (int i = 0; i < gameState.getNPlayers(); i++) {
-//                if (i == gameState.getCurrentPlayer()) gameState.setPlayerResult(CoreConstants.GameResult.LOSE_GAME, i);
-//                else gameState.setPlayerResult(CoreConstants.GameResult.WIN_GAME, i);
-//            }
-//            currentState.logEvent(Event.GameEvent.GAME_EVENT, "Game over: no moves remaining for p" + gameState.getCurrentPlayer());
-//        }
+        List<AbstractAction> actions = computeAvailableActions(gameState);
+        if(actions.isEmpty()){
+            gameState.setGameStatus(CoreConstants.GameResult.GAME_END);
+            for (int i = 0; i < gameState.getNPlayers(); i++) {
+                if (i == gameState.getCurrentPlayer()) gameState.setPlayerResult(CoreConstants.GameResult.LOSE_GAME, i);
+                else gameState.setPlayerResult(CoreConstants.GameResult.WIN_GAME, i);
+            }
+            currentState.logEvent(Event.GameEvent.GAME_EVENT, "Game over: no moves remaining for p" + gameState.getCurrentPlayer());
+        }
     }
 
     @Override

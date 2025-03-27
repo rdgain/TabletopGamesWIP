@@ -25,8 +25,10 @@ public class MMGameState extends AbstractGameState {
     GridBoard<BoardSpot> board;
 
     List<Counter> playerMarblesOnBoard = new ArrayList<>();
-    List<List<Integer>> playerMarblesPushedOut = new ArrayList<>();  // for player i, list of what players pushed their marbles out. size of list.get(i) indicates how many marbles of player i were pushed out in total.
-
+    // for player i, list of what players pushed their marbles out. size of list.get(i) indicates how many marbles of player i were pushed out in total.
+    List<List<Integer>> playerMarblesPushedOut = new ArrayList<>();
+    // for player i, list of what players pushed their marbles out and removed it from the game. size of list.get(i) indicates how many marbles of player i were pushed out in total.
+    List<List<Integer>> playerMarblesRemoved = new ArrayList<>();
     /**
      * @param gameParameters - game parameters.
      * @param nPlayers       - number of players in the game
@@ -53,6 +55,9 @@ public class MMGameState extends AbstractGameState {
 
     public List<List<Integer>> getPlayerMarblesPushedOut() {
         return playerMarblesPushedOut;
+    }
+    public List<List<Integer>> getPlayerMarblesRemoved() {
+        return playerMarblesRemoved;
     }
 
     /**
@@ -108,6 +113,7 @@ public class MMGameState extends AbstractGameState {
         }
 
         for (int i = 0; i < nPlayers; i++) {
+            copy.playerMarblesRemoved.add(new ArrayList<>(playerMarblesRemoved.get(i)));
             copy.playerMarblesPushedOut.add(new ArrayList<>(playerMarblesPushedOut.get(i)));
             copy.playerMarblesOnBoard.add(playerMarblesOnBoard.get(i).copy());
         }
@@ -139,12 +145,12 @@ public class MMGameState extends AbstractGameState {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         MMGameState that = (MMGameState) o;
-        return Objects.equals(deckOfRules, that.deckOfRules) && Objects.equals(rulesInPlay, that.rulesInPlay) && Objects.equals(board, that.board) && Objects.equals(playerMarblesOnBoard, that.playerMarblesOnBoard) && Objects.deepEquals(playerMarblesPushedOut, that.playerMarblesPushedOut);
+        return Objects.equals(deckOfRules, that.deckOfRules) && Objects.equals(rulesInPlay, that.rulesInPlay) && Objects.equals(board, that.board) && Objects.equals(playerMarblesOnBoard, that.playerMarblesOnBoard) && Objects.deepEquals(playerMarblesPushedOut, that.playerMarblesPushedOut)  && Objects.deepEquals(playerMarblesRemoved, that.playerMarblesRemoved);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(deckOfRules, rulesInPlay, board, playerMarblesOnBoard, playerMarblesPushedOut);
+        return Objects.hash(deckOfRules, rulesInPlay, board, playerMarblesOnBoard, playerMarblesPushedOut, playerMarblesRemoved);
     }
 
     @Override
