@@ -78,9 +78,11 @@ public class MMForwardModel extends StandardForwardModel {
 
         state.playerMarblesOnBoard.clear();
         state.playerMarblesPushedOut.clear();
+        state.playerMarblesRemoved.clear();
         for (int i = 0; i < state.getNPlayers(); i++) {
             state.playerMarblesOnBoard.add(new Counter(nMarblesPerPlayer, 0, nMarblesPerPlayer, "Marbles on board p" + i));
             state.playerMarblesPushedOut.add(new ArrayList<>());
+            state.playerMarblesRemoved.add(new ArrayList<>());
         }
 
         state.setFirstPlayer(0);

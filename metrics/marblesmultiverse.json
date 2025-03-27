@@ -11,6 +11,9 @@
       {"class": "evaluation.metrics.GameMetrics$OrdinalPosition" },
       {"class": "evaluation.metrics.GameMetrics$PlayerType" },
       {"class": "evaluation.metrics.GameMetrics$Winner" },
-      {"class":  "games.marblesmultiverse.metrics.MMMetrics$RuleCardsUsed"}
+      {"class":  "games.marblesmultiverse.metrics.MMMetrics$RuleCardsUsed"},
+      {"class":  "games.marblesmultiverse.metrics.MMMetrics$MarbelsPerPlayer"},
+      {"class":  "games.marblesmultiverse.metrics.MMMetrics$MarbelsRemoved"},
+      {"class":  "games.marblesmultiverse.metrics.MMMetrics$WhoPushedOut"}
     ]]
 }

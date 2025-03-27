@@ -327,6 +327,7 @@ public enum Card {
             case OUT_IS_GONE:
                 // Nothing to do, it's just gone, just update counters
                 state.getPlayerMarblesPushedOut().get(player.ordinal()).add(playerPushing);
+                state.getPlayerMarblesRemoved().get(player.ordinal()).add(playerPushing);
                 state.getPlayerMarblesOnBoard().get(player.ordinal()).decrement();
                 break;
             case CENTER_IF_FREE:
@@ -334,6 +335,7 @@ public enum Card {
                 if (centerSpot.occupant == null) {
                     centerSpot.addMarble(player);
                 } else {
+                    state.getPlayerMarblesRemoved().get(player.ordinal()).add(playerPushing);
                     state.getPlayerMarblesOnBoard().get(player.ordinal()).decrement();
                 }
                 break;
@@ -341,6 +343,7 @@ public enum Card {
                 state.getPlayerMarblesPushedOut().get(player.ordinal()).add(playerPushing);
                 if (centerSpot.occupant != null) {
                     state.getPlayerMarblesOnBoard().get(centerSpot.occupant.ordinal()).decrement();
+                    state.getPlayerMarblesRemoved().get(player.ordinal()).add(playerPushing);
                 }
                 centerSpot.addMarble(player);
                 break;
