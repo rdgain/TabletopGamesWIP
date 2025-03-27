@@ -1,0 +1,11 @@
+{
+  "game" : "MultiverseMarbles",
+  "nPlayers" : 2,
+  "mode" : "exhaustive",
+  "matchups" : 500,
+  "verbose" : true,
+  "listener" : "metrics/marblesmultiverse.json",
+  "destDir" : "MMExperiment",
+  "output" : "MMExperiment/Tournament.log",
+  "playerDirectory" : "MMExperiment/players/"
+}
