@@ -2,7 +2,7 @@
   "game" : "MultiverseMarbles",
   "nPlayers" : 2,
   "mode" : "exhaustive",
-  "matchups" : 500,
+  "matchups" : 1000,
   "verbose" : true,
   "listener" : "metrics/marblesmultiverse.json",
   "destDir" : "MMExperiment",
