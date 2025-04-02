@@ -1,0 +1,19 @@
+Rule,Total_PushedMarbles_Ratio_Avg,Total_RemovedMarbles_Ratio_Avg
+Movement_Rule_Jump over 1 marble or blocker or move a marble by 1 space in any direction,-0.16579229886675723,-0.13202947795336378
+Movement_Rule_Move 1 marble by 1 space in any direction.,0.07070043804704514,0.11063000603819768
+Movement_Rule_Move 1 marble by up to 3 spaces in any direction in a straight line.,-0.09777634600948325,-0.04445620218555145
+Movement_Rule_Move 1 marble exactly 2 spaces in any direction.,0.18906553355759737,0.06519437338786711
+PushOut_Rule_Pushed out marbles are removed from play,-0.05597048141301164,0.3637111524300601
+"PushOut_Rule_Pushed out marbles return to the center, if it is free. Else they are removed.",-0.00313996654143409,-0.1971662915337305
+PushOut_Rule_Pushed out marbles return to the center. Remove any pre-existing marble.,0.05877416054372604,-0.16676433510989738
+"PushRequirement_Rule_You can push opposing marbles if you use an even number of marbles (2, 4 or 6). Do not split your column while pushing the opponent.",0.2568250833048966,0.23481375614200287
+PushRequirement_Rule_You can push opposing marbles if you use equal marbles. Do not split your column while pushing the opponent.,-0.4375376010043997,-0.3596487513208835
+PushRequirement_Rule_You can push opposing marbles if you use fewer or equal marbles. Do not split your column while pushing the opponent.,-0.3629828906992718,-0.28797747001188284
+PushRequirement_Rule_You can push opposing marbles if you use fewer or more marbles.,0.2304749077445709,0.16049415779797574
+PushRequirement_Rule_You can push opposing marbles if you use more marbles.,0.1476284292467932,0.08988589698690169
+PushRequirement_Rule_You can push opposing marbles if you use more or equal marbles. Do not split your column while pushing the opponent.,0.28417689285294345,0.2919937496837193
+"PushRequirement_Rule_You can push your opposing marbles if you use an uneven number of marbles (1, 3 or 5). Do not split your column while pushing the opponent.",-0.16503279917808783,-0.16848137689674525
+Victory_Rule_Occupy 1 goal of each color.,-0.36160521296870046,-0.3395243916312427
+Victory_Rule_Occupy 3 non-neighbouring goals.,-0.3224386050652145,-0.3037372033085309
+Victory_Rule_Occupy all goals of your color.,0.2855594727021281,0.22199307580714245
+Victory_Rule_Push out 3 opposing marbles.,0.4326349058973134,0.4549326508308789

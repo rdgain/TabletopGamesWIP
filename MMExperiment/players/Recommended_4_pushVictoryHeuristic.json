@@ -10,7 +10,7 @@
 	"class" : "players.mcts.MCTSParams",
 	"exploreEpsilon" : 0.3,
 	"maxTreeDepth" : 10,
-	"budgetType" : "BUDGET_TIME",
+	"budgetType" : "BUDGET_ITERATIONS",
 	"budget" : 1000,
 	"treePolicy" : "UCB_Tuned"
 }
