@@ -856,7 +856,7 @@ public class Game {
 //        AbstractPlayer rmhcPlayer = new RMHCPlayer(params);
 //        players.add(rmhcPlayer);
 
-        MCTSParams params = loadClassFromJSON(loadJSONFile("MMExperiment/tuned-mcts-agents/Recommended_4.json"));
+        MCTSParams params = loadClassFromJSON(loadJSONFile("MMExperiment/tuned-mcts-agents/MCTS.json"));
 //        params.budget = 1000;
 //        params.budgetType = PlayerConstants.BUDGET_TIME;
 //        params.heuristic = new PushVictoryHeuristic();
