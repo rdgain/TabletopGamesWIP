@@ -23,7 +23,8 @@ public class MMMetrics implements IMetricsCollection {
                 MMGameState gs = (MMGameState) e.state;
                 Map<MMTypes.CardType, Card> rules = gs.getRulesInPlay();
                 for (Map.Entry<MMTypes.CardType, Card> r : rules.entrySet()) {
-                    records.put("Rule-" + r.getKey().name(), r.getValue().description);
+                    //records.put("Rule-" + r.getKey().name(), r.getValue().description); //using rule description
+                    records.put("Rule-" + r.getKey().name(), r.getValue().name()); // using the rule name
                 }
                 return true;
             }
