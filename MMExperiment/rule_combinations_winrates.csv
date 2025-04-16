@@ -1,0 +1,155 @@
+rule_type,rule_value,combination,player0_win_rate,total_games,player0_wins
+pushrequirement_victory,FEWER_OR_MORE_ANY_THREE,pushrequirement: FEWER_OR_MORE + victory: ANY_THREE,0.5510752688172043,372.0,205.0
+movement_pushrequirement,LEAPFROG_FEWER_OR_MORE,movement: LEAPFROG + pushrequirement: FEWER_OR_MORE,0.5433333333333333,300.0,163.0
+pushout_pushrequirement,CENTER_IF_FREE_FEWER_OR_MORE,pushout: CENTER_IF_FREE + pushrequirement: FEWER_OR_MORE,0.532520325203252,492.0,262.0
+pushrequirement_victory,FEWER_OR_MORE_YOUR_COLOR,pushrequirement: FEWER_OR_MORE + victory: YOUR_COLOR,0.5277777777777778,360.0,190.0
+pushrequirement_victory,UNEVEN_YOUR_COLOR,pushrequirement: UNEVEN + victory: YOUR_COLOR,0.5252525252525253,396.0,208.0
+pushout_pushrequirement,OUT_IS_GONE_MORE_OR_EQUAL,pushout: OUT_IS_GONE + pushrequirement: MORE_OR_EQUAL,0.5229166666666667,480.0,251.0
+movement_pushrequirement,LEAPFROG_EVEN,movement: LEAPFROG + pushrequirement: EVEN,0.5224358974358975,312.0,163.0
+pushrequirement_victory,UNEVEN_ONE_OF_EACH,pushrequirement: UNEVEN + victory: ONE_OF_EACH,0.5223880597014925,402.0,210.0
+pushout_pushrequirement,CENTER_IF_FREE_EVEN,pushout: CENTER_IF_FREE + pushrequirement: EVEN,0.5208333333333334,432.0,225.0
+movement_pushrequirement,MOVE_2_EVEN,movement: MOVE_2 + pushrequirement: EVEN,0.5196078431372549,408.0,212.0
+pushrequirement_victory,EVEN_ANY_THREE,pushrequirement: EVEN + victory: ANY_THREE,0.5192307692307693,312.0,162.0
+pushout_victory,OUT_IS_GONE_ANY_THREE,pushout: OUT_IS_GONE + victory: ANY_THREE,0.5176151761517616,738.0,382.0
+pushrequirement_victory,EVEN_PUSH_OUT,pushrequirement: EVEN + victory: PUSH_OUT,0.5174129353233831,402.0,208.0
+pushrequirement_victory,MORE_OR_EQUAL_ANY_THREE,pushrequirement: MORE_OR_EQUAL + victory: ANY_THREE,0.5163934426229508,366.0,189.0
+movement_victory,MOVE_EXACTLY_2_ANY_THREE,movement: MOVE_EXACTLY_2 + victory: ANY_THREE,0.5156695156695157,702.0,362.0
+pushrequirement_victory,EVEN_YOUR_COLOR,pushrequirement: EVEN + victory: YOUR_COLOR,0.5106382978723404,282.0,144.0
+pushrequirement_victory,MORE_ONE_OF_EACH,pushrequirement: MORE + victory: ONE_OF_EACH,0.5104166666666666,384.0,196.0
+movement_pushrequirement,MOVE_2_MORE_OR_EQUAL,movement: MOVE_2 + pushrequirement: MORE_OR_EQUAL,0.5089285714285714,336.0,171.0
+pushout_pushrequirement,CENTER_REPLACE_EVEN,pushout: CENTER_REPLACE + pushrequirement: EVEN,0.5078431372549019,510.0,259.0
+movement_pushrequirement,LEAPFROG_MORE,movement: LEAPFROG + pushrequirement: MORE,0.5069444444444444,432.0,219.0
+movement_pushrequirement,MOVE_EXACTLY_2_MORE_OR_EQUAL,movement: MOVE_EXACTLY_2 + pushrequirement: MORE_OR_EQUAL,0.5067567567567568,444.0,225.0
+push_pushrequirement,PUSH_1_FEWER_OR_MORE,push: PUSH_1 + pushrequirement: FEWER_OR_MORE,0.5061728395061729,1458.0,738.0
+pushrequirement,FEWER_OR_MORE,pushrequirement: FEWER_OR_MORE,0.5061728395061729,1458.0,738.0
+movement_victory,LEAPFROG_YOUR_COLOR,movement: LEAPFROG + victory: YOUR_COLOR,0.5059523809523809,672.0,340.0
+pushrequirement_victory,MORE_OR_EQUAL_PUSH_OUT,pushrequirement: MORE_OR_EQUAL + victory: PUSH_OUT,0.5056497175141242,354.0,179.0
+push_pushrequirement,PUSH_1_EVEN,push: PUSH_1 + pushrequirement: EVEN,0.5050505050505051,1386.0,700.0
+pushrequirement,EVEN,pushrequirement: EVEN,0.5050505050505051,1386.0,700.0
+movement_pushrequirement,MOVE_1_MORE,movement: MOVE_1 + pushrequirement: MORE,0.5049019607843137,408.0,206.0
+movement_victory,LEAPFROG_ANY_THREE,movement: LEAPFROG + victory: ANY_THREE,0.5043290043290043,462.0,233.0
+movement_victory,MOVE_2_ONE_OF_EACH,movement: MOVE_2 + victory: ONE_OF_EACH,0.504,750.0,378.0
+movement_pushrequirement,MOVE_EXACTLY_2_MORE,movement: MOVE_EXACTLY_2 + pushrequirement: MORE,0.5030864197530864,324.0,163.0
+push_victory,PUSH_1_ANY_THREE,push: PUSH_1 + victory: ANY_THREE,0.5029021558872305,2412.0,1213.0
+victory,ANY_THREE,victory: ANY_THREE,0.5029021558872305,2412.0,1213.0
+movement_pushout,LEAPFROG_OUT_IS_GONE,movement: LEAPFROG + pushout: OUT_IS_GONE,0.5,744.0,372.0
+movement_pushrequirement,MOVE_1_MORE_OR_EQUAL,movement: MOVE_1 + pushrequirement: MORE_OR_EQUAL,0.5,378.0,189.0
+movement_pushrequirement,MOVE_1_FEWER_OR_MORE,movement: MOVE_1 + pushrequirement: FEWER_OR_MORE,0.5,378.0,189.0
+pushout_pushrequirement,CENTER_IF_FREE_MORE,pushout: CENTER_IF_FREE + pushrequirement: MORE,0.5,528.0,264.0
+pushout_victory,OUT_IS_GONE_ONE_OF_EACH,pushout: OUT_IS_GONE + victory: ONE_OF_EACH,0.5,936.0,468.0
+pushout_victory,CENTER_IF_FREE_ANY_THREE,pushout: CENTER_IF_FREE + victory: ANY_THREE,0.5,882.0,441.0
+pushout_pushrequirement,OUT_IS_GONE_MORE,pushout: OUT_IS_GONE + pushrequirement: MORE,0.49783549783549785,462.0,230.0
+movement_pushrequirement,MOVE_2_FEWER_OR_MORE,movement: MOVE_2 + pushrequirement: FEWER_OR_MORE,0.49747474747474746,396.0,197.0
+pushrequirement,MORE_OR_EQUAL,pushrequirement: MORE_OR_EQUAL,0.49732262382864795,1494.0,743.0
+push_pushrequirement,PUSH_1_MORE_OR_EQUAL,push: PUSH_1 + pushrequirement: MORE_OR_EQUAL,0.49732262382864795,1494.0,743.0
+pushrequirement_victory,MORE_ANY_THREE,pushrequirement: MORE + victory: ANY_THREE,0.4967948717948718,312.0,155.0
+movement_victory,MOVE_2_ANY_THREE,movement: MOVE_2 + victory: ANY_THREE,0.4966996699669967,606.0,301.0
+pushout_victory,CENTER_IF_FREE_ONE_OF_EACH,pushout: CENTER_IF_FREE + victory: ONE_OF_EACH,0.4963768115942029,828.0,411.0
+movement_victory,LEAPFROG_ONE_OF_EACH,movement: LEAPFROG + victory: ONE_OF_EACH,0.49633699633699635,546.0,271.0
+push_pushrequirement,PUSH_1_MORE,push: PUSH_1 + pushrequirement: MORE,0.49533333333333335,1500.0,743.0
+pushrequirement,MORE,pushrequirement: MORE,0.49533333333333335,1500.0,743.0
+pushrequirement_victory,MORE_YOUR_COLOR,pushrequirement: MORE + victory: YOUR_COLOR,0.49516908212560384,414.0,205.0
+pushout_pushrequirement,OUT_IS_GONE_FEWER_OR_MORE,pushout: OUT_IS_GONE + pushrequirement: FEWER_OR_MORE,0.4942528735632184,522.0,258.0
+pushout_victory,CENTER_IF_FREE_YOUR_COLOR,pushout: CENTER_IF_FREE + victory: YOUR_COLOR,0.49417249417249415,858.0,424.0
+movement_pushrequirement,MOVE_EXACTLY_2_EVEN,movement: MOVE_EXACTLY_2 + pushrequirement: EVEN,0.49393939393939396,330.0,163.0
+movement_victory,MOVE_1_ANY_THREE,movement: MOVE_1 + victory: ANY_THREE,0.4937694704049844,642.0,317.0
+pushout_victory,CENTER_REPLACE_ANY_THREE,pushout: CENTER_REPLACE + victory: ANY_THREE,0.49242424242424243,792.0,390.0
+movement_pushrequirement,MOVE_EXACTLY_2_FEWER_OR_MORE,movement: MOVE_EXACTLY_2 + pushrequirement: FEWER_OR_MORE,0.4921875,384.0,189.0
+movement_pushrequirement,MOVE_2_UNEVEN,movement: MOVE_2 + pushrequirement: UNEVEN,0.4911111111111111,450.0,221.0
+pushout_pushrequirement,CENTER_REPLACE_FEWER_OR_MORE,pushout: CENTER_REPLACE + pushrequirement: FEWER_OR_MORE,0.49099099099099097,444.0,218.0
+pushrequirement_victory,MORE_OR_EQUAL_ONE_OF_EACH,pushrequirement: MORE_OR_EQUAL + victory: ONE_OF_EACH,0.49047619047619045,420.0,206.0
+movement_pushrequirement,MOVE_EXACTLY_2_UNEVEN,movement: MOVE_EXACTLY_2 + pushrequirement: UNEVEN,0.49019607843137253,408.0,200.0
+movement_pushout,MOVE_EXACTLY_2_CENTER_REPLACE,movement: MOVE_EXACTLY_2 + pushout: CENTER_REPLACE,0.4901315789473684,912.0,447.0
+pushout_pushrequirement,CENTER_REPLACE_MORE,pushout: CENTER_REPLACE + pushrequirement: MORE,0.48823529411764705,510.0,249.0
+pushrequirement_victory,EQUAL_ONE_OF_EACH,pushrequirement: EQUAL + victory: ONE_OF_EACH,0.4880952380952381,336.0,164.0
+pushout_pushrequirement,CENTER_REPLACE_MORE_OR_EQUAL,pushout: CENTER_REPLACE + pushrequirement: MORE_OR_EQUAL,0.4880952380952381,504.0,246.0
+victory,ONE_OF_EACH,victory: ONE_OF_EACH,0.48717948717948717,2652.0,1292.0
+pushrequirement_victory,EQUAL_ANY_THREE,pushrequirement: EQUAL + victory: ANY_THREE,0.48717948717948717,312.0,152.0
+push_victory,PUSH_1_ONE_OF_EACH,push: PUSH_1 + victory: ONE_OF_EACH,0.48717948717948717,2652.0,1292.0
+pushout_pushrequirement,OUT_IS_GONE_EVEN,pushout: OUT_IS_GONE + pushrequirement: EVEN,0.4864864864864865,444.0,216.0
+movement_pushout,MOVE_2_CENTER_IF_FREE,movement: MOVE_2 + pushout: CENTER_IF_FREE,0.4847417840375587,852.0,413.0
+movement,LEAPFROG,movement: LEAPFROG,0.48381452318460194,2286.0,1106.0
+movement_push,LEAPFROG_PUSH_1,movement: LEAPFROG + push: PUSH_1,0.48381452318460194,2286.0,1106.0
+pushout_pushrequirement,CENTER_IF_FREE_MORE_OR_EQUAL,pushout: CENTER_IF_FREE + pushrequirement: MORE_OR_EQUAL,0.4823529411764706,510.0,246.0
+movement_pushrequirement,MOVE_1_EVEN,movement: MOVE_1 + pushrequirement: EVEN,0.48214285714285715,336.0,162.0
+pushrequirement_victory,FEWER_OR_MORE_ONE_OF_EACH,pushrequirement: FEWER_OR_MORE + victory: ONE_OF_EACH,0.4817708333333333,384.0,185.0
+pushrequirement_victory,UNEVEN_ANY_THREE,pushrequirement: UNEVEN + victory: ANY_THREE,0.4812206572769953,426.0,205.0
+movement_pushout,LEAPFROG_CENTER_IF_FREE,movement: LEAPFROG + pushout: CENTER_IF_FREE,0.4810606060606061,792.0,381.0
+pushout_pushrequirement,OUT_IS_GONE_UNEVEN,pushout: OUT_IS_GONE + pushrequirement: UNEVEN,0.4801587301587302,504.0,242.0
+pushout_victory,CENTER_REPLACE_YOUR_COLOR,pushout: CENTER_REPLACE + victory: YOUR_COLOR,0.4800469483568075,852.0,409.0
+pushrequirement_victory,MORE_PUSH_OUT,pushrequirement: MORE + victory: PUSH_OUT,0.4794871794871795,390.0,187.0
+pushrequirement_victory,MORE_OR_EQUAL_YOUR_COLOR,pushrequirement: MORE_OR_EQUAL + victory: YOUR_COLOR,0.4774011299435028,354.0,169.0
+pushrequirement_victory,EVEN_ONE_OF_EACH,pushrequirement: EVEN + victory: ONE_OF_EACH,0.47692307692307695,390.0,186.0
+victory,YOUR_COLOR,victory: YOUR_COLOR,0.4759083728278041,2532.0,1205.0
+push_victory,PUSH_1_YOUR_COLOR,push: PUSH_1 + victory: YOUR_COLOR,0.4759083728278041,2532.0,1205.0
+push_pushrequirement,PUSH_1_UNEVEN,push: PUSH_1 + pushrequirement: UNEVEN,0.4755639097744361,1596.0,759.0
+pushrequirement,UNEVEN,pushrequirement: UNEVEN,0.4755639097744361,1596.0,759.0
+movement_victory,MOVE_1_ONE_OF_EACH,movement: MOVE_1 + victory: ONE_OF_EACH,0.47520661157024796,726.0,345.0
+movement_pushout,MOVE_2_OUT_IS_GONE,movement: MOVE_2 + pushout: OUT_IS_GONE,0.47505668934240364,882.0,419.0
+movement,MOVE_2,movement: MOVE_2,0.4748062015503876,2580.0,1225.0
+movement_push,MOVE_2_PUSH_1,movement: MOVE_2 + push: PUSH_1,0.4748062015503876,2580.0,1225.0
+pushout_pushrequirement,CENTER_REPLACE_UNEVEN,pushout: CENTER_REPLACE + pushrequirement: UNEVEN,0.47435897435897434,468.0,222.0
+pushout,OUT_IS_GONE,pushout: OUT_IS_GONE,0.4738139248305607,3246.0,1538.0
+push_pushout,PUSH_1_OUT_IS_GONE,push: PUSH_1 + pushout: OUT_IS_GONE,0.4738139248305607,3246.0,1538.0
+pushout,CENTER_IF_FREE,pushout: CENTER_IF_FREE,0.4737463126843658,3390.0,1606.0
+push_pushout,PUSH_1_CENTER_IF_FREE,push: PUSH_1 + pushout: CENTER_IF_FREE,0.4737463126843658,3390.0,1606.0
+movement_victory,MOVE_EXACTLY_2_ONE_OF_EACH,movement: MOVE_EXACTLY_2 + victory: ONE_OF_EACH,0.473015873015873,630.0,298.0
+pushout_pushrequirement,CENTER_IF_FREE_UNEVEN,pushout: CENTER_IF_FREE + pushrequirement: UNEVEN,0.47275641025641024,624.0,295.0
+movement_victory,MOVE_2_YOUR_COLOR,movement: MOVE_2 + victory: YOUR_COLOR,0.4725085910652921,582.0,275.0
+push,PUSH_1,push: PUSH_1,0.4724889955982393,9996.0,4723.0
+movement_pushout,MOVE_1_CENTER_IF_FREE,movement: MOVE_1 + pushout: CENTER_IF_FREE,0.47202797202797203,858.0,405.0
+movement_pushout,LEAPFROG_CENTER_REPLACE,movement: LEAPFROG + pushout: CENTER_REPLACE,0.4706666666666667,750.0,353.0
+movement_pushrequirement,LEAPFROG_MORE_OR_EQUAL,movement: LEAPFROG + pushrequirement: MORE_OR_EQUAL,0.47023809523809523,336.0,158.0
+movement_pushrequirement,MOVE_1_UNEVEN,movement: MOVE_1 + pushrequirement: UNEVEN,0.46994535519125685,366.0,172.0
+pushout,CENTER_REPLACE,pushout: CENTER_REPLACE,0.4699404761904762,3360.0,1579.0
+push_pushout,PUSH_1_CENTER_REPLACE,push: PUSH_1 + pushout: CENTER_REPLACE,0.4699404761904762,3360.0,1579.0
+movement_victory,MOVE_1_YOUR_COLOR,movement: MOVE_1 + victory: YOUR_COLOR,0.4689922480620155,516.0,242.0
+movement_push,MOVE_EXACTLY_2_PUSH_1,movement: MOVE_EXACTLY_2 + push: PUSH_1,0.46853932584269664,2670.0,1251.0
+movement,MOVE_EXACTLY_2,movement: MOVE_EXACTLY_2,0.46853932584269664,2670.0,1251.0
+movement_pushout,MOVE_1_OUT_IS_GONE,movement: MOVE_1 + pushout: OUT_IS_GONE,0.4666666666666667,750.0,350.0
+pushout_victory,CENTER_REPLACE_ONE_OF_EACH,pushout: CENTER_REPLACE + victory: ONE_OF_EACH,0.4650900900900901,888.0,413.0
+pushrequirement_victory,FEWER_OR_EQUAL_ANY_THREE,pushrequirement: FEWER_OR_EQUAL + victory: ANY_THREE,0.46474358974358976,312.0,145.0
+movement_pushout,MOVE_2_CENTER_REPLACE,movement: MOVE_2 + pushout: CENTER_REPLACE,0.4645390070921986,846.0,393.0
+movement_push,MOVE_1_PUSH_1,movement: MOVE_1 + push: PUSH_1,0.4638211382113821,2460.0,1141.0
+movement,MOVE_1,movement: MOVE_1,0.4638211382113821,2460.0,1141.0
+pushrequirement_victory,FEWER_OR_MORE_PUSH_OUT,pushrequirement: FEWER_OR_MORE + victory: PUSH_OUT,0.4619883040935672,342.0,158.0
+movement_pushrequirement,MOVE_2_MORE,movement: MOVE_2 + pushrequirement: MORE,0.46130952380952384,336.0,155.0
+movement_pushout,MOVE_EXACTLY_2_CENTER_IF_FREE,movement: MOVE_EXACTLY_2 + pushout: CENTER_IF_FREE,0.4583333333333333,888.0,407.0
+movement_victory,MOVE_EXACTLY_2_YOUR_COLOR,movement: MOVE_EXACTLY_2 + victory: YOUR_COLOR,0.4566929133858268,762.0,348.0
+movement_pushout,MOVE_EXACTLY_2_OUT_IS_GONE,movement: MOVE_EXACTLY_2 + pushout: OUT_IS_GONE,0.45632183908045976,870.0,397.0
+movement_pushout,MOVE_1_CENTER_REPLACE,movement: MOVE_1 + pushout: CENTER_REPLACE,0.45305164319248825,852.0,386.0
+pushout_victory,OUT_IS_GONE_YOUR_COLOR,pushout: OUT_IS_GONE + victory: YOUR_COLOR,0.45255474452554745,822.0,372.0
+movement_pushrequirement,LEAPFROG_FEWER_OR_EQUAL,movement: LEAPFROG + pushrequirement: FEWER_OR_EQUAL,0.44907407407407407,216.0,97.0
+movement_pushrequirement,LEAPFROG_UNEVEN,movement: LEAPFROG + pushrequirement: UNEVEN,0.44623655913978494,372.0,166.0
+pushout_victory,CENTER_REPLACE_PUSH_OUT,pushout: CENTER_REPLACE + victory: PUSH_OUT,0.44323671497584544,828.0,367.0
+movement_pushrequirement,LEAPFROG_EQUAL,movement: LEAPFROG + pushrequirement: EQUAL,0.44025157232704404,318.0,140.0
+pushout_pushrequirement,OUT_IS_GONE_EQUAL,pushout: OUT_IS_GONE + pushrequirement: EQUAL,0.4360730593607306,438.0,191.0
+movement_victory,LEAPFROG_PUSH_OUT,movement: LEAPFROG + victory: PUSH_OUT,0.43234323432343236,606.0,262.0
+pushrequirement_victory,FEWER_OR_EQUAL_ONE_OF_EACH,pushrequirement: FEWER_OR_EQUAL + victory: ONE_OF_EACH,0.43154761904761907,336.0,145.0
+movement_victory,MOVE_2_PUSH_OUT,movement: MOVE_2 + victory: PUSH_OUT,0.4221183800623053,642.0,271.0
+victory,PUSH_OUT,victory: PUSH_OUT,0.4220833333333333,2400.0,1013.0
+push_victory,PUSH_1_PUSH_OUT,push: PUSH_1 + victory: PUSH_OUT,0.4220833333333333,2400.0,1013.0
+movement_victory,MOVE_EXACTLY_2_PUSH_OUT,movement: MOVE_EXACTLY_2 + victory: PUSH_OUT,0.421875,576.0,243.0
+pushout_victory,OUT_IS_GONE_PUSH_OUT,pushout: OUT_IS_GONE + victory: PUSH_OUT,0.42133333333333334,750.0,316.0
+movement_pushrequirement,MOVE_2_EQUAL,movement: MOVE_2 + pushrequirement: EQUAL,0.41830065359477125,306.0,128.0
+pushout_pushrequirement,CENTER_REPLACE_FEWER_OR_EQUAL,pushout: CENTER_REPLACE + pushrequirement: FEWER_OR_EQUAL,0.4178082191780822,438.0,183.0
+pushout_pushrequirement,CENTER_REPLACE_EQUAL,pushout: CENTER_REPLACE + pushrequirement: EQUAL,0.4156378600823045,486.0,202.0
+movement_victory,MOVE_1_PUSH_OUT,movement: MOVE_1 + victory: PUSH_OUT,0.4114583333333333,576.0,237.0
+pushrequirement,EQUAL,pushrequirement: EQUAL,0.41025641025641024,1326.0,544.0
+push_pushrequirement,PUSH_1_EQUAL,push: PUSH_1 + pushrequirement: EQUAL,0.41025641025641024,1326.0,544.0
+movement_pushrequirement,MOVE_EXACTLY_2_EQUAL,movement: MOVE_EXACTLY_2 + pushrequirement: EQUAL,0.4068627450980392,408.0,166.0
+pushout_pushrequirement,CENTER_IF_FREE_FEWER_OR_EQUAL,pushout: CENTER_IF_FREE + pushrequirement: FEWER_OR_EQUAL,0.4054726368159204,402.0,163.0
+movement_pushrequirement,MOVE_2_FEWER_OR_EQUAL,movement: MOVE_2 + pushrequirement: FEWER_OR_EQUAL,0.4051724137931034,348.0,141.0
+pushout_victory,CENTER_IF_FREE_PUSH_OUT,pushout: CENTER_IF_FREE + victory: PUSH_OUT,0.40145985401459855,822.0,330.0
+pushrequirement,FEWER_OR_EQUAL,pushrequirement: FEWER_OR_EQUAL,0.40129449838187703,1236.0,496.0
+push_pushrequirement,PUSH_1_FEWER_OR_EQUAL,push: PUSH_1 + pushrequirement: FEWER_OR_EQUAL,0.40129449838187703,1236.0,496.0
+pushrequirement_victory,FEWER_OR_EQUAL_YOUR_COLOR,pushrequirement: FEWER_OR_EQUAL + victory: YOUR_COLOR,0.39880952380952384,336.0,134.0
+pushrequirement_victory,EQUAL_YOUR_COLOR,pushrequirement: EQUAL + victory: YOUR_COLOR,0.3974358974358974,390.0,155.0
+movement_pushrequirement,MOVE_EXACTLY_2_FEWER_OR_EQUAL,movement: MOVE_EXACTLY_2 + pushrequirement: FEWER_OR_EQUAL,0.3897849462365591,372.0,145.0
+pushout_pushrequirement,OUT_IS_GONE_FEWER_OR_EQUAL,pushout: OUT_IS_GONE + pushrequirement: FEWER_OR_EQUAL,0.3787878787878788,396.0,150.0
+movement_pushrequirement,MOVE_1_FEWER_OR_EQUAL,movement: MOVE_1 + pushrequirement: FEWER_OR_EQUAL,0.37666666666666665,300.0,113.0
+pushout_pushrequirement,CENTER_IF_FREE_EQUAL,pushout: CENTER_IF_FREE + pushrequirement: EQUAL,0.3756218905472637,402.0,151.0
+movement_pushrequirement,MOVE_1_EQUAL,movement: MOVE_1 + pushrequirement: EQUAL,0.3741496598639456,294.0,110.0
+pushrequirement_victory,UNEVEN_PUSH_OUT,pushrequirement: UNEVEN + victory: PUSH_OUT,0.3655913978494624,372.0,136.0
+pushrequirement_victory,FEWER_OR_EQUAL_PUSH_OUT,pushrequirement: FEWER_OR_EQUAL + victory: PUSH_OUT,0.2857142857142857,252.0,72.0
+pushrequirement_victory,EQUAL_PUSH_OUT,pushrequirement: EQUAL + victory: PUSH_OUT,0.2534722222222222,288.0,73.0

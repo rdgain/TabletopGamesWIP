@@ -1,4 +1,4 @@
 Category,Count
-"Pushed out marbles return to the center, if it is free. Else they are removed.",324
-Pushed out marbles return to the center. Remove any pre-existing marble.,330
-Pushed out marbles are removed from play,342
+OUT_IS_GONE,3246
+CENTER_REPLACE,3360
+CENTER_IF_FREE,3390

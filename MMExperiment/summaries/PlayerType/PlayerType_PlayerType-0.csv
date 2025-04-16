@@ -1,4 +1,4 @@
 Category,Count
-Recommended_4,332
-Recommended_4_pushVictoryHeuristic,332
-Recommended_4_ownColorVictoryHeuristic,332
+MCTS-OwnColor,3332
+MCTS,3332
+MCTS-Push,3332

@@ -1,8 +1,8 @@
 Category,Count
-"You can push opposing marbles if you use an even number of marbles (2, 4 or 6). Do not split your column while pushing the opponent.",162
-You can push opposing marbles if you use fewer or equal marbles. Do not split your column while pushing the opponent.,156
-You can push opposing marbles if you use more marbles.,162
-You can push opposing marbles if you use equal marbles. Do not split your column while pushing the opponent.,132
-"You can push your opposing marbles if you use an uneven number of marbles (1, 3 or 5). Do not split your column while pushing the opponent.",114
-You can push opposing marbles if you use fewer or more marbles.,120
-You can push opposing marbles if you use more or equal marbles. Do not split your column while pushing the opponent.,150
+EVEN,1386
+UNEVEN,1596
+MORE_OR_EQUAL,1494
+FEWER_OR_MORE,1458
+EQUAL,1326
+FEWER_OR_EQUAL,1236
+MORE,1500

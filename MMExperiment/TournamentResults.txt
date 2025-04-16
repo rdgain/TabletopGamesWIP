@@ -1,66 +1,56 @@
-Game: MultiverseMarbles, Players: 2, Mode: EXHAUSTIVE, TotalGames: 996, GamesPerMatchup: 166
+Game: MultiverseMarbles, Players: 2, Mode: EXHAUSTIVE, TotalGames: 9996, GamesPerMatchup: 1666
 Alpha calculations using Delta Ordinal
 Alpha: 10.0
-	0.054	Recommended_4
-	0.396	Recommended_4_ownColorVictoryHeuristic
-	0.550	Recommended_4_pushVictoryHeuristic
+	0.297	MCTS-OwnColor
+	0.663	MCTS-Push
+	0.040	MCTS
 
 Transition matrix for alpha = 10.0
-0.042	0.651	0.307	
-0.025	0.393	0.582	
-0.076	0.373	0.552	
+0.296	0.678	0.026	
+0.290	0.664	0.046	
+0.432	0.531	0.037	
 B matrix for alpha = 10.0
-0.528	0.501	0.484	
-0.501	1.211	1.103	
-0.484	1.103	1.185	
-The following agents cluster together, and may be considered equivalent: 
-	Cluster for Recommended_4_ownColorVictoryHeuristic
-		Recommended_4_ownColorVictoryHeuristic
-		Recommended_4_pushVictoryHeuristic
-
+0.907	1.160	0.526	
+1.160	1.709	0.547	
+0.526	0.547	0.474	
 Alpha calculations using Win Rate
 Alpha: 10.0
-	0.054	Recommended_4
-	0.396	Recommended_4_ownColorVictoryHeuristic
-	0.550	Recommended_4_pushVictoryHeuristic
+	0.297	MCTS-OwnColor
+	0.663	MCTS-Push
+	0.040	MCTS
 
 Transition matrix for alpha = 10.0
-0.042	0.651	0.307	
-0.025	0.393	0.582	
-0.076	0.373	0.552	
+0.296	0.678	0.026	
+0.290	0.664	0.046	
+0.432	0.531	0.037	
 B matrix for alpha = 10.0
-0.528	0.501	0.484	
-0.501	1.211	1.103	
-0.484	1.103	1.185	
-The following agents cluster together, and may be considered equivalent: 
-	Cluster for Recommended_4_ownColorVictoryHeuristic
-		Recommended_4_ownColorVictoryHeuristic
-		Recommended_4_pushVictoryHeuristic
+0.907	1.160	0.526	
+1.160	1.709	0.547	
+0.526	0.547	0.474	
+MCTS-OwnColor got 3321.00 points. MCTS-OwnColor won 33.2% of the 9996 games of the tournament. MCTS-OwnColor won 49.8% of the 6664 games it played during the tournament.
+MCTS-OwnColor won 41.1% of the 3332 games against MCTS-Push.
+MCTS-OwnColor won 58.6% of the 3332 games against MCTS.
 
-Recommended_4 got 236.00 points. Recommended_4 won 23.7% of the 996 games of the tournament. Recommended_4 won 35.5% of the 664 games it played during the tournament.
-Recommended_4 won 31.9% of the 332 games against Recommended_4_ownColorVictoryHeuristic.
-Recommended_4 won 39.2% of the 332 games against Recommended_4_pushVictoryHeuristic.
+MCTS-Push got 3730.00 points. MCTS-Push won 37.3% of the 9996 games of the tournament. MCTS-Push won 56.0% of the 6664 games it played during the tournament.
+MCTS-Push won 49.4% of the 3332 games against MCTS-OwnColor.
+MCTS-Push won 62.6% of the 3332 games against MCTS.
 
-Recommended_4_ownColorVictoryHeuristic got 341.00 points. Recommended_4_ownColorVictoryHeuristic won 34.2% of the 996 games of the tournament. Recommended_4_ownColorVictoryHeuristic won 51.4% of the 664 games it played during the tournament.
-Recommended_4_ownColorVictoryHeuristic won 59.3% of the 332 games against Recommended_4.
-Recommended_4_ownColorVictoryHeuristic won 43.4% of the 332 games against Recommended_4_pushVictoryHeuristic.
-
-Recommended_4_pushVictoryHeuristic got 353.00 points. Recommended_4_pushVictoryHeuristic won 35.4% of the 996 games of the tournament. Recommended_4_pushVictoryHeuristic won 53.2% of the 664 games it played during the tournament.
-Recommended_4_pushVictoryHeuristic won 59.0% of the 332 games against Recommended_4.
-Recommended_4_pushVictoryHeuristic won 47.3% of the 332 games against Recommended_4_ownColorVictoryHeuristic.
+MCTS got 2334.00 points. MCTS won 23.3% of the 9996 games of the tournament. MCTS won 35.0% of the 6664 games it played during the tournament.
+MCTS won 34.1% of the 3332 games against MCTS-OwnColor.
+MCTS won 36.0% of the 3332 games against MCTS-Push.
 
 ---- Ranking ---- (+/- are standard errors on the mean calculated using a Normal approximation) 
-Recommended_4_pushVictoryHeuristic: Win rate 0.53 +/- 0.019	Mean Ordinal 1.41 +/- 0.02
-Recommended_4_ownColorVictoryHeuristic: Win rate 0.51 +/- 0.019	Mean Ordinal 1.40 +/- 0.02
-Recommended_4: Win rate 0.36 +/- 0.019	Mean Ordinal 1.59 +/- 0.02
+MCTS-Push: Win rate 0.56 +/- 0.006	Mean Ordinal 1.39 +/- 0.01
+MCTS-OwnColor: Win rate 0.50 +/- 0.006	Mean Ordinal 1.42 +/- 0.01
+MCTS: Win rate 0.35 +/- 0.006	Mean Ordinal 1.61 +/- 0.01
 
 Alpha-rank by Win Rate
-	Recommended_4_pushVictoryHeuristic	0.55
-	Recommended_4_ownColorVictoryHeuristic	0.40
-	Recommended_4                 	0.05
+	MCTS-Push                     	0.66
+	MCTS-OwnColor                 	0.30
+	MCTS                          	0.04
 
 Alpha-rank by Ordinal Position
-	Recommended_4_pushVictoryHeuristic	0.55
-	Recommended_4_ownColorVictoryHeuristic	0.40
-	Recommended_4                 	0.05
+	MCTS-Push                     	0.66
+	MCTS-OwnColor                 	0.30
+	MCTS                          	0.04
 

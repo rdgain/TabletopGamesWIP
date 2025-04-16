@@ -1,5 +1,5 @@
 Category,Count
-Jump over 1 marble or blocker or move a marble by 1 space in any direction,246
-Move 1 marble exactly 2 spaces in any direction.,264
-Move 1 marble by up to 3 spaces in any direction in a straight line.,246
-Move 1 marble by 1 space in any direction.,240
+MOVE_2,2580
+MOVE_EXACTLY_2,2670
+MOVE_1,2460
+LEAPFROG,2286
