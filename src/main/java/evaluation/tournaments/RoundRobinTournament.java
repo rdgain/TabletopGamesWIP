@@ -31,7 +31,7 @@ public class RoundRobinTournament extends AbstractTournament {
     protected List<IGameListener> listeners = new ArrayList<>();
     private boolean verbose;
     public boolean alphaRankDetails = true;
-    double[] pointsPerPlayer, winsPerPlayer;
+    double[] pointsPerPlayer, winsPerPlayer, scorePerPlayer;
     int[] nGamesPlayed;
     int[][] nGamesPlayedPerOpponent;
     int[][] winsPerPlayerPerOpponent;
@@ -48,6 +48,7 @@ public class RoundRobinTournament extends AbstractTournament {
     protected boolean randomGameParams;
     public String name;
     public boolean byTeam;
+    protected String evalMethod;
 
     protected long randomSeed;
     List<Integer> gameSeeds = new ArrayList<>();
@@ -71,12 +72,17 @@ public class RoundRobinTournament extends AbstractTournament {
             case "EXHAUSTIVE" -> EXHAUSTIVE;
             case "EXHAUSTIVESP" -> EXHAUSTIVE_SELF_PLAY;
             case "ONEVSALL" -> ONE_VS_ALL;
+            case "FIXED" -> FIXED;
             default -> RANDOM;
         };
         if (tournamentMode == EXHAUSTIVE && nTeams > this.agents.size()) {
             throw new IllegalArgumentException("Not enough agents to fill a match without self-play." +
                     "Either add more agents, reduce the number of players per game, or switch to RANDOM mode.");
         }
+        if (tournamentMode == FIXED && this.agents.size() != playersPerGame) {
+            throw new IllegalArgumentException("In FIXED mode, the number of agents must match the number of players per game.");
+        }
+        this.evalMethod = (String) config.getOrDefault(RunArg.evalMethod, "Win");
 
         this.allAgentIds = new LinkedList<>();
         for (int i = 0; i < this.agents.size(); i++)
@@ -94,6 +100,7 @@ public class RoundRobinTournament extends AbstractTournament {
         }
         this.pointsPerPlayer = new double[agents.size()];
         this.pointsPerPlayerSquared = new double[agents.size()];
+        this.scorePerPlayer = new double[agents.size()];
         this.winsPerPlayer = new double[agents.size()];
         this.nGamesPlayed = new int[agents.size()];
         this.nGamesPlayedPerOpponent = new int[agents.size()][];
@@ -133,8 +140,10 @@ public class RoundRobinTournament extends AbstractTournament {
                 }
                 actualGames = this.gamesPerMatchup * Utils.playerPermutations(agentPositions, agents.size(), selfPlay);
                 break;
+            case FIXED:
+                // we run the totalGameBudget number of games with no change to agent order
             case RANDOM:
-                this.gamesPerMatchup = 1; // not actually used, we just run the totalGameBudget number of games
+                this.gamesPerMatchup = totalGameBudget; // not actually used, we just run the totalGameBudget number of games
                 break;
             default:
                 throw new IllegalArgumentException("Unknown tournament mode " + config.get(RunArg.mode));
@@ -205,11 +214,15 @@ public class RoundRobinTournament extends AbstractTournament {
     }
 
     public int getWinnerIndex() {
-        if (finalWinRanking == null || finalWinRanking.isEmpty())
+        Map<Integer, Pair<Double, Double>> ranking = switch (evalMethod) {
+            case "Ordinal", "Score" -> finalOrdinalRanking;
+            default -> finalWinRanking;
+        };
+        if (ranking == null || ranking.isEmpty())
             throw new UnsupportedOperationException("Cannot get winner before results have been calculated");
 
         // The winner is the first key in finalRanking
-        for (Integer key : finalWinRanking.keySet()) {
+        for (Integer key : ranking.keySet()) {
             return key;
         }
         throw new AssertionError("Should not be reachable");
@@ -228,6 +241,15 @@ public class RoundRobinTournament extends AbstractTournament {
 
         int nTeams = byTeam ? game.getGameState().getNTeams() : nPlayers;
         switch (tournamentMode) {
+            case FIXED:
+                // we add the agents to the matchUp in the order they are in the list
+                // we always run the same fixed set of agents, so ignore the input matchup
+                matchUp.clear();
+                for (int i = 0; i < agents.size(); i++) {
+                    matchUp.add(i);
+                }
+                evaluateMatchUp(matchUp, gamesPerMatchup, gameSeeds);
+                break;
             case RANDOM:
                 // In the RANDOM case we use a new seed for each game
                 PermutationCycler idStream = new PermutationCycler(agents.size(), seedRnd, nTeams);
@@ -235,7 +257,7 @@ public class RoundRobinTournament extends AbstractTournament {
                     List<Integer> matchup = new ArrayList<>(nTeams);
                     for (int j = 0; j < nTeams; j++)
                         matchup.add(idStream.getAsInt());
-                    evaluateMatchUp(matchup, 1, Collections.singletonList(seedRnd.nextInt()));
+                    evaluateMatchUp(matchup, 1, Collections.singletonList(gameSeeds.get(i)));
                 }
                 break;
             case ONE_VS_ALL:
@@ -302,10 +324,9 @@ public class RoundRobinTournament extends AbstractTournament {
             System.out.printf("Evaluate %s at %tT%n", agentIDsInThisGame.toString(), System.currentTimeMillis());
         LinkedList<AbstractPlayer> matchUpPlayers = new LinkedList<>();
 
-        // If we are in self-play mode, we need to create a copy of the player to avoid them sharing the same state
-        // If not in self-play mode then this is unnecessary, as the same agent will never be in the same game twice
+        // create a copy of the player to avoid them sharing the same state
         for (int agentID : agentIDsInThisGame)
-            matchUpPlayers.add(tournamentMode == EXHAUSTIVE_SELF_PLAY ? this.agents.get(agentID).copy() : this.agents.get(agentID));
+            matchUpPlayers.add(this.agents.get(agentID).copy());
 
         if (verbose) {
             StringBuffer sb = new StringBuffer();
@@ -402,6 +423,8 @@ public class RoundRobinTournament extends AbstractTournament {
             }
         }
 
+        scorePerPlayer[j] += game.getGameState().getGameScore(player);
+
         if (results[player] == GameResult.WIN_GAME) {
             pointsPerPlayer[j] += 1;
             winsPerPlayer[j] += 1;
@@ -484,6 +507,10 @@ public class RoundRobinTournament extends AbstractTournament {
                     agents.get(i), 100.0 * winsPerPlayer[i] / nGamesPlayed[i], nGamesPlayed[i]);
             if (toFile) dataDump.add(str);
             if (verbose) System.out.print(str);
+            str = String.format("%s got a mean score of %.2f.\n", agents.get(i), scorePerPlayer[i] / nGamesPlayed[i]);
+            if (toFile) dataDump.add(str);
+            if (verbose) System.out.print(str);
+
 
             for (int j = 0; j < this.agents.size(); j++) {
                 if (i != j) {
@@ -515,43 +542,53 @@ public class RoundRobinTournament extends AbstractTournament {
             // now report alpha-rank as long as we have more agents than players
             // otherwise the Transition matrix is singular and we get no additional information
             // compared the the simple win rates
-            str = "\nAlpha-rank by Win Rate\n";
-            if (toFile) dataDump.add(str);
-            if (verbose) System.out.print(str);
-            List<Pair<String, Double>> sortedAlphaRank = IntStream.range(0, agents.size())
-                    .mapToObj(i -> new Pair<>(agents.get(i).toString(), alphaRankByWin[i]))
-                    .sorted((o1, o2) -> o2.b.compareTo(o1.b))
-                    .toList();
-            for (Pair<String, Double> pair : sortedAlphaRank) {
-                str = String.format("\t%-30s\t%.2f\n", pair.a, pair.b);
+            if (alphaRankByWin != null) {
+                str = "\nAlpha-rank by Win Rate\n";
                 if (toFile) dataDump.add(str);
                 if (verbose) System.out.print(str);
+                List<Pair<String, Double>> sortedAlphaRank = IntStream.range(0, agents.size())
+                        .mapToObj(i -> new Pair<>(agents.get(i).toString(), alphaRankByWin[i]))
+                        .sorted((o1, o2) -> o2.b.compareTo(o1.b))
+                        .toList();
+                for (Pair<String, Double> pair : sortedAlphaRank) {
+                    str = String.format("\t%-30s\t%.2f\n", pair.a, pair.b);
+                    if (toFile) dataDump.add(str);
+                    if (verbose) System.out.print(str);
+                }
             }
-
-            // and then by ordinal
-            str = "\nAlpha-rank by Ordinal Position\n";
-            if (toFile) dataDump.add(str);
-            if (verbose) System.out.print(str);
-            sortedAlphaRank = IntStream.range(0, agents.size())
-                    .mapToObj(i -> new Pair<>(agents.get(i).toString(), alphaRankByOrdinal[i]))
-                    .sorted((o1, o2) -> o2.b.compareTo(o1.b))
-                    .toList();
-            for (Pair<String, Double> pair : sortedAlphaRank) {
-                str = String.format("\t%-30s\t%.2f\n", pair.a, pair.b);
+            if (alphaRankByOrdinal != null) {
+                // and then by ordinal
+                str = "\nAlpha-rank by Ordinal Position\n";
                 if (toFile) dataDump.add(str);
                 if (verbose) System.out.print(str);
+                List<Pair<String, Double>> sortedAlphaRank = IntStream.range(0, agents.size())
+                        .mapToObj(i -> new Pair<>(agents.get(i).toString(), alphaRankByOrdinal[i]))
+                        .sorted((o1, o2) -> o2.b.compareTo(o1.b))
+                        .toList();
+                for (Pair<String, Double> pair : sortedAlphaRank) {
+                    str = String.format("\t%-30s\t%.2f\n", pair.a, pair.b);
+                    if (toFile) dataDump.add(str);
+                    if (verbose) System.out.print(str);
+                }
             }
         }
         // To file
         if (toFile) {
             try {
+                File resultsFile = new File(this.resultsFile);
+                if (!resultsFile.exists()) {
+                    File dir = resultsFile.getParentFile();
+                    if (dir != null && !dir.exists())
+                        dir.mkdirs();
+                }
                 FileWriter writer = new FileWriter(resultsFile, true);
                 for (String line : dataDump)
                     writer.write(line);
                 writer.write("\n");
                 writer.close();
             } catch (Exception e) {
-                e.printStackTrace();
+                System.out.println("Unable to write results to " + resultsFile);
+                resultsFile = null;
             }
         }
     }
@@ -611,7 +648,7 @@ public class RoundRobinTournament extends AbstractTournament {
                 }
             } catch (Exception e) {
                 System.out.println("Error in eigen decomposition - unable to calculate alpha-rank.");
-                return new double[agents.size()];
+                return null;
             }
 
             // print the transition matrix
@@ -693,7 +730,6 @@ public class RoundRobinTournament extends AbstractTournament {
 
             // print the cluster membership
             if (alphaRankDetails && Arrays.stream(clusterMembership).anyMatch(Objects::nonNull)) {
-
                 String str = "The following agents cluster together, and may be considered equivalent: ";
                 dataDump.add(str + "\n");
                 if (verbose) System.out.println(str);
@@ -722,15 +758,31 @@ public class RoundRobinTournament extends AbstractTournament {
     }
 
     public double getWinRate(int agentID) {
-        return finalWinRanking.get(agentID).a;
+        return finalWinRanking.get(agentID) == null ? 0.0 : finalWinRanking.get(agentID).a;
+    }
+
+    public double getWinRateAlphaRank(int agentID) {
+        if (alphaRankByWin == null)
+            return getWinRate(agentID);
+        return alphaRankByWin[agentID];
     }
 
     public double getWinStdErr(int agentID) {
-        return finalWinRanking.get(agentID).b;
+        return finalWinRanking.get(agentID) == null ? 0.0 : finalWinRanking.get(agentID).b;
+    }
+
+    public double getSumOfSquares(int agentID, String type) {
+        return type.equals("Win") ? pointsPerPlayerSquared[agentID] : rankPerPlayerSquared[agentID];
     }
 
     public double getOrdinalRank(int agentID) {
         return finalOrdinalRanking.get(agentID).a;
+    }
+
+    public double getOrdinalAlphaRank(int agentID) {
+        if (alphaRankByOrdinal == null)
+            return -getOrdinalRank(agentID);
+        return alphaRankByOrdinal[agentID];
     }
 
     public double getOrdinalStdErr(int agentID) {
@@ -744,6 +796,7 @@ public class RoundRobinTournament extends AbstractTournament {
     public int getNumberOfAgents() {
         return agents.size();
     }
+
     public int[] getNGamesPlayed() {
         return nGamesPlayed;
     }

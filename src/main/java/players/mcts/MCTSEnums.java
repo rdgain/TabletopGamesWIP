@@ -21,7 +21,7 @@ public class MCTSEnums {
     }
 
     public enum TreePolicy {
-        UCB, UCB_Tuned, AlphaGo, EXP3, RegretMatching, Uniform, Greedy
+        UCB, UCB_Tuned, AlphaGo, EXP3, RegretMatching, NoAveragingRM, Uniform, Greedy
     }
 
     public enum BackupPolicy {
@@ -32,6 +32,14 @@ public class MCTSEnums {
         // MaxMC uses a different approach (dependent on the maxBackupThreshold parameter). It will mix in the max option once this threshold is passed at any given node.
         // Additionally, MaxMC only applies if the best action was not taken - this gives different behaviour to lambda-style backups, which always mis in the Q value
         // even if the best action was taken (this down-weights the actual observed reward from that iteration.)
+    }
+
+    public enum RolloutIncrement {
+        TICK, TURN, ROUND
+        // Determine which event will trigger an increment on the rolloutDepth counter.
+        // For example, it can be set to TURN when the game's score is only affected by the last move made by a player,
+        // or ROUND when scores are only tallied at the end of a round.
+        // Useful when the number of moves made per turn or per round is not a fixed amount.
     }
 
     public enum RolloutTermination {

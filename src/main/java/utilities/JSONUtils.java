@@ -6,7 +6,6 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-import scala.util.parsing.json.JSON;
 
 import java.io.*;
 import java.lang.reflect.Array;
@@ -64,6 +63,9 @@ public class JSONUtils {
             if (TunableParameters.class.isAssignableFrom(outputClass)) {
                 // in this case we do not look for the Constructor arguments, as
                 // the parameters are defined directly as name-value pairs in JSON
+                // But first we check for any args, and log an error if they exist
+                if (json.containsKey("args"))
+                    throw new AssertionError("TunableParameters should not have args in JSON : " + json.toJSONString());
                 T t = outputClass.getConstructor().newInstance();
                 TunableParameters.loadFromJSON((TunableParameters) t, json);
                 return t;
@@ -124,7 +126,7 @@ public class JSONUtils {
             Constructor<?> constructor = ConstructorUtils.getMatchingAccessibleConstructor(clazz, argClasses);
             if (constructor == null)
                 throw new AssertionError("No matching Constructor found for " + clazz);
-       //     System.out.println("Invoking constructor for " + clazz + " with " + Arrays.toString(args));
+            //   System.out.println("Invoking constructor for " + clazz + " with " + Arrays.toString(args));
             Object retValue = constructor.newInstance(args);
             return outputClass.cast(retValue);
 
@@ -356,15 +358,18 @@ public class JSONUtils {
                     sb.append("\t".repeat(Math.max(0, tabDepth)));
                     if (v instanceof JSONObject subJSON) {
                         sb.append(prettyPrint(subJSON, tabDepth + 1));
-                    } else {
+                    } else if (v instanceof String) {
+                        sb.append("\"").append(v).append("\"");
+                    } else if (v instanceof Long || v instanceof Integer ||
+                            v instanceof Double || v instanceof Boolean) {
                         sb.append(v);
                     }
                     if (index < array.size() - 1)
-                        sb.append(",");
-                    sb.append("\n");
+                        sb.append(",").append("\n");
                 }
+                sb.append("\t".repeat(Math.max(0, tabDepth - 1))).append("]");
                 tabDepth--;
-            } else if (value instanceof String){
+            } else if (value instanceof String) {
                 sb.append("\"").append(value).append("\"");
             } else if (value instanceof Long || value instanceof Integer ||
                     value instanceof Double || value instanceof Boolean) {
@@ -376,7 +381,7 @@ public class JSONUtils {
                 sb.append(",");
             sb.append("\n");
         }
-        sb.append("\t".repeat(Math.max(0, tabDepth-1)));
+        sb.append("\t".repeat(Math.max(0, tabDepth - 1)));
         sb.append("}");
         return sb.toString();
     }
@@ -426,5 +431,24 @@ public class JSONUtils {
             }
         }
         return json;
+    }
+
+    /*
+        This tests the equality of two objects, even if they are of different types.
+        This supports 'equality' to include:
+        - the objects are different versions of Number, but with the same underlying numeric value
+        - one of the objects is an Enum, and the other is a String representation of the enum
+        - if either of the inputs are JSONObjects, then thhese will be instantiated
+         */
+    public static boolean areValuesEqual(Object possibleValue, Object value) {
+        if (value instanceof JSONObject)
+            value = loadClassFromJSON((JSONObject) value);
+        if (possibleValue instanceof JSONObject)
+            possibleValue = loadClassFromJSON((JSONObject) possibleValue);
+        if (possibleValue instanceof Enum || value instanceof Enum) {
+            return possibleValue.toString().equals(value.toString());
+        } else if (possibleValue instanceof Number && value instanceof Number) {
+            return ((Number) possibleValue).doubleValue() == ((Number) value).doubleValue();
+        } else return possibleValue.equals(value);
     }
 }
