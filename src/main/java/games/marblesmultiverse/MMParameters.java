@@ -3,8 +3,12 @@ package games.marblesmultiverse;
 import core.AbstractGameState;
 import core.AbstractParameters;
 import evaluation.optimisation.TunableParameters;
+import games.marblesmultiverse.components.Card;
+import games.marblesmultiverse.components.MMTypes;
 import utilities.Vector2D;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -23,22 +27,32 @@ public class MMParameters extends AbstractParameters {
     public int gridSize = 9;
     public Vector2D gridCenter = new Vector2D(4,4);  // depending on gridsize
 
+    public Map<MMTypes.CardType, Card> initialSetup = new HashMap<>() {{
+        put(MMTypes.CardType.Setup, Card.TWO_SIDES);
+        put(MMTypes.CardType.Victory, Card.YOUR_COLOR);
+        put(MMTypes.CardType.Movement, Card.MOVE_1);
+        put(MMTypes.CardType.Push, Card.PUSH_1);
+        put(MMTypes.CardType.PushRequirement, Card.MORE);
+        put(MMTypes.CardType.PushOut, Card.OUT_IS_GONE);
+    }};
+    public boolean mutationFromInitialSetup = false;  // If true, then the game setup will instead use the initial setup with {nMutations} of the cards changes
+    public int nMutations = 1;  // Number between 0-N rules (capped to number of possible rules that can change because they have >1 cards implemented)
+    public boolean useInitialSetup = false;  // If true, initial setup is used exactly, all other params for setup ignored
+
     @Override
-    protected AbstractParameters _copy() {
-        // TODO: deep copy of all variables.
+    protected MMParameters _copy() {
         return this;
     }
 
     @Override
     public boolean _equals(Object o) {
-        if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         MMParameters that = (MMParameters) o;
-        return gridSize == that.gridSize && Objects.equals(gridCenter, that.gridCenter);
+        return maxTurns == that.maxTurns && gridSize == that.gridSize && mutationFromInitialSetup == that.mutationFromInitialSetup && nMutations == that.nMutations && useInitialSetup == that.useInitialSetup && Objects.equals(gridCenter, that.gridCenter) && Objects.equals(initialSetup, that.initialSetup);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(gridSize, gridCenter);
+        return Objects.hash(super.hashCode(), maxTurns, gridSize, gridCenter, initialSetup, mutationFromInitialSetup, nMutations, useInitialSetup);
     }
 }

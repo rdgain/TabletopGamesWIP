@@ -73,6 +73,14 @@ public enum Card {
             OUT_IS_GONE, CENTER_IF_FREE, CENTER_REPLACE,
             TWO_SIDES);
 
+    public static boolean isImplemented(Card c) {return implementedCards.contains(c);}
+    public static int nImplemented(MMTypes.CardType ct) {
+        int count = 0;
+        for (Card c: implementedCards) if (c.type == ct) count++;
+        return count;
+    }
+
+
     Card(String description, MMTypes.CardType type){
         this.description =description;
         this.type=type;

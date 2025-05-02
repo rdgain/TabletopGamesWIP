@@ -45,31 +45,55 @@ public class MMForwardModel extends StandardForwardModel {
         deck.addAll(Card.implementedCards);
         Collections.shuffle(deck, state.getRnd());
 
-        // select first rules
+        // Select ruleset
         Map<MMTypes.CardType, Card> initialSetup = new HashMap<>();
-        int ct = 0;
-        while (initialSetup.size() < MMTypes.CardType.values().length && ct < deck.size()) {
-            Card card = deck.get(ct);
-            if (initialSetup.containsKey(card.type)) {
-                ct++;
-                continue;
+        if (params.useInitialSetup) {
+            // Using initial setup only.
+            initialSetup.putAll(params.initialSetup);
+            deck.removeAll(initialSetup.values());
+
+        } else if (params.mutationFromInitialSetup) {
+            // Using initial setup with some mutations
+            initialSetup.putAll(params.initialSetup);
+            // Find the card types that can change (because they have >1 implemented)
+            List<MMTypes.CardType> possibleMutations = new ArrayList<>();
+            for (MMTypes.CardType ct: MMTypes.CardType.values()) {
+                if (Card.nImplemented(ct) > 1) possibleMutations.add(ct);
             }
-            initialSetup.put(card.type, card);
-            deck.remove(ct);
+            // Apply mutations
+            int nMutations = Math.min(params.nMutations, possibleMutations.size());  // Cap number of mutations applied to max. available
+            for (int i = 0; i < nMutations; i++) {
+                // Random type of card to mutate from those possible
+                int rndIdx = state.getRnd().nextInt(possibleMutations.size());
+                MMTypes.CardType ct = possibleMutations.get(rndIdx);
+                possibleMutations.remove(ct);
+                // Random replacement for that type
+                List<Card> possibleCardReplacements = new ArrayList<>();
+                for (Card c: Card.values()) {
+                    if (c.type == ct && c != initialSetup.get(ct) && Card.isImplemented(c)) possibleCardReplacements.add(c);
+                }
+                // Replace in rule setup
+                initialSetup.put(ct, possibleCardReplacements.get(state.getRnd().nextInt(possibleCardReplacements.size())));
+            }
+            // Remove all cards that are part of our setup
+            deck.removeAll(initialSetup.values());
+
+        } else {
+            // Completely random card for each type of rule
+            int ct = 0;
+            while (initialSetup.size() < MMTypes.CardType.values().length && ct < deck.size()) {
+                Card card = deck.get(ct);
+                if (initialSetup.containsKey(card.type)) {
+                    ct++;
+                    continue;
+                }
+                initialSetup.put(card.type, card);
+                deck.remove(ct);
+            }
+            if (initialSetup.size() < MMTypes.CardType.values().length) {
+                throw new AssertionError("Not enough cards to setup the game");
+            }
         }
-        if (initialSetup.size() < MMTypes.CardType.values().length) {
-            throw new AssertionError("Not enough cards to setup the game");
-        }
-//        initialSetup.put(MMTypes.CardType.Setup, Card.TWO_SIDES);
-//        initialSetup.put(MMTypes.CardType.Victory, Card.YOUR_COLOR);
-////        initialSetup.put(MMTypes.CardType.Victory, Card.PUSH_OUT);
-//        initialSetup.put(MMTypes.CardType.Movement, Card.MOVE_2);
-//        initialSetup.put(MMTypes.CardType.Push, Card.PUSH_1);
-//        initialSetup.put(MMTypes.CardType.PushRequirement, Card.EVEN);
-//        initialSetup.put(MMTypes.CardType.PushOut, Card.OUT_IS_GONE);
-//        for (Card card : initialSetup.values()) {
-//            deck.remove(card);
-//        }
 
         state.rulesInPlay = initialSetup;
         state.deckOfRules = deck;
