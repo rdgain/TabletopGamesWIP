@@ -98,6 +98,28 @@ public class GameMetrics implements IMetricsCollection {
         }
     }
 
+    public static class RoundCounter extends AbstractMetric {
+
+        @Override
+        protected boolean _run(MetricsGameListener listener, Event e, Map<String, Object> records) {
+            //records.put("RoundCounter: ", e.state.getRoundCounter());
+            System.out.println("Round: " + e.state.getRoundCounter());  // TODO just for debug
+            return true;
+        }
+
+        @Override
+        public Set<IGameEvent> getDefaultEventTypes() {
+            return Collections.singleton(ROUND_OVER);
+        }
+
+        @Override
+        public Map<String, Class<?>> getColumns(int nPlayersPerGame, Set<String> playerNames) {
+            Map<String, Class<?>> columns = new HashMap<>();
+            columns.put("RoundCounter", Integer.class);
+            return columns;
+        }
+    }
+
 
     public static class StateSpace extends AbstractMetric {
         @Override
@@ -118,7 +140,6 @@ public class GameMetrics implements IMetricsCollection {
             return columns;
         }
     }
-
 
     public static class PlayerType extends AbstractMetric {
         @Override
@@ -180,20 +201,26 @@ public class GameMetrics implements IMetricsCollection {
                 put("Copy (ms)", Double.class);
                 put("Actions Available Compute (ms)", Double.class);
                 put("Agent (ms)", Double.class);
+                put("Agent", String.class);
+                put("Player", Integer.class);
             }};
         }
 
         @Override
         protected boolean _run(MetricsGameListener listener, Event e, Map<String, Object> records) {
-            records.put("Next (ms)", listener.getGame().getNextTime() / 1e3);
-            records.put("Copy (ms)", listener.getGame().getCopyTime() / 1e3);
-            records.put("Actions Available Compute (ms)", listener.getGame().getActionComputeTime() / 1e3);
-            records.put("Agent (ms)", listener.getGame().getAgentTime() / 1e3);
+            // the times are all recorded in nanoseconds, so we convert to milliseconds
+            records.put("Next (ms)", listener.getGame().getNextTime() / 1e6);
+            records.put("Copy (ms)", listener.getGame().getCopyTime() / 1e6);
+            records.put("Actions Available Compute (ms)", listener.getGame().getActionComputeTime() / 1e6);
+            records.put("Agent (ms)", listener.getGame().getAgentTime() / 1e6);
+            records.put("Agent", listener.getGame().getPlayers().get(e.playerID).toString());
+            records.put("Player", e.playerID);
             return true;
         }
 
         @Override
         public Set<IGameEvent> getDefaultEventTypes() {
+            // ACTION_CHOSEN would be fine except for the recording of the time for 'next'
             return Collections.singleton(Event.GameEvent.ACTION_TAKEN);
         }
     }

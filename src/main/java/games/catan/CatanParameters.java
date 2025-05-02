@@ -51,6 +51,9 @@ public class CatanParameters extends TunableParameters {
 
     public boolean tradingAllowed = true;
 
+    public int hexShuffleSeed = -1;
+    public int diceSeed = -1;
+
     public HashMap<Building.Type, Integer> buildingValue = new HashMap<Building.Type, Integer>() {{
         put(Building.Type.Settlement, 1);
         put(Building.Type.City, 2);
@@ -107,7 +110,7 @@ public class CatanParameters extends TunableParameters {
         public static ResourceAmount translate(int amount, CatanParameters cp) {
             double perc = amount*1.0 / cp.n_resource_cards;
             int idx = (int)(values().length * perc);
-            if (idx == 4) idx--;
+            if (idx >= 4) idx = 3;
             return values()[idx];
         }
     }
@@ -172,6 +175,8 @@ public class CatanParameters extends TunableParameters {
 
     public CatanParameters(){
         addTunableParameter("tradingAllowed", true);
+        addTunableParameter("hexShuffleSeed", -1);
+        addTunableParameter("diceSeed", -1);
         addTunableParameter("maxRounds", 100);
         addTunableParameter("dataPath", "data/catan/");
         _reset();
@@ -186,6 +191,8 @@ public class CatanParameters extends TunableParameters {
     @Override
     public void _reset() {
         tradingAllowed = (boolean) getParameterValue("tradingAllowed");
+        hexShuffleSeed = (int) getParameterValue("hexShuffleSeed");
+        diceSeed = (int) getParameterValue("diceSeed");
         setMaxRounds((int) getParameterValue("maxRounds"));
         dataPath = (String) getParameterValue("dataPath");
     }

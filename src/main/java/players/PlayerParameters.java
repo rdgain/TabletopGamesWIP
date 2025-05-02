@@ -1,5 +1,6 @@
 package players;
 
+import core.AbstractPlayer;
 import core.interfaces.IPlayerDecorator;
 import core.actions.ActionSpace;
 import core.interfaces.IStateHeuristic;
@@ -7,7 +8,7 @@ import evaluation.optimisation.TunableParameters;
 
 import java.util.Arrays;
 
-public class PlayerParameters extends TunableParameters {
+public class PlayerParameters extends TunableParameters<AbstractPlayer> {
 
     public double noiseEpsilon = 1e-6;
 
@@ -66,7 +67,7 @@ public class PlayerParameters extends TunableParameters {
     }
 
     @Override
-    public boolean _equals(Object o) {
+    protected boolean _equals(Object o) {
         if (this == o) return true;
         if (o instanceof PlayerParameters that) {
             if (gameHeuristic == null && that.gameHeuristic == null) return true;
@@ -77,8 +78,8 @@ public class PlayerParameters extends TunableParameters {
     }
 
     @Override
-    public Object instantiate() {
-        return null;
+    public AbstractPlayer instantiate() {
+        throw new RuntimeException("PlayerParameters should not be instantiated directly.");
     }
 
 
