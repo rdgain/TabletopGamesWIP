@@ -96,12 +96,12 @@ public enum Card {
                 // Check all neighbours distance 1
                 for (int i = 0; i < gs.getBoard().getHeight(); i++) {
                     for (int j = 0; j < gs.getBoard().getWidth(); j++) {
-                        BoardSpot boardSpot = gs.getBoard().getElement(j, i);
+                        BoardSpot boardSpot = (BoardSpot) gs.getBoard().getElement(j, i);
                         if (boardSpot != null && boardSpot.occupant == MMTypes.MarbleType.player(playerID)) {
                             Vector2D from = new Vector2D(j, i);
                             for (Vector2D to: Constants.getNeighbours(from)) {
                                 // 1 space away
-                                BoardSpot spot = gs.getBoard().getElement(to.getX(), to.getY());
+                                BoardSpot spot = (BoardSpot) gs.getBoard().getElement(to.getX(), to.getY());
                                 if (spot != null) {
                                     if (spot.occupant == null && spot.type != MMTypes.SpotType.BLOCKAGE) {
                                         // Move is always to an empty spot
@@ -117,18 +117,18 @@ public enum Card {
                 // Check all neighbours distance 1
                 for (int i = 0; i < gs.getBoard().getHeight(); i++) {
                     for (int j = 0; j < gs.getBoard().getWidth(); j++) {
-                        BoardSpot boardSpot = gs.getBoard().getElement(j, i);
+                        BoardSpot boardSpot = (BoardSpot) gs.getBoard().getElement(j, i);
                         if (boardSpot != null && boardSpot.occupant == MMTypes.MarbleType.player(playerID)) {
                             Vector2D from = new Vector2D(j, i);
                             for (Vector2D to: Constants.getNeighbours(from)) {
                                 // 2 space away checking if someone is on the way
-                                BoardSpot firstSpot = gs.getBoard().getElement(to.getX(), to.getY());
+                                BoardSpot firstSpot = (BoardSpot) gs.getBoard().getElement(to.getX(), to.getY());
                                 if (firstSpot != null) {
 //                                    if (firstSpot.occupant == null) {
                                         // check if the next one in this direction is empty too
                                         int direction = Constants.direction(from, to);
                                         Vector2D secondSpotCoord = Constants.getNeighbours(to).get(direction);
-                                        BoardSpot secondSpot = gs.getBoard().getElement(secondSpotCoord.getX(), secondSpotCoord.getY());
+                                        BoardSpot secondSpot = (BoardSpot) gs.getBoard().getElement(secondSpotCoord.getX(), secondSpotCoord.getY());
                                         if (secondSpot != null) {
                                             if (secondSpot.occupant == null && secondSpot.type != MMTypes.SpotType.BLOCKAGE) {
                                                 // then add move if the next one is empty too
@@ -146,12 +146,12 @@ public enum Card {
                 // Check all neighbours distance 1
                 for (int i = 0; i < gs.getBoard().getHeight(); i++) {
                     for (int j = 0; j < gs.getBoard().getWidth(); j++) {
-                        BoardSpot boardSpot = gs.getBoard().getElement(j, i);
+                        BoardSpot boardSpot = (BoardSpot) gs.getBoard().getElement(j, i);
                         if (boardSpot != null && boardSpot.occupant == MMTypes.MarbleType.player(playerID)) {
                             Vector2D from = new Vector2D(j, i);
                             for (Vector2D to: Constants.getNeighbours(from)) {
                                 // 2 space away checking if someone is on the way
-                                BoardSpot firstSpot = gs.getBoard().getElement(to.getX(), to.getY());
+                                BoardSpot firstSpot = (BoardSpot) gs.getBoard().getElement(to.getX(), to.getY());
                                 if (firstSpot != null) {
                                     if (firstSpot.occupant == null && firstSpot.type != MMTypes.SpotType.BLOCKAGE) {
                                         // move one in this direction
@@ -160,7 +160,7 @@ public enum Card {
                                         // check if the next one in this direction is empty too
                                         int direction = Constants.direction(from, to);
                                         Vector2D secondSpotCoord = Constants.getNeighbours(to).get(direction);
-                                        BoardSpot secondSpot = gs.getBoard().getElement(secondSpotCoord.getX(), secondSpotCoord.getY());
+                                        BoardSpot secondSpot = (BoardSpot) gs.getBoard().getElement(secondSpotCoord.getX(), secondSpotCoord.getY());
                                         if (secondSpot != null) {
                                             if (secondSpot.occupant == null && secondSpot.type != MMTypes.SpotType.BLOCKAGE) {
                                                 // then add move if the next one is empty too
@@ -180,18 +180,18 @@ public enum Card {
                 // Check all neighbours distance 1
                 for (int i = 0; i < gs.getBoard().getHeight(); i++) {
                     for (int j = 0; j < gs.getBoard().getWidth(); j++) {
-                        BoardSpot boardSpot = gs.getBoard().getElement(j, i);
+                        BoardSpot boardSpot = (BoardSpot) gs.getBoard().getElement(j, i);
                         if (boardSpot != null && boardSpot.occupant == MMTypes.MarbleType.player(playerID)) {
                             Vector2D from = new Vector2D(j, i);
                             for (Vector2D to: Constants.getNeighbours(from)) {
                                 // 2 space away checking if someone is on the way
-                                BoardSpot firstSpot = gs.getBoard().getElement(to.getX(), to.getY());
+                                BoardSpot firstSpot = (BoardSpot) gs.getBoard().getElement(to.getX(), to.getY());
                                 if (firstSpot != null) {
                                     if (firstSpot.occupant != null) {
                                         // check if the next one in this direction is empty too
                                         int direction = Constants.direction(from, to);
                                         Vector2D secondSpotCoord = Constants.getNeighbours(to).get(direction);
-                                        BoardSpot secondSpot = gs.getBoard().getElement(secondSpotCoord.getX(), secondSpotCoord.getY());
+                                        BoardSpot secondSpot = (BoardSpot) gs.getBoard().getElement(secondSpotCoord.getX(), secondSpotCoord.getY());
                                         if (secondSpot != null) {
                                             if (secondSpot.occupant == null) {
                                                 // then add move if the next one is empty too
@@ -233,12 +233,12 @@ public enum Card {
                 // Check all neighbours distance 1
                 for (int i = 0; i < gs.getBoard().getHeight(); i++) {
                     for (int j = 0; j < gs.getBoard().getWidth(); j++) {
-                        BoardSpot boardSpot = gs.getBoard().getElement(j, i);
+                        BoardSpot boardSpot = (BoardSpot) gs.getBoard().getElement(j, i);
                         if (boardSpot != null && boardSpot.occupant == MMTypes.MarbleType.player(playerID)) {
                             Vector2D from = new Vector2D(j, i);
                             for (Vector2D to: Constants.getNeighbours(from)) {
                                 // 1 space away
-                                BoardSpot spot = gs.getBoard().getElement(to.getX(), to.getY());
+                                BoardSpot spot = (BoardSpot) gs.getBoard().getElement(to.getX(), to.getY());
                                 if (spot != null) {
                                     // todo some rules don't allow to split columns
                                     if (spot.occupant == MMTypes.MarbleType.player(playerID)) {
@@ -279,13 +279,13 @@ public enum Card {
                 int oppCount = 0;
                 if (gs.getBoard().isInBounds(current.getX(), current.getY())
                         && gs.getBoard().getElement(current) != null
-                        && gs.getBoard().getElement(current).occupant != null) {
-                    int opponent = gs.getBoard().getElement(current).occupant.ordinal();
+                        && ((BoardSpot)gs.getBoard().getElement(current)).occupant != null) {
+                    int opponent = ((BoardSpot)gs.getBoard().getElement(current)).occupant.ordinal();
                     Vector2D oppLast = calculateColumn(gs.getBoard(), current, direction, opponent);
                     oppCount = 1+Constants.grid_distance(oppLast, oppStart);
                     if (gs.getBoard().isInBounds(current.getX(), current.getY())
                             && gs.getBoard().getElement(current) != null
-                            && gs.getBoard().getElement(current).occupant != null) {
+                            && ((BoardSpot)gs.getBoard().getElement(current)).occupant != null) {
                         if (gs.getRulesInPlay().get(MMTypes.CardType.PushRequirement).pushReq(count, oppCount)) {
                             Pair<AbstractAction, Integer> a = canPush(gs, oppStart, Constants.add_direction(oppStart, direction), opponent, nCols + 1);
                             if (a != null) {
@@ -321,7 +321,7 @@ public enum Card {
         if (this.type != MMTypes.CardType.PushOut) return;
 
         Vector2D center = ((MMParameters)state.getGameParameters()).gridCenter;
-        BoardSpot centerSpot = state.getBoard().getElement(center);
+        BoardSpot centerSpot = (BoardSpot) state.getBoard().getElement(center);
 
         switch (this) {
             case OUT_IS_GONE:
@@ -358,12 +358,12 @@ public enum Card {
     }
 
     // Returns the last spot in the column
-    public static Vector2D calculateColumn(GridBoard<BoardSpot> board, Vector2D from, int direction, int playerID) {
+    public static Vector2D calculateColumn(GridBoard board, Vector2D from, int direction, int playerID) {
         Vector2D current = from;
         Vector2D next = Constants.add_direction(current, direction);
         while (board.isInBounds(next.getX(), next.getY())
                 && board.getElement(next) != null
-                && board.getElement(next).occupant == MMTypes.MarbleType.player(playerID)) {
+                && ((BoardSpot)board.getElement(next)).occupant == MMTypes.MarbleType.player(playerID)) {
             current = next;
             next = Constants.add_direction(current, direction);
         }
@@ -387,7 +387,7 @@ public enum Card {
     }
 
     // Returns number of marbles per player
-    public int parseSetup(GridBoard<BoardSpot> board) {
+    public int parseSetup(GridBoard board) {
         int nMarblesPerPlayer = 0;
         if (this.type != MMTypes.CardType.Setup) return nMarblesPerPlayer;
 
@@ -423,7 +423,7 @@ public enum Card {
                         board.setElement(x, y, spot);
                     } else {
                         // Parsing the second part: marble placements
-                        BoardSpot spot = board.getElement(x, y);
+                        BoardSpot spot = (BoardSpot) board.getElement(x, y);
                         if (spot != null && !tokens[x].equals("0")) {
                             MMTypes.MarbleType marble = MMTypes.MarbleType.valueOf(tokens[x]);
                             if (marble.ordinal() == 0) nMarblesPerPlayer++;
@@ -460,7 +460,7 @@ public enum Card {
                 Arrays.fill(win, true);
                 for (int i = 0; i < gs.getBoard().getHeight(); i++) {
                     for (int j = 0; j < gs.getBoard().getWidth(); j++) {
-                        BoardSpot boardSpot = gs.getBoard().getElement(j, i);
+                        BoardSpot boardSpot = (BoardSpot) gs.getBoard().getElement(j, i);
                         if (boardSpot != null && boardSpot.victoryOwner != null &&
                                 boardSpot.victoryOwner.ordinal() < gs.getNPlayers() &&
                                 boardSpot.occupant != boardSpot.victoryOwner)
@@ -476,7 +476,7 @@ public enum Card {
                 for (int i = 0; i < gs.getNPlayers(); i++) victoryOccupiedPerPlayer.add(new HashSet<>());
                 for (int i = 0; i < gs.getBoard().getHeight(); i++) {
                     for (int j = 0; j < gs.getBoard().getWidth(); j++) {
-                        BoardSpot boardSpot = gs.getBoard().getElement(j, i);
+                        BoardSpot boardSpot = (BoardSpot) gs.getBoard().getElement(j, i);
                         if (boardSpot != null && boardSpot.victoryOwner != null &&
                                 boardSpot.victoryOwner.ordinal() < gs.getNPlayers())
                             if (boardSpot.occupant != null) victoryOccupiedPerPlayer.get(boardSpot.occupant.ordinal()).add(boardSpot.victoryOwner);
@@ -490,7 +490,7 @@ public enum Card {
                 int[] nOccupied = new int[gs.getNPlayers()];
                 for (int i = 0; i < gs.getBoard().getHeight(); i++) {
                     for (int j = 0; j < gs.getBoard().getWidth(); j++) {
-                        BoardSpot boardSpot = gs.getBoard().getElement(j, i);
+                        BoardSpot boardSpot = (BoardSpot) gs.getBoard().getElement(j, i);
                         if (boardSpot != null && boardSpot.victoryOwner != null &&
                                 boardSpot.victoryOwner.ordinal() < gs.getNPlayers())
                             if (boardSpot.occupant != null) nOccupied[boardSpot.occupant.ordinal()] ++;

@@ -14,7 +14,7 @@ public class Utils {
         ArrayList<Vector2D> pieces = new ArrayList<>();
         for (int i = 0; i < mmgs.getBoard().getHeight(); i++) {
             for (int j = 0; j < mmgs.getBoard().getWidth(); j++) {
-                BoardSpot boardSpot = mmgs.getBoard().getElement(j, i);
+                BoardSpot boardSpot = (BoardSpot) mmgs.getBoard().getElement(j, i);
                 if (boardSpot != null && boardSpot.getOccupant() != null && boardSpot.getOccupant().ordinal() == playerId) {
                     pieces.add(new Vector2D(i, j));
                 }
@@ -27,7 +27,7 @@ public class Utils {
         ArrayList<BoardSpot> victorySpots = new ArrayList<>();
         for (int i = 0; i < mmgs.getBoard().getHeight(); i++) {
             for (int j = 0; j < mmgs.getBoard().getWidth(); j++) {
-                BoardSpot boardSpot = mmgs.getBoard().getElement(j, i);
+                BoardSpot boardSpot = (BoardSpot) mmgs.getBoard().getElement(j, i);
                 if (boardSpot != null && boardSpot.getVictoryOwner() != null
                         && boardSpot.getSpotType() == MMTypes.SpotType.VICTORY
                         && boardSpot.getVictoryOwner().ordinal() == playerId) {

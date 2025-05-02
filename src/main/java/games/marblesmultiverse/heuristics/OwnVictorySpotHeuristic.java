@@ -21,7 +21,7 @@ public class OwnVictorySpotHeuristic implements IStateHeuristic {
         int occupiedOwnVictorySpot = 0;
         for (int i = 0; i < mmgs.getBoard().getHeight(); i++) {
             for (int j = 0; j < mmgs.getBoard().getWidth(); j++) {
-                BoardSpot boardSpot = mmgs.getBoard().getElement(j, i);
+                BoardSpot boardSpot = (BoardSpot) mmgs.getBoard().getElement(j, i);
                 if (boardSpot != null && boardSpot.getVictoryOwner() != null
                         && boardSpot.getSpotType() == MMTypes.SpotType.VICTORY
                         && boardSpot.getVictoryOwner().ordinal() == playerId) {

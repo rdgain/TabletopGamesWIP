@@ -24,7 +24,7 @@ public class Push extends DirectionalAction {
     public boolean execute(AbstractGameState gs) {
         MMGameState state = (MMGameState) gs;
         Card pushOutRule = state.getRulesInPlay().get(MMTypes.CardType.PushOut);
-        GridBoard<BoardSpot> board = state.getBoard();
+        GridBoard board = state.getBoard();
 
         // todo hardcoded to PUSH_1
 
@@ -43,8 +43,8 @@ public class Push extends DirectionalAction {
         // Iterate from 'from' onwards in the direction of 'to' for as many columns as we need.
         while (board.isInBounds(current.getX(), current.getY())
                 && board.getElement(current) != null
-                && board.getElement(current).getOccupant() != null) {
-            BoardSpot currentSpot = board.getElement(current);
+                && ((BoardSpot)board.getElement(current)).getOccupant() != null) {
+            BoardSpot currentSpot = (BoardSpot) board.getElement(current);
 
             // Check if we changed player (or spot is empty), increase number of columns and update player of current column
             if (currentSpot.getOccupant() != player) {
@@ -73,10 +73,10 @@ public class Push extends DirectionalAction {
         }
         // Add last marble
         if (board.isInBounds(current.getX(), current.getY()) && board.getElement(current) != null) {
-            board.getElement(current).addMarble(spots.get(spots.size()-1));
+            ((BoardSpot)board.getElement(current)).addMarble(spots.get(spots.size()-1));
         }
         // Remove first marble which was pushed into others
-        state.getBoard().getElement(from).removeMarble();
+        ((BoardSpot)state.getBoard().getElement(from)).removeMarble();
 
 
         // Debug verify counters in sync with board state

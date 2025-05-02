@@ -150,7 +150,7 @@ public class MMBoardView extends ComponentView implements IScreenHighlight {
 
                 int xC = 10 + offsetX + j * defaultItemSize;
                 int yC = 10 + offsetY + i * defaultItemSize;
-                drawCell(g, xC, yC, i + ", " + j, gs.getBoard().getElement(j, i));
+                drawCell(g, xC, yC, i + ", " + j, (BoardSpot) gs.getBoard().getElement(j, i));
 
                 // Save rect where cell is drawn
                 rects.put(new Rectangle(xC - defaultItemSize/2, yC - defaultItemSize/2, defaultItemSize, defaultItemSize), "grid-" + j + "-" + i);

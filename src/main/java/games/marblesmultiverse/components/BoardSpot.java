@@ -105,6 +105,8 @@ public class BoardSpot extends BoardNode {
     }
 
     public String simpleString() {
-        return "(" + type.name().charAt(0) + "/" + victoryOwner.name().charAt(0) + "/" + occupant.name().charAt(0) + ")";
+        char occupantStr = this.occupant == null? ' ' : this.occupant.name().charAt(0);
+        char victoryOwnerStr = this.victoryOwner == null? ' ' : victoryOwner.name().charAt(0);
+        return "(" + type.name().charAt(0) + "/" + victoryOwnerStr + "/" + occupantStr + ")";
     }
 }

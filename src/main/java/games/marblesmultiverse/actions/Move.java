@@ -24,8 +24,8 @@ public class Move extends DirectionalAction {
     @Override
     public boolean execute(AbstractGameState gs) {
         MMGameState state = (MMGameState) gs;
-        BoardSpot boardSpotFrom = state.getBoard().getElement(from);
-        BoardSpot boardSpotTo = state.getBoard().getElement(to);
+        BoardSpot boardSpotFrom = (BoardSpot) state.getBoard().getElement(from);
+        BoardSpot boardSpotTo = (BoardSpot) state.getBoard().getElement(to);
         boardSpotTo.addMarble(boardSpotFrom.getOccupant());
         boardSpotFrom.removeMarble();
         return true;
