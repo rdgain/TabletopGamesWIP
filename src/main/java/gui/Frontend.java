@@ -1,20 +1,27 @@
 package gui;
 
+import com.google.gson.Gson;
 import core.*;
 import core.actions.AbstractAction;
 import evaluation.listeners.MetricsGameListener;
 import evaluation.optimisation.TunableParameters;
 import evaluation.metrics.Event;
 import games.GameType;
+import games.marblesmultiverse.MMParameters;
 import gui.models.AITableModel;
 import players.PlayerParameters;
 import players.PlayerType;
+import players.TraceReplay;
 import players.human.ActionController;
 
 import javax.swing.Timer;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
+import java.io.File;
+import java.lang.reflect.InvocationTargetException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.*;
 
@@ -41,6 +48,7 @@ public class Frontend extends GUI {
         nPlayers.add(BorderLayout.WEST, nPlayersText);
         JTextField nPlayerField = new JTextField("" + defaultNPlayers, 10);  // integer of this is n players
         nPlayers.add(BorderLayout.CENTER, nPlayerField);
+
 
         // Game type and parameters selection
 
@@ -106,6 +114,7 @@ public class Frontend extends GUI {
                 gameParameterEditWindow[idx].setVisible(true);
             }
         });
+
 
         // For each player, select type and parameters
 
@@ -230,6 +239,39 @@ public class Frontend extends GUI {
         seedSelect.add(BorderLayout.CENTER, seedOption);
         seedSelect.add(BorderLayout.EAST, seedRefresh);
 
+        // Load play trace JSON button (MultiverseMarbles only)
+        JPanel playTraceLoader = new JPanel();
+        playTraceLoader.setLayout(new BorderLayout());
+        JButton loadMMPlayTrace = new JButton("Load Play Trace (this will ignore any player settings)");
+        JFileChooser playTraceFileChooser = new JFileChooser(System.getProperty("user.dir"));
+        playTraceFileChooser.setAcceptAllFileFilterUsed(false);
+        playTraceFileChooser.addChoosableFileFilter(
+                new FileNameExtensionFilter("JSON files only", "json")
+        );
+
+        ArrayList<Integer> actionTraces = new ArrayList<>();
+        loadMMPlayTrace.addActionListener(e -> {
+                    int retVal = playTraceFileChooser.showOpenDialog(this);
+                    if (retVal == JFileChooser.APPROVE_OPTION) {
+                        try {
+                            String jsonFile =  new String(Files.readAllBytes(Paths.get(playTraceFileChooser.getSelectedFile().getPath())));
+                            Gson gson = new Gson();
+                            long[] playTraces = gson.fromJson(jsonFile, long[].class); // This is Long due to also saving the random seed of the game.
+
+                            for (int i = 0; i < playTraces.length-1; i++) {   // Convert playTrace into integer array
+                                actionTraces.add(Math.toIntExact(playTraces[i]));
+                            }
+                            loadMMPlayTrace.setText("TRACE LOADED, all other player settings ignored");
+                            seedOption.setText(Long.toString(playTraces[playTraces.length-1]));
+                        } catch (Exception ex) {
+                            throw new RuntimeException(ex);
+                        }
+                    }
+                }
+        );
+        playTraceLoader.add(loadMMPlayTrace);
+        playerSelect.add(playTraceLoader);
+
         // Game run core parameters select
         CoreParameters coreParameters = new CoreParameters();
         JPanel gameRunParamSelect = new JPanel();
@@ -285,11 +327,20 @@ public class Frontend extends GUI {
                 ArrayList<AbstractPlayer> players = new ArrayList<>();
                 int nP = Integer.parseInt(nPlayerField.getText());
                 String[] playerNames = new String[nP];
-                for (int i = 0; i < nP; i++) {
-                    AbstractPlayer player = PlayerType.valueOf(playerOptionsChoice[i].getItemAt(playerOptionsChoice[i].getSelectedIndex()))
-                            .createPlayerInstance(seed, humanInputQueue, playerParameters[i]);
-                    playerNames[i] = player.toString();
-                    players.add(player);
+                if (actionTraces.isEmpty()) {
+                    for (int i = 0; i < nP; i++) {
+                        AbstractPlayer player = PlayerType.valueOf(playerOptionsChoice[i].getItemAt(playerOptionsChoice[i].getSelectedIndex()))
+                                .createPlayerInstance(seed, humanInputQueue, playerParameters[i]);
+                        playerNames[i] = player.toString();
+                        players.add(player);
+                    }
+                }
+                else {
+                    for (int i = 0; i < nP; i++) {
+                        AbstractPlayer player = new TraceReplay(actionTraces);
+                        playerNames[i] = player.toString();
+                        players.add(player);
+                    }
                 }
                 GameType gameType = GameType.valueOf(gameOptions.getItemAt(gameOptions.getSelectedIndex()));
                 System.out.println("Playing `" + gameType.name() + "` with players: " + Arrays.toString(playerNames));
@@ -298,8 +349,27 @@ public class Frontend extends GUI {
                 TunableParameters params = gameParameters[gameOptions.getSelectedIndex()];
                 if (params != null) {
                     params.setRandomSeed(seed);
+                    gameRunning = gameType.createGameInstance(players.size(), params);
                 }
-                gameRunning = gameType.createGameInstance(players.size(), params);
+                else {  // if the game has no tunable parameter
+                    Class<?> parameterClass = gameType.getParameterClass();
+                    AbstractParameters absParams = null;
+                    if (parameterClass != null) {
+                        try {
+                            absParams = (AbstractParameters) parameterClass.getConstructor().newInstance();
+                            absParams.setRandomSeed(seed);
+                        }
+                        catch (InvocationTargetException | NoSuchMethodException | InstantiationException | IllegalAccessException ex) {
+                            throw new RuntimeException(ex);
+                        }
+                    }
+                    if (gameType == GameType.MultiverseMarbles) {   // Turning off saving trace
+                        MMParameters mmParams = (MMParameters) absParams;
+                        mmParams.saveTraceEnabled = false;
+                    }
+                    gameRunning = gameType.createGameInstance(players.size(), absParams);
+                }
+//                gameRunning = gameType.createGameInstance(players.size(), params);
                 if (gameRunning != null) {
                     // Reset game instance, passing the players for this game
                     gameRunning.reset(players);

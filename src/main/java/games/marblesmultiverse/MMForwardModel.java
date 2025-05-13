@@ -128,6 +128,16 @@ public class MMForwardModel extends StandardForwardModel {
     }
 
     @Override
+    protected void _beforeAction(AbstractGameState currentState, AbstractAction actionChosen) {
+        MMGameState gs = (MMGameState) currentState;
+        if (gs.saveTraceEnabled) {
+            gs.currentActions.clear();
+            gs.currentActions.addAll(_computeAvailableActions(currentState));
+            gs.saveTrace(actionChosen);
+        }
+    }
+
+    @Override
     protected void _afterAction(AbstractGameState currentState, AbstractAction actionTaken) {
         if (currentState.isActionInProgress()) return;
         MMGameState gameState = (MMGameState) currentState;
@@ -193,6 +203,10 @@ public class MMForwardModel extends StandardForwardModel {
     protected void endGame(AbstractGameState gs) {
         if (gs.getCoreGameParameters().verbose) {
             System.out.println(Arrays.toString(gs.getPlayerResults()));
+        }
+        MMGameState mmgs = (MMGameState) gs;
+        if (mmgs.saveTraceEnabled) {
+            mmgs.exportPlayTrace();
         }
     }
 }

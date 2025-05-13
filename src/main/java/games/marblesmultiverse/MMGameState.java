@@ -1,13 +1,18 @@
 package games.marblesmultiverse;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import core.AbstractGameState;
 import core.AbstractParameters;
+import core.actions.AbstractAction;
 import core.components.*;
 import games.GameType;
 import games.marblesmultiverse.components.BoardSpot;
 import games.marblesmultiverse.components.Card;
 import games.marblesmultiverse.components.MMTypes;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.util.*;
 
 /**
@@ -29,12 +34,20 @@ public class MMGameState extends AbstractGameState {
     List<List<Integer>> playerMarblesPushedOut = new ArrayList<>();
     // for player i, list of what players pushed their marbles out and removed it from the game. size of list.get(i) indicates how many marbles of player i were pushed out in total.
     List<List<Integer>> playerMarblesRemoved = new ArrayList<>();
+
+    List<AbstractAction> currentActions = new ArrayList<>();
+    ArrayList<Long> playTraces = new ArrayList<>();
+
+    boolean saveTraceEnabled;
+
     /**
      * @param gameParameters - game parameters.
      * @param nPlayers       - number of players in the game
      */
     public MMGameState(AbstractParameters gameParameters, int nPlayers) {
         super(gameParameters, nPlayers);
+        MMParameters params = (MMParameters) gameParameters;
+        saveTraceEnabled = params.saveTraceEnabled;
     }
 
     public GridBoard getBoard() {
@@ -117,7 +130,7 @@ public class MMGameState extends AbstractGameState {
             copy.playerMarblesPushedOut.add(new ArrayList<>(playerMarblesPushedOut.get(i)));
             copy.playerMarblesOnBoard.add(playerMarblesOnBoard.get(i).copy());
         }
-
+        copy.saveTraceEnabled = false; // Force gs copy to never save trace
         return copy;
     }
 
@@ -165,5 +178,40 @@ public class MMGameState extends AbstractGameState {
             str += "\n";
         }
         return str;
+    }
+
+    public void saveTrace(AbstractAction actionChosen) {
+        if (!saveTraceEnabled) {
+            return;
+        }
+//        System.out.println("TURN " + turnCounter);
+//        System.out.println("Total actions: " + currentActions.size());
+        int actionIndex = currentActions.indexOf(actionChosen);
+        if (actionIndex == -1) {
+            System.out.println("ACTIONS CANNOT BE FOUND AAAAAAAAAAAAAAAAAAA");
+            System.out.println(actionChosen);
+            System.out.println("-----------------");
+            return;
+        }
+        playTraces.add((long)actionIndex);
+//        System.out.println("Player " + getCurrentPlayer() + " : " + actionIndex);
+//        System.out.println(currentActions.get(actionIndex));
+//        System.out.println(actionChosen);
+//        System.out.println(playTraces);
+//        System.out.println("-----------------");
+    }
+
+    public void exportPlayTrace() {
+        playTraces.add(gameParameters.getRandomSeed());
+        Gson gson = new Gson();
+        String fileName = "MM-trace-" + getGameID() + ".json";
+        MMParameters params = (MMParameters) gameParameters;
+        File jsonToWrite = new File(params.savePath, fileName);
+        try (FileWriter f = new FileWriter(jsonToWrite)) {
+            gson.toJson(playTraces, f);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        playTraces.clear();
     }
 }

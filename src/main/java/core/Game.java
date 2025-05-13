@@ -129,9 +129,22 @@ public class Game {
             game = gameToPlay.createGameInstance(players.size(), seed, params);
         } else game = gameToPlay.createGameInstance(players.size(), seed);
 
-        if (game == null)
-            System.out.println("Error game: " + gameToPlay);
+        return runGame(gameToPlay, game, players, randomizeParameters, listeners, ac, turnPause);
+    }
 
+    public static Game runOne(GameType gameToPlay, AbstractParameters gameParams, List<AbstractPlayer> players, long seed,
+                              boolean randomizeParameters, List<IGameListener> listeners, ActionController ac, int turnPause) {
+        // Creating game instance (null if not implemented)
+        Game game;
+        if (gameParams != null) {
+            game = gameToPlay.createGameInstance(players.size(), seed, gameParams);
+        } else game = gameToPlay.createGameInstance(players.size(), seed);
+
+        return runGame(gameToPlay, game, players, randomizeParameters, listeners, ac, turnPause);
+    }
+
+    private static Game runGame(GameType gameToPlay, Game game, List<AbstractPlayer> players,
+                                boolean randomizeParameters, List<IGameListener> listeners, ActionController ac, int turnPause) {
         if (listeners != null) {
             Set<String> agentNames = players.stream()
                     //           .peek(a -> System.out.println(a.toString()))
@@ -229,7 +242,7 @@ public class Game {
                 Long s = seed;
                 if (s == null) s = System.currentTimeMillis();
                 s += offset;
-                game = runOne(gt, null, players, s, randomizeParameters, listeners, null, turnPause);
+                game = runOne(gt, (String) null, players, s, randomizeParameters, listeners, null, turnPause);
                 if (game != null) {
                     recordPlayerResults(statSummaries, game);
                     offset = game.getGameState().getRoundCounter() * game.getGameState().getNPlayers();
@@ -298,7 +311,7 @@ public class Game {
 
             // Play n repetitions of this game and record player results
             for (int i = 0; i < nRepetitions; i++) {
-                Game game = runOne(gt, null, players, seeds[i], randomizeParameters, listeners, null, turnPause);
+                Game game = runOne(gt, (String) null, players, seeds[i], randomizeParameters, listeners, null, turnPause);
                 if (game != null) {
                     recordPlayerResults(statSummaries, game);
                 }
@@ -878,12 +891,13 @@ public class Game {
 //        AbstractPlayer rmhcPlayer = new RMHCPlayer(params);
 //        players.add(rmhcPlayer);
 
-        MCTSParams params = loadClassFromJSON(loadJSONFile("MMExperiment/tuned-mcts-agents/MCTS.json"));
-//        params.budget = 1000;
-//        params.budgetType = PlayerConstants.BUDGET_TIME;
-//        params.heuristic = new PushVictoryHeuristic();
-        params.heuristic = new OwnColorVictoryHeuristic();
-        params.opponentTreePolicy = MCTSEnums.OpponentTreePolicy.OneTree;
+//        MCTSParams params = loadClassFromJSON(loadJSONFile("MMExperiment/tuned-mcts-agents/MCTS.json"));
+        MCTSParams params = new MCTSParams();
+        params.budget = 1000;
+        params.budgetType = PlayerConstants.BUDGET_TIME;
+        params.heuristic = new PushVictoryHeuristic();
+//        params.heuristic = new OwnColorVictoryHeuristic();
+//        params.opponentTreePolicy = MCTSEnums.OpponentTreePolicy.OneTree;
 //        players.add(new HumanGUIPlayer(ac));
         players.add(new MCTSPlayer(params));
         players.add(new MCTSPlayer(params));

@@ -305,7 +305,7 @@ public enum GameType {
     MultiverseMarbles(2, 2,
             Arrays.asList(Strategy, Abstract),
             Arrays.asList(GridMovement),
-			MMGameState .class, MMForwardModel .class, MMParameters.class, MMGUIManager.class);
+			MMGameState.class, MMForwardModel.class, MMParameters.class, MMGUIManager.class);
 
     // Core classes where the game is defined
     final Class<? extends AbstractGameState> gameStateClass;

@@ -23,6 +23,8 @@ import java.util.Objects;
  */
 public class MMParameters extends AbstractParameters {
 
+    public boolean saveTraceEnabled = true;
+    public String savePath = "MMPlayTraceTest/";
     public int maxTurns = 200;
     public int gridSize = 9;
     public Vector2D gridCenter = new Vector2D(4,4);  // depending on gridsize

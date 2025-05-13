@@ -122,6 +122,24 @@ public class MMMetrics implements IMetricsCollection {
             return columns;
         }
     }
+
+    public static class ActionTrace extends AbstractMetric {
+
+        @Override
+        protected boolean _run(MetricsGameListener listener, Event e, Map<String, Object> records) {
+            return false;
+        }
+
+        @Override
+        public Set<IGameEvent> getDefaultEventTypes() {
+            return null;
+        }
+
+        @Override
+        public Map<String, Class<?>> getColumns(int nPlayersPerGame, Set<String> playerNames) {
+            return null;
+        }
+    }
 }
 
 
