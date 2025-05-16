@@ -204,7 +204,7 @@ public class MMGameState extends AbstractGameState {
     public void exportPlayTrace() {
         playTraces.add(gameParameters.getRandomSeed());
         Gson gson = new Gson();
-        String fileName = "MM-trace-" + getGameID() + ".json";
+        String fileName = "MM-trace-" + getGameID() + "-" + System.currentTimeMillis() + ".json";
         MMParameters params = (MMParameters) gameParameters;
         File jsonToWrite = new File(params.savePath, fileName);
         try (FileWriter f = new FileWriter(jsonToWrite)) {

@@ -908,15 +908,15 @@ public class Game {
         String gameParams = null;
 
         /* Run! */
-        runOne(GameType.valueOf(gameType), gameParams, players, seed, false, null, useGUI ? ac : null, turnPause);
+//        runOne(GameType.valueOf(gameType), gameParams, players, seed, false, null, useGUI ? ac : null, turnPause);
 
         /* Run multiple games */
-//        int n = 100;
-//        long t = System.currentTimeMillis();
-//        ArrayList<GameType> games = new ArrayList<>();
-//        games.add(MultiverseMarbles);
-//        runMany(games, players, null, n, false, true, null, turnPause);
-//        System.out.println("FISNIHED RUNNING IN " + (System.currentTimeMillis() - t)/1000 + " SECONDS");
+        int n = 10;
+        long t = System.currentTimeMillis();
+        ArrayList<GameType> games = new ArrayList<>();
+        games.add(MultiverseMarbles);
+        runMany(games, players, null, n, false, true, null, turnPause);
+        System.out.println("FISNIHED RUNNING IN " + (System.currentTimeMillis() - t)/1000 + " SECONDS");
 //        runMany(new ArrayList<GameType>() {{add(Uno);}}, players, null, 100, false, false, null, turnPause);
     }
 

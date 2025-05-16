@@ -402,6 +402,22 @@ public class Frontend extends GUI {
             };
             gameThread = new Thread(runnable);
             gameThread.start();
+
+            // Start Paused if replaying
+            if (!actionTraces.isEmpty()) {
+                paused = !paused;
+                pauseGame.setText(paused ? "Resume" : "Pause");
+                if (gameRunning != null) {
+                    gameRunning.setPaused(paused);
+                    if (!paused && !gameRunning.isHumanToMove()) {
+                        // in this case we need to notify the game loop to get going again
+                        synchronized (gameRunning) {
+                            gameRunning.notifyAll();
+                        }
+                    }
+                }
+                oneAction.setEnabled(paused && started);
+            }
         };
 
         java.awt.event.ActionListener stopTrigger = e -> {

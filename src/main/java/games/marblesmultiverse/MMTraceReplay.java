@@ -26,7 +26,7 @@ import static core.Game.runOne;
 
 public class MMTraceReplay {
     public static void main(String[] args) throws IOException {
-        String playTracePath = "MMPlayTraceTest/MM-trace-2.json";
+        String playTracePath = "MMPlayTraceTest/MM-trace-14-1747409386860.json";
         boolean useGUI = true;
         int turnPause = 10;
         ActionController ac = new ActionController();

@@ -47,7 +47,7 @@ public class MMBoardView extends ComponentView implements IScreenHighlight {
     private Color highlightFromColor = new Color(144, 176, 0);
 
     public MMBoardView(MMGameState gs) {
-        super(gs.getBoard(), 500, 500);
+        super(gs.getBoard(), 575, 575);
         this.gs = gs;
         rects = new HashMap<>();
         highlights = new LinkedList<>();
